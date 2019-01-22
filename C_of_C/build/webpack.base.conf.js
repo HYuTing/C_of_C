@@ -29,6 +29,9 @@ module.exports = {
       '@': resolve('src'),
     }
   },
+  devServer: {
+    disableHostCheck: true
+  },
   module: {
     rules: [
       {
@@ -79,4 +82,5 @@ module.exports = {
     tls: 'empty',
     child_process: 'empty'
   }
+
 }
