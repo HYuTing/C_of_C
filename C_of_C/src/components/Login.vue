@@ -1,17 +1,17 @@
 <template>
   <div class="main">
     <img class="login-background" src="../assets/loginback.png">
-    <form>
+    <form :model="loginForm">
       <div class="form-div">
         <img class="icon" src="../assets/usericon.png">
-        <input class="form-input" placeholder="用户名" type="text">
+        <input v-model="loginForm.username" name="username" class="form-input" placeholder="用户名" type="text">
       </div>
       <div class="form-div">
         <img class="icon" src="../assets/passwordicon.png">
-        <input class="form-input" placeholder="密码" type="password">
+        <input v-model="loginForm.password" name="password" class="form-input" placeholder="密码" type="password">
       </div>
     </form>
-    <button class="login-btn">
+    <button class="login-btn" @click="Login">
       登 录
     </button>
     <p class="loginup"><a>忘记密码</a><span class="break"> | </span><router-link to='loginup' class="loginup">注册账号</router-link></p>
@@ -24,7 +24,50 @@ export default {
   name: 'Login',
   data () {
     return {
-      msg: ''
+      loginForm: {
+        username: '',
+        password: ''
+      }
+    }
+  },
+
+  methods: {
+    Login: function() {
+      var _this = this;
+      if(_this.loginForm.username == '') {
+        this.$toast('请输入用户名');
+      }
+      else if(_this.loginForm.password == '') {
+        this.$toast('密码错误');
+      }
+      else {
+        this.axios({
+          // url: this.baseUrl + '/user/login',
+          url: '/api/user/login',
+          method: 'post',
+          data: {
+            "userName": this.loginForm.username,
+            "userPass": this.loginForm.password
+          }
+        })
+        .then((res) => {
+          // console.log(res.headers);
+          // console.log(res.headers['s-token']);
+          this.$cookies.set('token', res.headers['s-token'], 30);
+          if(res.status == 200) {
+            this.$toast('登录成功');
+
+              setTimeout(function() {
+                _this.$router.push("/Userinfo");
+              }, 1500);
+
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$toast('账号或密码错误');
+        })
+      }
     }
   }
 }
@@ -60,7 +103,7 @@ export default {
 
 .login-btn {
   width: 80%;
-  padding: 6px 0;
+  padding: 0.16rem 0;
   margin: 0.3rem 0;
   margin-bottom: 0.5rem;
   font-size: 0.6rem;

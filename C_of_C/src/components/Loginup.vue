@@ -20,10 +20,12 @@
     </button>
     <p class="loginup"><router-link to='login' class="loginup">已有账号，去登录</router-link></p>
     <p class="tip">* 仅限忠门籍在榕乡亲注册</p>
+
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'Loginup',
   data () {
@@ -36,11 +38,13 @@ export default {
       check: ''
     }
   },
+
   computed: {
     userpassword() {
       return this.loginForm.password;
     }
   },
+
   watch: {
     userpassword(val) {
       this.checkpassword  = require('../assets/checkpassword.png')
@@ -66,14 +70,22 @@ export default {
     LoginUp: function() {
       // console.log(this.loginForm.username);
       // console.log(this.loginForm.password);
+      var _this = this;
 
       if(this.loginForm.username == ''){
-        alert('请输入用户名')
+        this.$toast('请输入用户名');
+      }
+      else if(this.loginForm.password == ''){
+        this.$toast('请输入密码');
+      }
+      else if(this.checkpassword != require('../assets/checkpassword1.png')) {
+        this.$toast('请确认密码');
       }
 
       if(this.loginForm.username !='' && this.loginForm.password != '' && this.checkpassword == require('../assets/checkpassword1.png')) {
         this.axios({
-          url: this.baseUrl + '/user/register',
+          // url: this.baseUrl + '/user/register',
+          url: '/api/user/register',
           method: 'post',
           data: {
             "userName": this.loginForm.username,
@@ -81,12 +93,20 @@ export default {
           }
         })
         .then(function(res) {
-          //console.log(res);
+          // console.log(res);
+          if(res.status == 200) {
+            _this.$toast('注册成功');
+            setTimeout(function() {
+              _this.$router.push("/login");
+            }, 2000);
+          }
         })
         .catch(function(error) {
-          console.log(error);
+          // console.log(error);
+          _this.$toast('该用户名已被注册');
         })
       }
+
     }
   }
 }
