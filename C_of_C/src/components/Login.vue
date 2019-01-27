@@ -53,13 +53,36 @@ export default {
         .then((res) => {
           // console.log(res.headers);
           // console.log(res.headers['s-token']);
-          this.$cookies.set('token', res.headers['s-token'], 30);
+          this.$cookies.set('token', res.headers['s-token'], 3600*24);
           if(res.status == 200) {
             this.$toast('登录成功');
 
+            this.axios({
+              // url: this.baseUrl + '/user/info',
+              url: '/api/user/info',
+              method: 'get',
+              headers: {
+                "S-TOKEN": this.$cookies.get('token')
+              }
+            })
+            .then((res) => {
+              //console.log(res.data.data);
+              if(res.data.data.userInfoName != '') {
+                setTimeout(function() {
+                  _this.$router.push("/AddrList");
+                }, 1500);
+              }
+            })
+            .catch((error) => {
               setTimeout(function() {
-                _this.$router.push("/Userinfo");
+                _this.$router.push({
+                  path: "/Userinfo",
+                  query: {
+                    edit: 1
+                  }
+                });
               }, 1500);
+            })
 
           }
         })

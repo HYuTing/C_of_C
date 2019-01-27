@@ -32,6 +32,10 @@ function tokenExpire() {
     setTimeout(() => {
       router.app.$router.push("/login");
     }, 2200);
+    return false;
+  }
+  else {
+    return true;
   }
   // console.log(router.app.$cookies.get('token'));
   // console.log(router.app);
