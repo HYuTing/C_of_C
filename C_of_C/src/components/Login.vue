@@ -14,7 +14,7 @@
     <button class="login-btn" @click="Login">
       登 录
     </button>
-    <p class="loginup"><a>忘记密码</a><span class="break"> | </span><router-link to='loginup' class="loginup">注册账号</router-link></p>
+    <p class="loginup"><router-link to='loginup' class="loginup">注册账号</router-link></p>
     <p class="tip">* 仅限忠门籍在榕乡亲注册</p>
   </div>
 </template>
@@ -54,26 +54,16 @@ export default {
           // console.log(res.headers);
           // console.log(res.headers['s-token']);
           this.$cookies.set('token', res.headers['s-token'], 3600*24);
-          if(res.status == 200) {
+          if(res.status === 200) {
             this.$toast('登录成功');
-
-            this.axios({
-              // url: this.baseUrl + '/user/info',
-              url: '/api/user/info',
-              method: 'get',
-              headers: {
-                "S-TOKEN": this.$cookies.get('token')
-              }
-            })
-            .then((res) => {
-              //console.log(res.data.data);
-              if(res.data.data.userInfoName != '') {
-                setTimeout(function() {
-                  _this.$router.push("/AddrList");
-                }, 1500);
-              }
-            })
-            .catch((error) => {
+            // console.log(res.data.data.infoCheck);
+            var infoCheck = res.data.data.infoCheck;
+            if(infoCheck === true) {
+              setTimeout(function() {
+                _this.$router.push("/AddrList");
+              }, 1500);
+            }
+            else {
               setTimeout(function() {
                 _this.$router.push({
                   path: "/Userinfo",
@@ -82,8 +72,7 @@ export default {
                   }
                 });
               }, 1500);
-            })
-
+            }
           }
         })
         .catch((error) => {
@@ -107,32 +96,34 @@ export default {
 }
 
 .icon {
-  width: 0.9rem;
-  margin-right: 0.3rem;
-  margin-bottom: -0.3rem;
+  width: 1rem;
+  margin-right: 0.2rem;
+  margin-bottom: -0.36rem;
 }
 
 .form-div {
+  padding-left: 1.24rem;
   margin-bottom: 0.8rem;
+  text-align: left;
 }
 
 .form-input {
-  width: 64%;
+  width: 66%;
   padding: 6px;
   font-size: 0.6rem;
   border: none;
-  border-bottom: 1px solid #f38255;
+  border-bottom: 1px solid #DCDFE6;
 }
 
 .login-btn {
   width: 80%;
   padding: 0.16rem 0;
   margin: 0.3rem 0;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
   font-size: 0.6rem;
   border: none;
   border-radius: 1rem;
-  background-color: #f38255;
+  background-color: #f39839;
   color: #fff;
 }
 
@@ -147,9 +138,12 @@ export default {
 }
 
 .tip {
-  margin: 1rem auto;
-  margin-bottom: 0.21rem;
+  position: absolute;
+  bottom: 0.28rem;
+  left: 0;
+  right: 0;
+  margin: auto;
   font-size: 0.46rem;
-  color: #f38255;
+  color: #b74620;
 }
 </style>

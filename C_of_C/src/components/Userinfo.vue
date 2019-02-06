@@ -5,7 +5,7 @@
       <form class="info-form">
         <div class="form-div">
           <img class="icon" src="../assets/user.png">
-          <span class="necessary">*</span>
+          <span class="necessary" v-show="edit">*</span>
           <div class="input-div">
             <span class="info" v-show="noedit">{{username}}</span>
             <input v-model="username" v-show="edit" class="info-input usrname-input" placeholder="姓名">
@@ -13,7 +13,7 @@
         </div>
         <div class="form-div">
           <img class="icon" src="../assets/phone.png">
-          <span class="necessary">*</span>
+          <span class="necessary" v-show="edit">*</span>
           <div class="input-div">
             <span class="info" v-show="noedit">{{cellphone}}</span>
             <input v-model="cellphone" v-show="edit" class="info-input" type="tel" maxlength="11" placeholder="手机号">
@@ -21,23 +21,25 @@
         </div>
         <div class="form-div">
           <img class="icon" src="../assets/QQ.png">
-          <span class="unnecessary">*</span>
+          <span class="unnecessary" v-show="edit">*</span>
           <div class="input-div">
+            <span class="info info-null" v-show="noeditQQ">QQ</span>
             <span class="info" v-show="noedit">{{qqnumber}}</span>
             <input v-model="qqnumber" v-show="edit" class="info-input" placeholder="QQ">
           </div>
         </div>
         <div class="form-div">
           <img class="icon" src="../assets/wx.png">
-          <span class="unnecessary">*</span>
+          <span class="unnecessary" v-show="edit">*</span>
           <div class="input-div">
+            <span class="info info-null" v-show="noeditwx">微信</span>
             <span class="info" v-show="noedit">{{wechat}}</span>
             <input v-model="wechat" v-show="edit" class="info-input" placeholder="微信">
           </div>
         </div>
         <div class="form-div">
           <img class="icon" src="../assets/occupation.png">
-          <span class="necessary">*</span>
+          <span class="necessary" v-show="edit">*</span>
           <div class="input-div spacial">
             职业：<span class="info" v-show="noedit">{{occupation}}</span>
             <select class="select occupation" v-model="occupationid" v-show="edit">
@@ -50,7 +52,7 @@
         </div>
         <div class="form-div">
           <img class="icon" src="../assets/location.png">
-          <span class="necessary">*</span>
+          <span class="necessary" v-show="edit">*</span>
           <div class="input-div spacial">
             原籍：<span class="info" v-show="noedit">{{town}}</span>
             <select class="select town" v-model="townid" v-show="edit">
@@ -59,7 +61,7 @@
               <option value="dp">东埔镇</option>
               <option value="yt">月塘镇</option>
             </select>
-            <span class="info" v-show="noedit" style="margin-left: 0.4rem;">{{village}}村</span>
+            <span class="info" v-show="noedit" style="margin-left: 0.6rem;">{{village}}村</span>
             <select class="select village" v-model="village" v-show="edit">
               <option v-for="(item, index) in items" v-bind:key="index">{{item}}</option>
             </select>
@@ -67,16 +69,18 @@
         </div>
         <div class="form-div">
           <img class="icon" src="../assets/team.png">
-          <span class="unnecessary">*</span>
+          <span class="unnecessary" v-show="edit">*</span>
           <div class="input-div">
+            <span class="info info-null" v-show="noeditteam">工作单位</span>
             <span class="info" v-show="noedit">{{team}}</span>
             <input v-model="team" v-show="edit" class="info-input" placeholder="工作单位">
           </div>
         </div>
         <div class="form-div">
           <img class="icon" src="../assets/address.png">
-          <span class="unnecessary">*</span>
+          <span class="unnecessary" v-show="edit">*</span>
           <div class="input-div">
+            <span class="info info-null" v-show="noeditaddress">地址</span>
             <span class="info" v-show="noedit">{{address}}</span>
             <input v-model="address" v-show="edit" class="info-input" placeholder="地址">
           </div>
@@ -87,16 +91,23 @@
       <p v-show="edit" class="tip">* 为必填</p>
     </div>
     <!-- <button @click="text">测试</button> -->
+    <Navigation v-show="noedit" :tagid="4"></Navigation>
   </div>
 </template>
 
 <script>
+import Navigation from './Navigation.vue'
+
 export default {
   name: 'Userinfo',
   data () {
     return {
       noedit: false,
       edit: true,
+      noeditQQ: false,
+      noeditwx: false,
+      noeditteam: false,
+      noeditaddress: false,
       username: '',
       cellphone: '',
       qqnumber: '',
@@ -115,8 +126,11 @@ export default {
       item3: ['联星','坂尾','霞塘','西元','月埔','双告山','霞塘','西元','月埔','双告山','前康','岱(蚮)前','东潘','洋埭']
     }
   },
+  components: {
+    Navigation
+  },
   created() {
-    var param = this.$route.query.edit;
+    var param = this.$route.query.edit;  // 从父组件接受的参数
     var _this = this;
     if(param == 0) {
       this.noedit = true
@@ -140,6 +154,48 @@ export default {
         _this.village = res.data.data.userInfoVillage;
         _this.team = res.data.data.userInfoUnit;
         _this.address = res.data.data.userInfoAddress;
+
+        if(_this.qqnumber === '') {
+          _this.noeditQQ = true;
+        }
+        if(_this.wechat === '') {
+          _this.noeditwx = true;
+        }
+        if(_this.team === '') {
+          _this.noeditteam = true;
+        }
+        if(_this.address === '') {
+          _this.noeditaddress = true;
+        }
+
+        if(_this.occupation === '公务员') {
+          _this.occupationid = 'occupation1'
+        }
+        else if(_this.occupation === '事业单位') {
+          _this.occupationid = 'occupation2'
+        }
+        else if(_this.occupation === '企业与自由职业') {
+          _this.occupationid = 'occupation3'
+        }
+        else if(_this.occupation === '无业或退休') {
+          _this.occupationid = 'occupation4'
+        }
+        if(_this.town == '山亭镇') {
+          _this.townid = 'st';
+          _this.items = _this.item0;
+        }
+        else if(_this.town == '忠门镇') {
+          _this.townid = 'zm';
+          _this.items = _this.item1;
+        }
+        else if(_this.town == '东埔镇') {
+          _this.townid = 'dp';
+          _this.items = _this.item2;
+        }
+        else if(_this.town == '月塘镇') {
+          _this.townid = 'yt';
+          _this.items = _this.item3;
+        }
       })
       .catch(function(error) {
         console.log(error);
@@ -150,9 +206,8 @@ export default {
   watch: {
     cellphone(val) {
       var re = /^1[0-9]*$/;
-      // console.log(re.test(val));
       if(re.test(val)) {
-        // this.$toast('手机号');
+
       }
       else {
         this.$toast('手机号错误');
@@ -176,31 +231,24 @@ export default {
       //console.log(val);
       if(val == 'st') {
         this.town = '山亭镇';
-        this.village = '';
         this.items = this.item0;
       }
       else if(val == 'zm') {
         this.town = '忠门镇';
-        this.village = '';
         this.items = this.item1;
       }
       else if(val == 'dp') {
         this.town = '东埔镇';
-        this.village = '';
         this.items = this.item2;
       }
       else if(val == 'yt') {
         this.town = '月塘镇';
-        this.village = '';
         this.items = this.item3;
       }
     }
   },
 
   methods: {
-    // text: function() {
-    //   this.$getToken();
-    // }
     save: function() {
       var _this = this;
       this.$getToken();
@@ -248,8 +296,21 @@ export default {
             })
             .then(function(res) {
               // console.log(res);
+              _this.$toast('保存成功');
               _this.noedit = !_this.noedit;
               _this.edit = !_this.edit;
+              if(_this.qqnumber === '') {
+                _this.noeditQQ = true;
+              }
+              if(_this.wechat === '') {
+                _this.noeditwx = true;
+              }
+              if(_this.team === '') {
+                _this.noeditteam = true;
+              }
+              if(_this.address === '') {
+                _this.noeditaddress = true;
+              }
             })
             .catch(function(error) {
               // console.log(error);
@@ -260,8 +321,13 @@ export default {
       }
     },
     editinfo: function() {
+      this.$getToken();
       this.noedit = !this.noedit;
       this.edit = !this.edit;
+      this.noeditQQ = false;
+      this.noeditwx = false;
+      this.noeditteam = false;
+      this.noeditaddress = false;
     }
   }
 }
@@ -271,21 +337,21 @@ export default {
 .main {
   width: 100%;
   height: 100%;
-  background-color: #F2F6FC;
+  font-size: 0.52rem;
+  /* background-color: #f4f4f4; */
+  background-color: #fff;
 }
 
 .head {
   width: 100%;
-  padding: 0.25rem 0;
-  margin-bottom: 0.25rem;
-  font-size: 0.46rem;
-  color: #fff;
-  background-color: #f38255;
+  padding: 0.28rem 0;
+  border-bottom: 1px solid #ebebeb;
+  color: #f39839;
+  background-color: #fff;
 }
 
 .info-table {
-  padding: 0.6rem 0.56rem;
-  padding-bottom: 0.56rem;
+  padding: 0.62rem;
   background-color: #fff;
 }
 
@@ -295,25 +361,21 @@ export default {
 
 .form-div {
   position: relative;
-  margin-bottom: 0.9rem;
-  font-size: 0.6rem;
+  line-height: 0.9rem;
+  margin-bottom: 0.6rem;
 }
 
 .icon {
-  width: 0.88rem;
+  width: 0.9rem;
   margin-bottom: -0.4rem;
 }
 
 .necessary {
-  margin-right: 0.1rem;
-  font-size: 0.6rem;
   font-weight: bolder;
-  color: #F56C6C;
+  color: #b74620;
 }
 
 .unnecessary {
-  margin-right: 0.1rem;
-  font-size: 0.6rem;
   font-weight: bolder;
   color: transparent;
 }
@@ -322,16 +384,16 @@ export default {
   position: absolute;
   top: 0;
   left: 1.4rem;
-  width: 83%;
+  width: 82%;
   height: 0.98rem;
   line-height: 0.98rem;
   color: #303133;
-  border-bottom: 0.01rem solid #C0C4CC;
+  border-bottom: 0.01rem solid #ebebeb;
 }
 
 .spacial {
-  width: 81%;
-  padding: 0.12rem 0.14rem;
+  width: 80%;
+  padding: 0.08rem 0.14rem;
   padding-top: 0;
 }
 
@@ -339,14 +401,28 @@ export default {
   width: 96%;
   padding: 0.14rem;
   border: none;
-  font-size: 0.6rem;
+  font-size: 0.52rem;
   background-color: transparent;
 }
 
+::-webkit-input-placeholder { /* WebKit browsers */
+  color: #909399;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color: #909399;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color: #909399;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+  color: #909399;
+}
+
 .select {
-  width: 5.2rem;
+  width: 5.14rem;
   margin-left: -0.02rem;
-  font-size: 0.6rem;
+  font-size: 0.52rem;
+  color: #303133;
   border: none;
   appearance:none;
   -moz-appearance:none;
@@ -364,13 +440,13 @@ export default {
 
 .save-btn {
   width: 36%;
-  padding: 0.2rem 0;
-  margin: 0.2rem auto;
+  padding: 0.16rem 0;
+  margin: 0.26rem auto;
   border: none;
-  border-radius: 0.1rem;
-  font-size: 0.6rem;
+  border-radius: 0.16rem;
+  font-size: 0.52rem;
   color: #fff;
-  background-color: #f38255;
+  background-color: #f39839;
 }
 
 .info {
@@ -378,13 +454,17 @@ export default {
   margin-left: 0.14rem;
 }
 
+.info-null {
+  color: #909399;
+}
+
 .usrname-input {
   position: absolute;
-  top: -0.04rem;
+  top: -0.02rem;
 }
 
 .tip {
-  font-size: 0.46rem;
-  color: #F56C6C;
+  font-size: 0.42rem;
+  color: #b74620;
 }
 </style>

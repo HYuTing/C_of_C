@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <img class="login-background" src="../assets/loginback2.png">
+    <img class="login-background" src="../assets/loginback.png">
     <form :model="loginForm">
       <div class="form-div">
         <img class="icon" src="../assets/usericon.png">
@@ -123,32 +123,34 @@ export default {
 }
 
 .icon {
-  width: 0.9rem;
-  margin-right: 0.3rem;
-  margin-bottom: -0.3rem;
+  width: 1rem;
+  margin-right: 0.2rem;
+  margin-bottom: -0.36rem;
 }
 
 .form-div {
+  padding-left: 1.24rem;
   margin-bottom: 0.8rem;
+  text-align: left;
 }
 
 .form-input {
-  width: 64%;
+  width: 66%;
   padding: 6px;
   font-size: 0.6rem;
   border: none;
-  border-bottom: 1px solid #f38255;
+  border-bottom: 1px solid #DCDFE6;
 }
 
 .login-btn {
-  width: 79%;
-  padding: 6px 0;
+  width: 80%;
+  padding: 0.16rem 0;
   margin: 0.3rem 0;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
   font-size: 0.6rem;
   border: none;
   border-radius: 1rem;
-  background-color: #f38255;
+  background-color: #f39839;
   color: #fff;
 }
 
@@ -163,9 +165,12 @@ export default {
 }
 
 .tip {
-  margin: 1rem auto;
-  margin-bottom: 0.21rem;
+  position: absolute;
+  bottom: 0.28rem;
+  left: 0;
+  right: 0;
+  margin: auto;
   font-size: 0.46rem;
-  color: #f38255;
+  color: #b74620;
 }
 </style>
