@@ -72,7 +72,12 @@ export default {
   },
   methods: {
     toAddrList: function() {
-      this.$router.push("/AddrList");
+      this.$router.push({
+        name: "AddrList",
+        params: {
+          pageNum: 1
+        }
+      });
     },
     toRegister: function() {
       this.$router.push("/Register");

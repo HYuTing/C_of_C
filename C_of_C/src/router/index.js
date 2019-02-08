@@ -7,6 +7,7 @@ import AddrList from '@/components/AddrList'
 import Register from '@/components/Register'
 import Userinfo from '@/components/Userinfo'
 import Notice from '@/components/Notice'
+import Detail from '@/components/Detail'
 
 Vue.use(Router)
 
@@ -46,7 +47,11 @@ export default new Router({
       path: '/Notice',
       name: 'Notice',
       component: Notice
+    },
+    {
+      path: '/Detail',
+      name: 'Detail',
+      component: Detail
     }
-
   ]
 })

@@ -36,7 +36,7 @@
             <span class="num3">村</span>
             <span class="num4">手机号</span>
           </li>
-          <li v-for="(item, index) in currentAddrlist" v-bind:key="index">
+          <li v-for="item in currentAddrlist" v-bind:key="item.userId" @click="toDetail(item.userId)">
             <span class="num1">{{item.userInfoName}}</span>
             <span class="num2">{{item.userInfoTown}}</span>
             <span class="num3">{{item.userInfoVillage}}</span>
@@ -122,8 +122,13 @@ export default {
   },
   created() {
     var _this = this;
+    this.curPageNum = this.$route.params.pageNum;  // 设置进入的页码，如果页码为空则赋值为1
+    if(!this.curPageNum) {
+      this.curPageNum = 1;
+    }
 
-    this.searchCondition = this.couponList[0].id;
+    this.searchCondition = this.couponList[0].id;  //设置select的默认值
+
     this.axios({
       // url: this.baseUrl + '/user/info/search',
       url: '/api/user/info/search',
@@ -132,7 +137,7 @@ export default {
         "S-TOKEN": this.$cookies.get('token')
       },
       data: {
-        "pageNum": 1,
+        "pageNum": this.curPageNum,
         "pageSize": this.pageSize,
         "userInfoName": "",
         "userInfoOccupation": "",
@@ -144,7 +149,6 @@ export default {
     .then(function(res) {
       console.log(res);
       _this.maxPageNum = res.data.data.maxPageNum;
-      _this.curPageNum = 1;
       _this.currentAddrlist = res.data.data.userInfoVOList;
     })
     .catch(function(error) {
@@ -383,7 +387,7 @@ export default {
         }
       })
       .then(function(res) {
-        console.log(res);
+        // console.log(res);
         _this.maxPageNum = res.data.data.maxPageNum;
         _this.curPageNum = 1;
         _this.currentAddrlist = res.data.data.userInfoVOList;
@@ -394,6 +398,18 @@ export default {
         console.log(error);
         _this.$toast('信息读取失败');
       })
+    },
+    toDetail: function(id) {
+      // console.log(id);
+      var _this = this;
+
+      this.$router.push({
+        name: "Detail",
+        params: {
+          userId: id,
+          curPage: _this.curPageNum
+        }
+      });
     }
   }
 }
