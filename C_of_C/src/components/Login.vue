@@ -42,8 +42,8 @@ export default {
       }
       else {
         this.axios({
-          // url: this.baseUrl + '/user/login',
-          url: '/api/user/login',
+          url: this.baseUrl + '/user/login',
+          // url: '/api/user/login',
           method: 'post',
           data: {
             "userName": this.loginForm.username,

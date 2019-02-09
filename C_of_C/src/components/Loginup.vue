@@ -84,8 +84,8 @@ export default {
 
       if(this.loginForm.username !='' && this.loginForm.password != '' && this.checkpassword == require('../assets/checkpassword1.png')) {
         this.axios({
-          // url: this.baseUrl + '/user/register',
-          url: '/api/user/register',
+          url: this.baseUrl + '/user/register',
+          // url: '/api/user/register',
           method: 'post',
           data: {
             "userName": this.loginForm.username,

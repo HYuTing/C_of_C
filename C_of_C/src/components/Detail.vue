@@ -96,17 +96,17 @@ export default {
 
     this.pagenum = this.$route.params.curPage;
 
-    console.log(param);
+    // console.log(param);
     this.axios({
-      // url: this.baseUrl + '/user/info/detail',
-      url: '/api/user/info/detail?userId=' + param,
+      url: this.baseUrl + '/user/info/detail?userId=' + param,
+      // url: '/api/user/info/detail?userId=' + param,
       method: 'get',
       headers: {
         "S-TOKEN": this.$cookies.get('token')
       }
     })
     .then(function(res) {
-      console.log(res);
+      // console.log(res);
       _this.username = res.data.data.userInfoName;
       _this.cellphone = res.data.data.userInfoPhone;
       _this.occupation = res.data.data.userInfoOccupation;

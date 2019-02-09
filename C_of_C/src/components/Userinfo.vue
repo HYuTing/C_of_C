@@ -136,8 +136,8 @@ export default {
       this.noedit = true
       this.edit = false;
       this.axios({
-        // url: this.baseUrl + '/user/info',
-        url: '/api/user/info',
+        url: this.baseUrl + '/user/info',
+        // url: '/api/user/info',
         method: 'get',
         headers: {
           "S-TOKEN": this.$cookies.get('token')
@@ -276,8 +276,8 @@ export default {
           }
           else {
             this.axios({
-              // url: this.baseUrl + '/user/info',
-              url: '/api/user/info',
+              url: this.baseUrl + '/user/info',
+              // url: '/api/user/info',
               method: 'post',
               data: {
                 "userInfoAddress": this.address,
@@ -439,14 +439,14 @@ export default {
 }
 
 .save-btn {
-  width: 36%;
+  width: 32%;
   padding: 0.16rem 0;
   margin: 0.26rem auto;
   border: none;
   border-radius: 0.16rem;
   font-size: 0.52rem;
   color: #fff;
-  background-color: #f39839;
+  background-color: #b74620;
 }
 
 .info {

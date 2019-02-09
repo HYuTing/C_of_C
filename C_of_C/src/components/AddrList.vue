@@ -73,7 +73,7 @@ export default {
       keyword: '',
       maxPageNum: 1,
       curPageNum: 1,
-      pageSize: 4,
+      pageSize: 14,
       gotoPageNum: '',
       currentAddrlist: [],
 
@@ -130,8 +130,8 @@ export default {
     this.searchCondition = this.couponList[0].id;  //设置select的默认值
 
     this.axios({
-      // url: this.baseUrl + '/user/info/search',
-      url: '/api/user/info/search',
+      url: this.baseUrl + '/user/info/search',
+      // url: '/api/user/info/search',
       method: 'post',
       headers: {
         "S-TOKEN": this.$cookies.get('token')
@@ -147,7 +147,7 @@ export default {
       }
     })
     .then(function(res) {
-      console.log(res);
+      // console.log(res);
       _this.maxPageNum = res.data.data.maxPageNum;
       _this.currentAddrlist = res.data.data.userInfoVOList;
     })
@@ -179,8 +179,8 @@ export default {
         this.success = false;
 
           this.axios({
-            // url: this.baseUrl + '/user/info/search',
-            url: '/api/user/info/search',
+            url: this.baseUrl + '/user/info/search',
+            // url: '/api/user/info/search',
             method: 'post',
             headers: {
               "S-TOKEN": this.$cookies.get('token')
@@ -219,8 +219,8 @@ export default {
         this.success = false;
 
           this.axios({
-            // url: this.baseUrl + '/user/info/search',
-            url: '/api/user/info/search',
+            url: this.baseUrl + '/user/info/search',
+            // url: '/api/user/info/search',
             method: 'post',
             headers: {
               "S-TOKEN": this.$cookies.get('token')
@@ -248,15 +248,15 @@ export default {
       }
     },
     gotoPage: function() {
-      console.log(this.gotoPageNum);
+      // console.log(this.gotoPageNum);
       var _this = this;
       if(0 < this.gotoPageNum && this.gotoPageNum <= this.maxPageNum) {
         this.loading = true;
         this.success = false;
 
           this.axios({
-            // url: this.baseUrl + '/user/info/search',
-            url: '/api/user/info/search',
+            url: this.baseUrl + '/user/info/search',
+            // url: '/api/user/info/search',
             method: 'post',
             headers: {
               "S-TOKEN": this.$cookies.get('token')
@@ -320,8 +320,8 @@ export default {
       this.success = false;
       this.fail = false;
       this.axios({
-        // url: this.baseUrl + '/user/info/search',
-        url: '/api/user/info/search',
+        url: this.baseUrl + '/user/info/search',
+        // url: '/api/user/info/search',
         method: 'post',
         headers: {
           "S-TOKEN": this.$cookies.get('token')
@@ -370,8 +370,8 @@ export default {
       this.fail = false;
 
       this.axios({
-        // url: this.baseUrl + '/user/info/search',
-        url: '/api/user/info/search',
+        url: this.baseUrl + '/user/info/search',
+        // url: '/api/user/info/search',
         method: 'post',
         headers: {
           "S-TOKEN": this.$cookies.get('token')
@@ -577,18 +577,22 @@ function getInfo() {
 
 .num1 {
   width: 22%;
+  line-height: 0.64rem;
   border-right: 1px solid #909399;
 }
 .num2 {
   width: 18%;
+  line-height: 0.64rem;
   border-right: 1px solid #909399;
 }
 .num3 {
   width: 25%;
+  line-height: 0.64rem;
   border-right: 1px solid #909399;
 }
 .num4 {
   width: 35%;
+  line-height: 0.64rem;
 }
 
 .page {
