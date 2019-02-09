@@ -144,7 +144,7 @@ export default {
         }
       })
       .then(function(res) {
-        console.log(res);
+        // console.log(res);
         _this.username = res.data.data.userInfoName;
         _this.cellphone = res.data.data.userInfoPhone;
         _this.qqnumber = res.data.data.userInfoQQ;

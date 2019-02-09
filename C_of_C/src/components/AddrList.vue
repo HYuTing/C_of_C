@@ -88,7 +88,7 @@ export default {
         },
         {
           id: '2',
-          name: '片区条件'
+          name: '镇条件'
         },
         {
           id: '3',
@@ -566,10 +566,10 @@ function getInfo() {
   width: 100%;
   margin: 0 auto;
   border-bottom: 1px solid #909399;
+  list-style: none;
 }
 
 .addrlist-ul>li span {
-  display: inline-block;
   box-sizing: border-box;
   float: left;
   padding: 0.16rem 0;
