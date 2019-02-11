@@ -2,9 +2,9 @@
   <div class="main">
     <header class="head">消息列表</header>
     <ul class="noticeList">
-      <li v-for="item in noticeList" v-bind:key="item.id" class="notice" @click="toDetail(item.id)">
-        <p class="notice-title">标题是{{item.title}}</p>
-        <p class="notice-time">{{num(1)}}/{{item.month}}/{{item.date}}</p>
+      <li v-for="item in noticeList" v-bind:key="item.messageId" class="notice" @click="toDetail(item.messageId)">
+        <p class="notice-title">{{item.title}}</p>
+        <p class="notice-time">{{year(item.messageTimestamp)}}/{{month(item.messageTimestamp)}}/{{date(item.messageTimestamp)}}</p>
       </li>
     </ul>
     <Navigation :tagid="3"></Navigation>
@@ -20,11 +20,9 @@ export default {
     return {
       noticeList: [
         {
-          id: 0,
-          title: '黄乐兴是猪',
-          year: '2019',
-          month: '02',
-          date: '11'
+          messageId: 0,
+          title: '',
+          messageTimestamp: ''
         },
       ]
     }
@@ -32,22 +30,63 @@ export default {
   components: {
     Navigation
   },
+  created() {
+    var _this = this;
+
+    this.axios({
+      url: this.baseUrl + '/message/list',
+      // url: '/api/user/info/search',
+      method: 'get',
+      headers: {
+        "S-TOKEN": this.$cookies.get('token')
+      }
+    })
+    .then(function(res) {
+      // console.log(res);
+      _this.noticeList = res.data.data;
+
+    })
+    .catch(function(error) {
+      console.log(error);
+      _this.$toast('信息读取失败');
+    })
+  },
   methods: {
-    toDetail: function() {
+    toDetail: function(val) {
       var _this = this;
       this.$getToken();
       if(this.$getToken()) {
+        // console.log(val);
         this.$router.push({
           path: "/NoticeDetail",
           query: {
-            noticeId: 1
+            noticeId: val
           }
         });
       }
     },
-    num: function(n) {
-      console.log(n);
-      return n;
+    year: function(val) {
+      // console.log(val);
+      val = parseInt(val*1000);
+      let date = new Date(val);
+      let y = date.getFullYear();
+
+      return y;
+    },
+    month: function(val) {
+      val = parseInt(val*1000);
+      let date = new Date(val);
+      let MM = date.getMonth() + 1;
+      MM = MM < 10 ? ('0' + MM) : MM;
+
+      return MM;
+    },
+    date: function(val) {
+      val = parseInt(val*1000);
+      let date = new Date(val);
+      let d = date.getDate();
+      d = d < 10 ? ('0' + d) : d;
+      return d;
     }
   }
 }
@@ -80,9 +119,9 @@ export default {
 
 .notice {
   position: relative;
-  padding: 0.34rem 0.16rem;
-  padding-bottom: 0.38rem;
-  background: #fff;
+  height: 0.8rem;
+  line-height: 0.8rem;
+  padding: 0.3rem 0.16rem;
   border-bottom: 1px solid #ebebeb;
   list-style: none;
 }
@@ -100,7 +139,7 @@ export default {
 
 .notice-time {
   position: absolute;
-  top: 0.42rem;
+  top: 0.22rem;
   right: 0.16rem;
   font-size: 0.44rem;
   color: #909399;

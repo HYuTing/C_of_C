@@ -5,9 +5,9 @@
       通知
     </header>
     <div class="content">
-      <p class="title">标题是什么我也不知道反正是一个重要的通知{{title}}</p>
-      <p class="maincontent">这里是主要内容这里是主要内容这里是主要内容这里是主要内容这里是主要内容这里是主要内容这里是主要内容这里是主要内容{{content}}</p>
-      <p class="time">发布于 2018{{year}}/03{{month}}/19{{date}}</p>
+      <p class="title">{{title}}</p>
+      <p class="maincontent">{{content}}</p>
+      <p class="time">发布于 {{year}}/{{month}}/{{date}}</p>
     </div>
     <Navigation :tagid="3"></Navigation>
   </div>
@@ -34,6 +34,38 @@ export default {
     var param = this.$route.query.noticeId;
     var _this = this;
 
+    // console.log(param);
+    this.axios({
+      url: this.baseUrl + '/message/detail?messageId=' + param,
+      // url: '/api/message/detail?messageId=' + param,
+      method: 'get',
+      headers: {
+        "S-TOKEN": this.$cookies.get('token')
+      }
+    })
+    .then(function(res) {
+      console.log(res);
+      _this.title = res.data.data.title;
+      _this.content = res.data.data.content;
+
+      let time = res.data.data.messageTimestamp;
+      time = parseInt(time*1000);
+      let date = new Date(time);
+
+      _this.year = date.getFullYear();
+
+      let MM = date.getMonth() + 1;
+      MM = MM < 10 ? ('0' + MM) : MM;
+      _this.month = MM;
+
+      let d = date.getDate();
+      d = d < 10 ? ('0' + d) : d;
+      _this.date = d;
+    })
+    .catch(function(error) {
+      console.log(error);
+      _this.$toast('信息读取失败');
+    })
   },
   methods: {
     reback: function() {
