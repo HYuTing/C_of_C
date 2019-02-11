@@ -56,12 +56,13 @@
           <div class="input-div spacial">
             原籍：<span class="info" v-show="noedit">{{town}}</span>
             <select class="select town" v-model="townid" v-show="edit">
-              <option value="st">山亭镇</option>
-              <option value="zm">忠门镇</option>
-              <option value="dp">东埔镇</option>
-              <option value="yt">月塘镇</option>
+              <option value="st">山亭</option>
+              <option value="zm">忠门</option>
+              <option value="dp">东埔</option>
+              <option value="yt">月塘</option>
             </select>
-            <span class="info" v-show="noedit" style="margin-left: 0.6rem;">{{village}}村</span>
+            <span v-show="noedit">镇</span>
+            <span class="info" v-show="noedit">{{village}} 村</span>
             <select class="select village" v-model="village" v-show="edit">
               <option v-for="(item, index) in items" v-bind:key="index">{{item}}</option>
             </select>
@@ -180,19 +181,19 @@ export default {
         else if(_this.occupation === '无业或退休') {
           _this.occupationid = 'occupation4'
         }
-        if(_this.town == '山亭镇') {
+        if(_this.town == '山亭') {
           _this.townid = 'st';
           _this.items = _this.item0;
         }
-        else if(_this.town == '忠门镇') {
+        else if(_this.town == '忠门') {
           _this.townid = 'zm';
           _this.items = _this.item1;
         }
-        else if(_this.town == '东埔镇') {
+        else if(_this.town == '东埔') {
           _this.townid = 'dp';
           _this.items = _this.item2;
         }
-        else if(_this.town == '月塘镇') {
+        else if(_this.town == '月塘') {
           _this.townid = 'yt';
           _this.items = _this.item3;
         }
@@ -230,19 +231,19 @@ export default {
     townid(val) {
       //console.log(val);
       if(val == 'st') {
-        this.town = '山亭镇';
+        this.town = '山亭';
         this.items = this.item0;
       }
       else if(val == 'zm') {
-        this.town = '忠门镇';
+        this.town = '忠门';
         this.items = this.item1;
       }
       else if(val == 'dp') {
-        this.town = '东埔镇';
+        this.town = '东埔';
         this.items = this.item2;
       }
       else if(val == 'yt') {
-        this.town = '月塘镇';
+        this.town = '月塘';
         this.items = this.item3;
       }
     }
@@ -343,16 +344,21 @@ export default {
 }
 
 .head {
+  position: fixed;
+  top: 0;
   width: 100%;
   padding: 0.28rem 0;
   border-bottom: 1px solid #ebebeb;
   color: #f39839;
   background-color: #fff;
+  z-index: 99;
 }
 
 .info-table {
-  padding: 0.62rem;
+  padding: 1.9rem 0.62rem;
+  padding-bottom: 2.5rem;
   background-color: #fff;
+  font-size: 0.58rem;
 }
 
 .info-form {
@@ -367,7 +373,7 @@ export default {
 
 .icon {
   width: 0.9rem;
-  margin-bottom: -0.4rem;
+  margin-bottom: -0.3rem;
 }
 
 .necessary {
@@ -401,7 +407,7 @@ export default {
   width: 96%;
   padding: 0.14rem;
   border: none;
-  font-size: 0.52rem;
+  font-size: 0.58rem;
   background-color: transparent;
 }
 
@@ -419,9 +425,9 @@ export default {
 }
 
 .select {
-  width: 5.14rem;
+  width: 4.74rem;
   margin-left: -0.02rem;
-  font-size: 0.52rem;
+  font-size: 0.58rem;
   color: #303133;
   border: none;
   appearance:none;
@@ -431,20 +437,22 @@ export default {
 }
 
 .town {
-  width: 2.2rem;
+  width: 1.6rem;
 }
 
 .village {
-  width: 2.82rem;
+  width: 2.6rem;
+  margin-left: 0.4rem;
 }
 
 .save-btn {
   width: 32%;
   padding: 0.16rem 0;
   margin: 0.26rem auto;
+  margin-bottom: 0.4rem;
   border: none;
   border-radius: 0.16rem;
-  font-size: 0.52rem;
+  font-size: 0.58rem;
   color: #fff;
   background-color: #b74620;
 }

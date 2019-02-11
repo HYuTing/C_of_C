@@ -2,9 +2,9 @@
   <div class="main">
     <header class="head">消息列表</header>
     <ul class="noticeList">
-      <li class="notice" @click="toDetail">
-        <p class="notice-title">标题是什么我也不知道{{title}}</p>
-        <p class="notice-time">2018{{year}}/03{{month}}/19{{date}}</p>
+      <li v-for="item in noticeList" v-bind:key="item.id" class="notice" @click="toDetail(item.id)">
+        <p class="notice-title">标题是{{item.title}}</p>
+        <p class="notice-time">{{num(1)}}/{{item.month}}/{{item.date}}</p>
       </li>
     </ul>
     <Navigation :tagid="3"></Navigation>
@@ -18,10 +18,15 @@ export default {
   name: 'Notice',
   data () {
     return {
-      title: '',
-      year: '',
-      month: '',
-      date: ''
+      noticeList: [
+        {
+          id: 0,
+          title: '黄乐兴是猪',
+          year: '2019',
+          month: '02',
+          date: '11'
+        },
+      ]
     }
   },
   components: {
@@ -29,12 +34,20 @@ export default {
   },
   methods: {
     toDetail: function() {
-      this.$router.push({
-        path: "/NoticeDetail",
-        query: {
-          noticeId: 1
-        }
-      });
+      var _this = this;
+      this.$getToken();
+      if(this.$getToken()) {
+        this.$router.push({
+          path: "/NoticeDetail",
+          query: {
+            noticeId: 1
+          }
+        });
+      }
+    },
+    num: function(n) {
+      console.log(n);
+      return n;
     }
   }
 }
@@ -61,6 +74,7 @@ export default {
 .noticeList {
   padding: 1.3rem 0.24rem;
   padding-bottom: 1.66rem;
+  font-size: 0.6rem;
   /* background-color: salmon; */
 }
 
@@ -86,9 +100,9 @@ export default {
 
 .notice-time {
   position: absolute;
-  top: 0.4rem;
+  top: 0.42rem;
   right: 0.16rem;
-  font-size: 0.4rem;
+  font-size: 0.44rem;
   color: #909399;
 }
 </style>

@@ -29,18 +29,17 @@
     </div>
     <div v-if="success">
       <div class="addrlist">
+        <p class="tip">* 点击可查看详情</p>
         <ul class="addrlist-ul">
           <li class="table-head">
             <span class="num1">姓名</span>
-            <span class="num2">镇</span>
-            <span class="num3">村</span>
-            <span class="num4">手机号</span>
+            <span class="num2">原籍</span>
+            <span class="num3">手机号</span>
           </li>
           <li v-for="item in currentAddrlist" v-bind:key="item.userId" @click="toDetail(item.userId)">
             <span class="num1">{{item.userInfoName}}</span>
-            <span class="num2">{{item.userInfoTown}}</span>
-            <span class="num3">{{item.userInfoVillage}}</span>
-            <span class="num4">{{item.userInfoPhone}}</span>
+            <span class="num2">{{item.userInfoTown}} {{item.userInfoVillage}}</span>
+            <span class="num3">{{item.userInfoPhone}}</span>
           </li>
         </ul>
         <div class="page">
@@ -73,34 +72,34 @@ export default {
       keyword: '',
       maxPageNum: 1,
       curPageNum: 1,
-      pageSize: 14,
+      pageSize: 12,
       gotoPageNum: '',
       currentAddrlist: [],
 
       couponList:[
         {
           id: '0',
-          name: '请选择条件'
+          name: '选择条件'
         },
         {
           id: '1',
-          name: '姓名条件'
+          name: '姓名'
         },
         {
           id: '2',
-          name: '镇条件'
+          name: '镇'
         },
         {
           id: '3',
-          name: '村条件'
+          name: '村'
         },
         {
           id: '4',
-          name: '职业条件'
+          name: '职业'
         },
         {
           id: '5',
-          name: '单位条件'
+          name: '单位'
         }
       ],
       searchCondition: '',
@@ -471,9 +470,9 @@ function getInfo() {
 
 .condition {
   width: 97%;
-  height: 0.88rem;
+  line-height: 0.88rem;
   padding-left: 0.06rem;
-  font-size: 0.46rem;
+  font-size: 0.52rem;
   color: #606266;
   border: none;
   appearance:none;
@@ -501,7 +500,7 @@ function getInfo() {
   line-height: 0.86rem;
   padding: 0 0.14rem;
   border: none;
-  font-size: 0.46rem;
+  font-size: 0.52rem;
   border-radius: 0.1rem;
   background-color: transparent;
 }
@@ -533,9 +532,9 @@ function getInfo() {
 
 .s-btn {
   width: 100%;
-  height: 0.88rem;
+  line-height: 0.88rem;
   border: none;
-  font-size: 0.4rem;
+  font-size: 0.5rem;
   color: #fff;
   background: transparent;
 }
@@ -543,8 +542,8 @@ function getInfo() {
 .addrlist {
   padding: 2.9rem 0.22rem;
   padding-right: 0.25rem;
-  padding-bottom: 2.68rem;
-  font-size: 0.46rem;
+  padding-bottom: 2.94rem;
+  font-size: 0.56rem;
   color: #303133;
 }
 
@@ -555,7 +554,7 @@ function getInfo() {
 .addrlist-ul {
   width: 100%;
   float: left;
-  margin-bottom: 0.44rem;
+  margin-bottom: 0.6rem;
   text-align: center;
   border: 1px solid #909399;
   border-bottom: none;
@@ -567,6 +566,7 @@ function getInfo() {
   margin: 0 auto;
   border-bottom: 1px solid #909399;
   list-style: none;
+  font-weight: bold;
 }
 
 .addrlist-ul>li span {
@@ -576,36 +576,31 @@ function getInfo() {
 }
 
 .num1 {
-  width: 22%;
-  line-height: 0.64rem;
-  border-right: 1px solid #909399;
+  width: 25.5%;
+  line-height: 0.74rem;
 }
 .num2 {
-  width: 18%;
-  line-height: 0.64rem;
+  width: 37.5%;
+  line-height: 0.74rem;
+  border-left: 1px solid #909399;
   border-right: 1px solid #909399;
 }
 .num3 {
-  width: 25%;
-  line-height: 0.64rem;
-  border-right: 1px solid #909399;
-}
-.num4 {
-  width: 35%;
-  line-height: 0.64rem;
+  width: 37%;
+  line-height: 0.74rem;
 }
 
 .page {
   clear: both;
   margin-top: 1rem;
-  font-size: 0.52rem;
+  font-size: 0.56rem;
   background: #b746205e;
 }
 
 .pagepart {
   box-sizing: border-box;
   float: left;
-  width: 50%;
+  width: 45%;
 }
 
 .pageleft {
@@ -619,7 +614,7 @@ function getInfo() {
 
 .page-icon {
   width: 0.45rem;
-  margin-bottom: -0.05rem;
+  margin-bottom: -0.03rem;
 
 }
 .prev {
@@ -639,30 +634,32 @@ function getInfo() {
 
 .pagenum-div {
   float: left;
-  width: 1.08rem;
-  height: 0.63rem;
-  margin-top: -0.04rem;
-  margin-right: 0.3rem;
+  width: 1.26rem;
+  line-height: 0.72rem;
+  margin-top: -0.08rem;
+  margin-right: 0.4rem;
   border: 1px solid #909399;
   border-radius: 0.08rem;
   background: transparent;
 }
 
 .pagenum {
-  width: 1rem;
-  padding: 0.02rem 0.04rem;
-  font-size: 0.46rem;
+  width: 1.10rem;
+  line-height: 0.72rem;
+  padding: 0.02rem 0.08rem;
+  font-size: 0.56rem;
   border: none;
   background-color: transparent;
 }
 
 .gotobtn {
   float: left;
-  width: 1.36rem;
-  height: 0.65rem;
-  margin-top: -0.04rem;
+  width: 1.66rem;
+  line-height: 0.8rem;
+  margin-top: -0.08rem;
   border: none;
   border-radius: 0.08rem;
+  font-size: 0.52rem;
   color: #fff;
   background-color: #b74620;
 }
@@ -670,7 +667,14 @@ function getInfo() {
 .loading {
   position: relative;
   top: 3.6rem;
-  font-size: 0.46rem;
+  font-size: 0.56rem;
   color: #909399;
+}
+
+.tip {
+  margin-bottom: 0.28rem;
+  text-align: left;
+  font-size: 0.46rem;
+  color: #b74620;
 }
 </style>

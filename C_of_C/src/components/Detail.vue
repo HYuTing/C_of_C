@@ -184,11 +184,12 @@ export default {
   line-height: 0.9rem;
   margin-bottom: 0.6rem;
   text-align: left;
+  font-size: 0.58rem;
 }
 
 .icon {
   width: 0.9rem;
-  margin-bottom: -0.4rem;
+  margin-bottom: -0.3rem;
 }
 
 .input-div {

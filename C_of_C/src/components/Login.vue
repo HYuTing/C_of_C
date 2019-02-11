@@ -71,7 +71,7 @@ export default {
                     edit: 1
                   }
                 });
-              }, 1500);
+              }, 500);
             }
           }
         })
@@ -138,11 +138,7 @@ export default {
 }
 
 .tip {
-  position: absolute;
-  bottom: 0.28rem;
-  left: 0;
-  right: 0;
-  margin: auto;
+  margin: 0.5rem auto;
   font-size: 0.46rem;
   color: #b74620;
 }

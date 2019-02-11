@@ -83,11 +83,12 @@ export default {
 
 .maincontent {
   letter-spacing: 1px;
+  font-size: 0.56rem;
 }
 
 .time {
-  padding: 0.4rem 0;
-  font-size: 0.4rem;
+  padding: 0.5rem 0;
+  font-size: 0.46rem;
   color: #909399;
   text-align: right;
 }

@@ -98,7 +98,7 @@ export default {
             _this.$toast('注册成功');
             setTimeout(function() {
               _this.$router.push("/login");
-            }, 2000);
+            }, 1000);
           }
         })
         .catch(function(error) {
@@ -165,11 +165,7 @@ export default {
 }
 
 .tip {
-  position: absolute;
-  bottom: 0.28rem;
-  left: 0;
-  right: 0;
-  margin: auto;
+  margin: 0.5rem auto;
   font-size: 0.46rem;
   color: #b74620;
 }
