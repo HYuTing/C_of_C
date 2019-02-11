@@ -46,30 +46,32 @@ export default {
   components: {
     Navigation
   },
-  created() {
-    var _this = this;
-
-    this.axios({
-      url: this.baseUrl + '/message/list',
-      // url: '/api/user/info/search',
-      method: 'get',
-      headers: {
-        "S-TOKEN": this.$cookies.get('token')
-      }
-    })
-    .then(function(res) {
-      console.log(res);
-
-    })
-    .catch(function(error) {
-      console.log(error);
-      _this.$toast('信息读取失败');
-    })
-  },
   methods: {
     register: function() {
-      this.$toast('签到成功');
-      this.status1 = false;
+      var _this = this;
+      this.$getToken();
+
+      if(this.$getToken()) {
+      this.axios({
+        url: this.baseUrl + '/sign/check',
+        // url: '/api/user/info/search',
+        method: 'get',
+        headers: {
+          "S-TOKEN": this.$cookies.get('token')
+        }
+      })
+      .then(function(res) {
+        console.log(res);
+        this.$toast('签到成功');
+        setTimeout(function() {
+          this.status1 = false;
+        }, 1000);
+      })
+      .catch(function(error) {
+        console.log(error);
+        _this.$toast('不在签到时间范围内');
+      })
+      }
     },
     donation: function() {
       this.editstatus = !this.editstatus;
