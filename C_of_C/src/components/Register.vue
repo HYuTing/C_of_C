@@ -9,16 +9,16 @@
       <header class="head">签到</header>
       <div class="lottery">
         <div class="lottery-div">
-          <p class="lottery-code">抽奖码：20191234{{lotteryCode}}</p>
+          <p class="lottery-code">抽奖码：{{lotteryCode}}</p>
           <p class="tip" v-if="befoDraw">提示：暂未开奖</p>
-          <p v-if="!befoDraw">抽奖结果：一等奖{{lotteryResult}}</p>
+          <p v-if="!befoDraw">抽奖结果：{{lotteryResult}}</p>
         </div>
       </div>
       <div class="donation">
         <p>捐赠金额：</p>
         <div class="donation-div">
           <p class="donation-num"><span class="rmb">￥ </span></p>
-          <input type="num" class="donation-input" value="0.00" v-model="donationNum" :disabled="!editstatus">
+          <input type="number" class="donation-input" placeholder="0.00" v-model="donationNum" :disabled="!editstatus">
         </div>
         <div class="donation-btn" v-if="editstatus" @click="donation">确认捐赠</div>
         <div class="donation-btn change-num" v-if="!editstatus" @click="changeNum">修改金额</div>
@@ -39,22 +39,43 @@ export default {
       lotteryCode: '',
       befoDraw: true,
       lotteryResult: '',
-      donationNum: '0.00',
+      donationNum: '',
       editstatus: true
     }
   },
   components: {
     Navigation
   },
-  methods: {
-    register: function() {
-      var _this = this;
-      this.$getToken();
-
-      if(this.$getToken()) {
+  created() {
+    var _this = this;
+    // console.log(this.$cookies.get('signCheck'));
+    if(this.$cookies.get('signCheck')) {
+      // console.log('?');
       this.axios({
-        url: this.baseUrl + '/sign/check',
-        // url: '/api/user/info/search',
+        url: this.baseUrl + '/lottery',
+        // url: '/api/lottery',
+        method: 'get',
+        headers: {
+          "S-TOKEN": this.$cookies.get('token')
+        }
+      })
+      .then(function(res) {
+        // console.log(res);
+        _this.lotteryCode = res.data.data.lotteryCode;
+        if(res.data.data.lotteryResult) {
+          _this.befoDraw = false;
+          _this.lotteryResult = res.data.data.lotteryResult;
+        }
+        _this.status1 = false;
+      })
+      .catch(function(error) {
+        console.log(error);
+        _this.$toast('获取信息失败');
+      });
+
+      this.axios({
+        url: this.baseUrl + '/donation',
+        // url: '/api/donation',
         method: 'get',
         headers: {
           "S-TOKEN": this.$cookies.get('token')
@@ -62,19 +83,108 @@ export default {
       })
       .then(function(res) {
         console.log(res);
-        this.$toast('签到成功');
-        setTimeout(function() {
-          this.status1 = false;
-        }, 1000);
+        if(res.data.data >= 0) {
+          _this.donationNum = res.data.data;
+          _this.editstatus = false;
+        }
       })
       .catch(function(error) {
         console.log(error);
-        _this.$toast('不在签到时间范围内');
-      })
+        _this.$toast('获取信息失败');
+      });
+
+    }
+    else {
+      this.status1 = true;
+    }
+  },
+  watch: {
+    donationNum(val) {
+      var re = /^\d+\.?\d{0,2}$/;
+      // console.log(re.test(val));
+      if(re.test(val)) {
+
+      }else {
+        this.$toast('金额格式错误');
+      }
+    }
+  },
+  methods: {
+    register: function() {
+      var _this = this;
+      this.$getToken();
+
+      if(this.$getToken()) {
+        this.axios({
+          url: this.baseUrl + '/sign/check',
+          // url: '/api/user/info/search',
+          method: 'get',
+          headers: {
+            "S-TOKEN": this.$cookies.get('token')
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          _this.$toast('签到成功');
+          setTimeout(function() {
+            _this.axios({
+              url: _this.baseUrl + '/lottery',
+              // url: '/api/user/info/search',
+              method: 'get',
+              headers: {
+                "S-TOKEN": _this.$cookies.get('token')
+              }
+            })
+            .then(function(res) {
+              // console.log(res);
+              _this.lotteryCode = res.data.data.lotteryCode;
+              if(res.data.data.lotteryResult) {
+                _this.befoDraw = false;
+                _this.lotteryResult = res.data.data.lotteryResult;
+                _this.$cookies.set('signCheck', true, 3600*24*8);
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+              _this.$toast('获取信息失败');
+            })
+            _this.status1 = false;
+          }, 1000);
+        })
+        .catch(function(error) {
+          console.log(error);
+          _this.$toast('不在签到时间范围内');
+        })
       }
     },
     donation: function() {
-      this.editstatus = !this.editstatus;
+      var _this = this;
+
+      var re = /^\d+\.?\d{0,2}$/;
+      // console.log(re.test(_this.donationNum));
+
+      if(re.test(_this.donationNum)) {
+        this.axios({
+          url: this.baseUrl + '/donation/update?donationNumber=' + _this.donationNum,
+          // url: '/api/donation/update?donationNumber=0.00',
+          method: 'post',
+          headers: {
+            "S-TOKEN": this.$cookies.get('token')
+          }
+        })
+        .then(function(res) {
+          // console.log(res);
+          _this.$toast('感谢您的捐赠');
+          _this.editstatus = !_this.editstatus;
+        })
+        .catch(function(error) {
+          console.log(error);
+          _this.$toast('请求失败');
+        })
+
+      }else {
+        this.$toast('金额格式错误');
+      }
     },
     changeNum: function() {
       this.editstatus = !this.editstatus;

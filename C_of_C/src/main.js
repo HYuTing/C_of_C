@@ -15,8 +15,8 @@ Vue.use(toastRegistry)
 Vue.prototype.axios = axios
 Vue.config.productionTip = false
 
-Vue.prototype.baseUrl = '/api';
-// Vue.prototype.baseUrl = 'http://chamber.huanglexing.com';
+// Vue.prototype.baseUrl = '/api';
+Vue.prototype.baseUrl = 'http://chamber.huanglexing.com';
 // Vue.prototype.userToken = '';
 
 /* eslint-disable no-new */
