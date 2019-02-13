@@ -213,7 +213,7 @@ export default {
 }
 
 .status1 {
-  position: relative;
+  position: absolute;
   width: 100%;
   height: 100%;
   background: url('../assets/df.png') no-repeat;

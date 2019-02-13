@@ -9,6 +9,9 @@ import Userinfo from '@/components/Userinfo'
 import Notice from '@/components/Notice'
 import Detail from '@/components/Detail'
 import NoticeDetail from '@/components/NoticeDetail'
+import AdminLogin from '@/admin/AdminLogin'
+import AdminUser from '@/admin/AdminUser'
+import AdminPay from '@/admin/AdminPay'
 
 Vue.use(Router)
 
@@ -58,6 +61,21 @@ export default new Router({
       path: '/NoticeDetail',
       name: 'NoticeDetail',
       component: NoticeDetail
+    },
+    {
+      path: '/adminLogin',
+      name: 'AdminLogin',
+      component: AdminLogin
+    },
+    {
+      path: '/admin/user_management',
+      name: 'AdminUser',
+      component: AdminUser
+    },
+    {
+      path: '/admin/payment_management',
+      name: 'AdminPay',
+      component: AdminPay
     }
   ]
 })
