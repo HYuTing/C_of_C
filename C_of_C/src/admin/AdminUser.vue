@@ -91,15 +91,21 @@
           </el-table-column>
           <el-table-column
             fixed="right"
-            label="密码"
-            width="70"
+            label="操作"
+            min-width="150"
             align="center">
             <template slot-scope="scope">
               <el-button
-                @click.native.prevent="deleteRow(scope.$index, tableData3)"
+                @click="handleClick(scope.row)"
                 type="text"
                 size="small">
-                修改
+                修改密码
+              </el-button>
+              <el-button
+                @click="handleDelete(scope.$index, scope.row)"
+                type="text"
+                size="small">
+                <span style="margin-left: 10px; color: #F56C6C;">删除</span>
               </el-button>
             </template>
           </el-table-column>
@@ -224,8 +230,11 @@ export default {
     MyNav
   },
   methods: {
-    Login: function() {
-
+    handleClick(row) {
+      console.log(row);
+    },
+    handleDelete(index, row) {
+      console.log(index, row);
     }
   }
 }

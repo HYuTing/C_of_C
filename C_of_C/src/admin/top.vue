@@ -27,11 +27,11 @@ export default {
   height: 54px;
   line-height: 54px;
   padding: 0 24px;
-  box-shadow: 0 0 10px #EBEEF5;
-  border-bottom: 1px solid #DCDFE6;
-  font-size: 22px;
+  box-shadow: 0 0 8px #EBEEF5;
+  font-size: 18px;
   text-align: left;
   background: #fff;
+  z-index: 99;
 }
 
 .top2{
@@ -40,7 +40,7 @@ export default {
   right: 24px;
   height: 54px;
   line-height: 54px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: normal;
 }
 

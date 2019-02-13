@@ -19,7 +19,7 @@
       <el-submenu index="4">
         <template slot="title">
           <i class="el-icon-star-on"></i>
-          <span slot="title" style="font-size: 16px;">抽奖管理</span>
+          <span slot="title" style="font-size: 14px;">抽奖管理</span>
         </template>
         <el-menu-item-group>
           <el-menu-item index="4-1">抽奖码与奖品</el-menu-item>
@@ -76,6 +76,6 @@ export default {
 
 li {
   text-align: left;
-  font-size: 16px;
+  font-size: 14px;
 }
 </style>
