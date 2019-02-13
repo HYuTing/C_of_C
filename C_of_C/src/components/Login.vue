@@ -60,19 +60,15 @@ export default {
             // console.log(res.data.data.infoCheck);
             var infoCheck = res.data.data.infoCheck;
             if(infoCheck === true) {
-              setTimeout(function() {
-                _this.$router.push("/AddrList");
-              }, 1500);
+              _this.$router.push("/AddrList");
             }
             else {
-              setTimeout(function() {
-                _this.$router.push({
-                  path: "/Userinfo",
-                  query: {
-                    edit: 1
-                  }
-                });
-              }, 500);
+              _this.$router.push({
+                path: "/Userinfo",
+                query: {
+                  edit: 1
+                }
+              });
             }
           }
         })

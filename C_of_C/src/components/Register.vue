@@ -18,7 +18,7 @@
         <p>捐赠金额：</p>
         <div class="donation-div">
           <p class="donation-num"><span class="rmb">￥ </span></p>
-          <input type="number" class="donation-input" placeholder="0.00" v-model="donationNum" :disabled="!editstatus">
+          <input type="number" class="donation-input" placeholder="0.00" v-model="donationNum" :disabled="!editstatus" @blur="focusState = false" v-focus="focusState">
         </div>
         <div class="donation-btn" v-if="editstatus" @click="donation">确认捐赠</div>
         <div class="donation-btn change-num" v-if="!editstatus" @click="changeNum">修改金额</div>
@@ -40,7 +40,8 @@ export default {
       befoDraw: true,
       lotteryResult: '',
       donationNum: '',
-      editstatus: true
+      editstatus: true,
+      focusState: false
     }
   },
   components: {
@@ -48,8 +49,8 @@ export default {
   },
   created() {
     var _this = this;
-    // console.log(this.$cookies.get('signCheck'));
-    if(this.$cookies.get('signCheck')) {
+    // console.log(typeof(this.$cookies.get('signCheck')));
+    if(this.$cookies.get('signCheck') === 'true') {
       // console.log('?');
       this.axios({
         url: this.baseUrl + '/lottery',
@@ -141,8 +142,8 @@ export default {
               if(res.data.data.lotteryResult) {
                 _this.befoDraw = false;
                 _this.lotteryResult = res.data.data.lotteryResult;
-                _this.$cookies.set('signCheck', true, 3600*24*8);
               }
+              _this.$cookies.set('signCheck', 'true', 3600*24*8);
             })
             .catch(function(error) {
               console.log(error);
@@ -188,6 +189,17 @@ export default {
     },
     changeNum: function() {
       this.editstatus = !this.editstatus;
+      this.focusState = true;
+    }
+  },
+  directives: {
+    focus: {
+      //根据focusState的状态改变是否聚焦focus
+      update: function (el, value) {    //第二个参数传进来的是个json
+        if (value) {
+          el.focus()
+        }
+      }
     }
   }
 }
@@ -286,7 +298,7 @@ export default {
   position: relative;
   width: 100%;
   height: 1rem;
-  line-height: 1.04rem;
+  line-height: 1.02rem;
   margin-top: 0.4rem;
   border: 1px solid #909399;
   border-radius: 0.08rem;
@@ -302,8 +314,7 @@ export default {
   top: 0;
   right: 0;
   width: 4.14rem;
-  padding: 0.12rem 0.15rem;
-  padding-top: 0.19rem;
+  padding: 0.15rem 0.15rem;
   padding-left: 0.91rem;
   border: none;
   border-radius: 0.08rem;

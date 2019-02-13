@@ -543,7 +543,7 @@ function getInfo() {
   padding: 2.9rem 0.22rem;
   padding-right: 0.25rem;
   padding-bottom: 2.94rem;
-  font-size: 0.56rem;
+  font-size: 0.55rem;
   color: #303133;
 }
 
@@ -576,17 +576,17 @@ function getInfo() {
 }
 
 .num1 {
-  width: 25.5%;
+  width: 25.25%;
   line-height: 0.74rem;
 }
 .num2 {
-  width: 37.5%;
+  width: 37.25%;
   line-height: 0.74rem;
   border-left: 1px solid #909399;
   border-right: 1px solid #909399;
 }
 .num3 {
-  width: 37%;
+  width: 37.5%;
   line-height: 0.74rem;
 }
 
