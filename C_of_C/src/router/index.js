@@ -12,6 +12,7 @@ import NoticeDetail from '@/components/NoticeDetail'
 import AdminLogin from '@/admin/AdminLogin'
 import AdminUser from '@/admin/AdminUser'
 import AdminPay from '@/admin/AdminPay'
+import AdminRegis from '@/admin/AdminRegis'
 
 Vue.use(Router)
 
@@ -76,6 +77,11 @@ export default new Router({
       path: '/admin/payment_management',
       name: 'AdminPay',
       component: AdminPay
+    },
+    {
+      path: '/admin/payregis_management',
+      name: 'AdminRegis',
+      component: AdminRegis
     }
   ]
 })

@@ -11,7 +11,7 @@
         <span slot="title">付款管理</span>
       </el-menu-item>
 
-      <el-menu-item index="3">
+      <el-menu-item index="3" route="/admin/payregis_management">
         <i class="el-icon-circle-check-outline"></i>
         <span slot="title">签到管理</span>
       </el-menu-item>
