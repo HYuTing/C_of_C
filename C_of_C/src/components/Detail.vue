@@ -138,12 +138,16 @@ export default {
   },
   methods: {
     reback: function() {
-      this.$router.push({
-        name: "AddrList",
-        params: {
-          pageNum: this.pagenum
-        }
-      });
+      this.$getToken();
+
+      if(this.$getToken()) {
+        this.$router.push({
+          name: "AddrList",
+          params: {
+            pageNum: this.pagenum
+          }
+        });
+      }
     }
   }
 }

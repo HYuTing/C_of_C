@@ -30,10 +30,23 @@ export default {
       }
     }
   },
-
+  created() {
+    if(this.$cookies.get('token') && this.$cookies.get('infoCheck')) {
+      this.$router.push("/addrList");
+    }
+    else if(this.$cookies.get('token') && !this.$cookies.get('infoCheck')) {
+      this.$router.push({
+        path: "/userinfo",
+        query: {
+          edit: 1
+        }
+      });
+    }
+  },
   methods: {
     Login: function() {
       var _this = this;
+
       if(_this.loginForm.username == '') {
         this.$toast('请输入用户名');
       }
@@ -54,17 +67,18 @@ export default {
           // console.log(res.headers);
           // console.log(res.headers['s-token']);
           this.$cookies.set('token', res.headers['s-token'], 3600*24*7);
-          this.$cookies.set('signCheck', res.data.data.signCheck, 3600*24*8);
+          this.$cookies.set('signCheck', res.data.data.signCheck, 3600*24*7);
+          this.$cookies.set('infoCheck', res.data.data.infoCheck, 3600*24*7);
           if(res.status === 200) {
             this.$toast('登录成功');
             // console.log(res.data.data.infoCheck);
             var infoCheck = res.data.data.infoCheck;
             if(infoCheck === true) {
-              _this.$router.push("/AddrList");
+              _this.$router.push("/addrList");
             }
             else {
               _this.$router.push({
-                path: "/Userinfo",
+                path: "/userinfo",
                 query: {
                   edit: 1
                 }

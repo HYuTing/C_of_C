@@ -168,123 +168,135 @@ export default {
   methods: {
     prev: function() {
       var _this = this;
-      if(this.curPageNum === 1) {
-        this.$toast('没有上一页了');
-      }
-      else {
-        this.curPageNum = this.curPageNum-1;
-        this.currentAddrlist = [];
-        this.loading = true;
-        this.success = false;
+      this.$getToken();
 
-          this.axios({
-            url: this.baseUrl + '/user/info/search',
-            // url: '/api/user/info/search',
-            method: 'post',
-            headers: {
-              "S-TOKEN": this.$cookies.get('token')
-            },
-            data: {
-              "pageNum": this.curPageNum,
-              "pageSize": this.pageSize,
-              "userInfoName": this.name,
-              "userInfoOccupation": this.occupation,
-              "userInfoTown": this.town,
-              "userInfoUnit": this.team,
-              "userInfoVillage": this.village
-            }
-          })
-          .then(function(res) {
-            // console.log(res);
-            _this.currentAddrlist = res.data.data.userInfoVOList;
-            _this.success = true;
-            _this.loading = false;
-          })
-          .catch(function(error) {
-            console.log(error);
-            _this.$toast('信息读取失败');
-          })
+      if(this.$getToken()) {
+        if(this.curPageNum === 1) {
+          this.$toast('没有上一页了');
+        }
+        else {
+          this.curPageNum = this.curPageNum-1;
+          this.currentAddrlist = [];
+          this.loading = true;
+          this.success = false;
+
+            this.axios({
+              url: this.baseUrl + '/user/info/search',
+              // url: '/api/user/info/search',
+              method: 'post',
+              headers: {
+                "S-TOKEN": this.$cookies.get('token')
+              },
+              data: {
+                "pageNum": this.curPageNum,
+                "pageSize": this.pageSize,
+                "userInfoName": this.name,
+                "userInfoOccupation": this.occupation,
+                "userInfoTown": this.town,
+                "userInfoUnit": this.team,
+                "userInfoVillage": this.village
+              }
+            })
+            .then(function(res) {
+              // console.log(res);
+              _this.currentAddrlist = res.data.data.userInfoVOList;
+              _this.success = true;
+              _this.loading = false;
+            })
+            .catch(function(error) {
+              console.log(error);
+              _this.$toast('信息读取失败');
+            })
+        }
       }
     },
     next: function() {
       var _this = this;
-      if(this.curPageNum === this.maxPageNum) {
-        this.$toast('没有下一页了');
-      }
-      else {
-        this.curPageNum = this.curPageNum+1;
-        this.currentAddrlist = [];
-        this.loading = true;
-        this.success = false;
+      this.$getToken();
 
-          this.axios({
-            url: this.baseUrl + '/user/info/search',
-            // url: '/api/user/info/search',
-            method: 'post',
-            headers: {
-              "S-TOKEN": this.$cookies.get('token')
-            },
-            data: {
-              "pageNum": this.curPageNum,
-              "pageSize": this.pageSize,
-              "userInfoName": this.name,
-              "userInfoOccupation": this.occupation,
-              "userInfoTown": this.town,
-              "userInfoUnit": this.team,
-              "userInfoVillage": this.village
-            }
-          })
-          .then(function(res) {
-            // console.log(res);
-            _this.currentAddrlist = res.data.data.userInfoVOList;
-            _this.loading = false;
-            _this.success = true;
-          })
-          .catch(function(error) {
-            console.log(error);
-            _this.$toast('信息读取失败');
-          })
+      if(this.$getToken()) {
+        if(this.curPageNum === this.maxPageNum) {
+          this.$toast('没有下一页了');
+        }
+        else {
+          this.curPageNum = this.curPageNum+1;
+          this.currentAddrlist = [];
+          this.loading = true;
+          this.success = false;
+
+            this.axios({
+              url: this.baseUrl + '/user/info/search',
+              // url: '/api/user/info/search',
+              method: 'post',
+              headers: {
+                "S-TOKEN": this.$cookies.get('token')
+              },
+              data: {
+                "pageNum": this.curPageNum,
+                "pageSize": this.pageSize,
+                "userInfoName": this.name,
+                "userInfoOccupation": this.occupation,
+                "userInfoTown": this.town,
+                "userInfoUnit": this.team,
+                "userInfoVillage": this.village
+              }
+            })
+            .then(function(res) {
+              // console.log(res);
+              _this.currentAddrlist = res.data.data.userInfoVOList;
+              _this.loading = false;
+              _this.success = true;
+            })
+            .catch(function(error) {
+              console.log(error);
+              _this.$toast('信息读取失败');
+            })
+        }
       }
     },
     gotoPage: function() {
       // console.log(this.gotoPageNum);
       var _this = this;
-      if(0 < this.gotoPageNum && this.gotoPageNum <= this.maxPageNum) {
-        this.loading = true;
-        this.success = false;
+      this.$getToken();
 
-          this.axios({
-            url: this.baseUrl + '/user/info/search',
-            // url: '/api/user/info/search',
-            method: 'post',
-            headers: {
-              "S-TOKEN": this.$cookies.get('token')
-            },
-            data: {
-              "pageNum": this.gotoPageNum,
-              "pageSize": this.pageSize,
-              "userInfoName": this.name,
-              "userInfoOccupation": this.occupation,
-              "userInfoTown": this.town,
-              "userInfoUnit": this.team,
-              "userInfoVillage": this.village
-            }
-          })
-          .then(function(res) {
-            // console.log(res);
-            _this.curPageNum = _this.gotoPageNum
-            _this.currentAddrlist = res.data.data.userInfoVOList;
-            _this.gotoPageNum = '';
-            _this.loading = false;
-            _this.success = true;
-          })
-          .catch(function(error) {
-            console.log(error);
-            _this.$toast('信息读取失败');
-          })
-      }
-      else {
-        this.$toast('页码错误');
+      if(this.$getToken()) {
+        if(0 < this.gotoPageNum && this.gotoPageNum <= this.maxPageNum) {
+          this.loading = true;
+          this.success = false;
+
+            this.axios({
+              url: this.baseUrl + '/user/info/search',
+              // url: '/api/user/info/search',
+              method: 'post',
+              headers: {
+                "S-TOKEN": this.$cookies.get('token')
+              },
+              data: {
+                "pageNum": this.gotoPageNum,
+                "pageSize": this.pageSize,
+                "userInfoName": this.name,
+                "userInfoOccupation": this.occupation,
+                "userInfoTown": this.town,
+                "userInfoUnit": this.team,
+                "userInfoVillage": this.village
+              }
+            })
+            .then(function(res) {
+              // console.log(res);
+              _this.curPageNum = _this.gotoPageNum
+              _this.currentAddrlist = res.data.data.userInfoVOList;
+              _this.gotoPageNum = '';
+              _this.loading = false;
+              _this.success = true;
+            })
+            .catch(function(error) {
+              console.log(error);
+              _this.$toast('信息读取失败');
+            })
+        }
+        else {
+          this.$toast('页码错误');
+        }
       }
     },
     getSelected: function() {
@@ -292,123 +304,132 @@ export default {
     },
     searchInfo: function() {
       var _this = this;
+      this.$getToken();
 
-      if(this.searchCondition == 1) {
-        this.name = this.searchValue;
-      }
-      else if(this.searchCondition == 2) {
-        this.town = this.searchValue;
-      }
-      else if(this.searchCondition == 3) {
-        this.village = this.searchValue;
-      }
-      else if(this.searchCondition == 4) {
-        this.occupation = this.searchValue;
-      }
-      else if(this.searchCondition == 5) {
-        this.team = this.searchValue;
-      }
-      // console.log('name:' + this.name);
-      // console.log('town:' + this.town);
-      // console.log('village:' + this.village);
-      // console.log('occupation:' + this.occupation);
-      // console.log('team:' + this.team);
+      if(this.$getToken()) {
+        if(this.searchCondition == 1) {
+          this.name = this.searchValue;
+        }
+        else if(this.searchCondition == 2) {
+          this.town = this.searchValue;
+        }
+        else if(this.searchCondition == 3) {
+          this.village = this.searchValue;
+        }
+        else if(this.searchCondition == 4) {
+          this.occupation = this.searchValue;
+        }
+        else if(this.searchCondition == 5) {
+          this.team = this.searchValue;
+        }
+        // console.log('name:' + this.name);
+        // console.log('town:' + this.town);
+        // console.log('village:' + this.village);
+        // console.log('occupation:' + this.occupation);
+        // console.log('team:' + this.team);
 
-      this.curPageNum = 1;
-      this.loading = true;
-      this.success = false;
-      this.fail = false;
-      this.axios({
-        url: this.baseUrl + '/user/info/search',
-        // url: '/api/user/info/search',
-        method: 'post',
-        headers: {
-          "S-TOKEN": this.$cookies.get('token')
-        },
-        data: {
-          "pageNum": this.curPageNum,
-          "pageSize": this.pageSize,
-          "userInfoName": this.name,
-          "userInfoOccupation": this.occupation,
-          "userInfoTown": this.town,
-          "userInfoUnit": this.team,
-          "userInfoVillage": this.village
-        }
-      })
-      .then(function(res) {
-        // console.log(res);
-        _this.gotoPageNum = '';
-        _this.loading = false;
+        this.curPageNum = 1;
+        this.loading = true;
+        this.success = false;
+        this.fail = false;
+        this.axios({
+          url: this.baseUrl + '/user/info/search',
+          // url: '/api/user/info/search',
+          method: 'post',
+          headers: {
+            "S-TOKEN": this.$cookies.get('token')
+          },
+          data: {
+            "pageNum": this.curPageNum,
+            "pageSize": this.pageSize,
+            "userInfoName": this.name,
+            "userInfoOccupation": this.occupation,
+            "userInfoTown": this.town,
+            "userInfoUnit": this.team,
+            "userInfoVillage": this.village
+          }
+        })
+        .then(function(res) {
+          // console.log(res);
+          _this.gotoPageNum = '';
+          _this.loading = false;
 
-        if(res.data.data.maxPageNum == 0) {
-          _this.fail = true;
-        }
-        else {
-          _this.success = true;
-          _this.maxPageNum = res.data.data.maxPageNum;
-          _this.currentAddrlist = res.data.data.userInfoVOList;
-        }
-      })
-      .catch(function(error) {
-        console.log(error);
-        _this.$toast('信息读取失败');
-      })
+          if(res.data.data.maxPageNum == 0) {
+            _this.fail = true;
+          }
+          else {
+            _this.success = true;
+            _this.maxPageNum = res.data.data.maxPageNum;
+            _this.currentAddrlist = res.data.data.userInfoVOList;
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+          _this.$toast('信息读取失败');
+        })
+      }
 
     },
     renovate: function() {
       var _this = this;
+      this.$getToken();
 
-      this.searchValue = '';
-      this.name = '';
-      this.town = '';
-      this.village = '';
-      this.occupation = '';
-      this.team = '';
-      this.loading = true;
-      this.success = false;
-      this.fail = false;
+      if(this.$getToken()) {
+        this.searchValue = '';
+        this.name = '';
+        this.town = '';
+        this.village = '';
+        this.occupation = '';
+        this.team = '';
+        this.loading = true;
+        this.success = false;
+        this.fail = false;
 
-      this.axios({
-        url: this.baseUrl + '/user/info/search',
-        // url: '/api/user/info/search',
-        method: 'post',
-        headers: {
-          "S-TOKEN": this.$cookies.get('token')
-        },
-        data: {
-          "pageNum": 1,
-          "pageSize": this.pageSize,
-          "userInfoName": "",
-          "userInfoOccupation": "",
-          "userInfoTown": "",
-          "userInfoUnit": "",
-          "userInfoVillage": ""
-        }
-      })
-      .then(function(res) {
-        // console.log(res);
-        _this.maxPageNum = res.data.data.maxPageNum;
-        _this.curPageNum = 1;
-        _this.currentAddrlist = res.data.data.userInfoVOList;
-        _this.loading = false;
-        _this.success = true;
-      })
-      .catch(function(error) {
-        console.log(error);
-        _this.$toast('信息读取失败');
-      })
+        this.axios({
+          url: this.baseUrl + '/user/info/search',
+          // url: '/api/user/info/search',
+          method: 'post',
+          headers: {
+            "S-TOKEN": this.$cookies.get('token')
+          },
+          data: {
+            "pageNum": 1,
+            "pageSize": this.pageSize,
+            "userInfoName": "",
+            "userInfoOccupation": "",
+            "userInfoTown": "",
+            "userInfoUnit": "",
+            "userInfoVillage": ""
+          }
+        })
+        .then(function(res) {
+          // console.log(res);
+          _this.maxPageNum = res.data.data.maxPageNum;
+          _this.curPageNum = 1;
+          _this.currentAddrlist = res.data.data.userInfoVOList;
+          _this.loading = false;
+          _this.success = true;
+        })
+        .catch(function(error) {
+          console.log(error);
+          _this.$toast('信息读取失败');
+        })
+      }
     },
     toDetail: function(id) {
       // console.log(id);
       var _this = this;
+      this.$getToken();
 
-      this.$router.push({
-        name: "Detail",
-        params: {
-          userId: id,
-          curPage: _this.curPageNum
-        }
-      });
+      if(this.$getToken()) {
+        this.$router.push({
+          name: "Detail",
+          params: {
+            userId: id,
+            curPage: _this.curPageNum
+          }
+        });
+      }
     }
   }
 }

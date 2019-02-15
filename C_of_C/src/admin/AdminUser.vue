@@ -12,7 +12,7 @@
         :data="tableData4"
         style="width: 100%"
         stripe
-        height="513"
+        height="440"
         >
         <el-table-column
           prop="number"

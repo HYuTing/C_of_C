@@ -81,11 +81,11 @@ export default {
     },
     toRegister: function() {
       this.$toast('该功能暂未开放');
-      // this.$router.push("/Register");
+      // this.$router.push("/register");
     },
     toNotice: function() {
       this.$toast('该功能暂未开放');
-      // this.$router.push("/Notice");
+      // this.$router.push("/notice");
     },
     toUserinfo: function() {
       this.$router.push({

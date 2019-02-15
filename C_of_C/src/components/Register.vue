@@ -163,28 +163,32 @@ export default {
 
       var re = /^\d+\.?\d{0,2}$/;
       // console.log(re.test(_this.donationNum));
+      this.$getToken();
 
-      if(re.test(_this.donationNum)) {
-        this.axios({
-          url: this.baseUrl + '/donation/update?donationNumber=' + _this.donationNum,
-          // url: '/api/donation/update?donationNumber=0.00',
-          method: 'post',
-          headers: {
-            "S-TOKEN": this.$cookies.get('token')
-          }
-        })
-        .then(function(res) {
-          // console.log(res);
-          _this.$toast('感谢您的捐赠');
-          _this.editstatus = !_this.editstatus;
-        })
-        .catch(function(error) {
-          console.log(error);
-          _this.$toast('请求失败');
-        })
+      if(this.$getToken()) {
 
-      }else {
-        this.$toast('金额格式错误');
+        if(re.test(_this.donationNum)) {
+          this.axios({
+            url: this.baseUrl + '/donation/update?donationNumber=' + _this.donationNum,
+            // url: '/api/donation/update?donationNumber=0.00',
+            method: 'post',
+            headers: {
+              "S-TOKEN": this.$cookies.get('token')
+            }
+          })
+          .then(function(res) {
+            // console.log(res);
+            _this.$toast('感谢您的捐赠');
+            _this.editstatus = !_this.editstatus;
+          })
+          .catch(function(error) {
+            console.log(error);
+            _this.$toast('请求失败');
+          })
+
+        }else {
+          this.$toast('金额格式错误');
+        }
       }
     },
     changeNum: function() {

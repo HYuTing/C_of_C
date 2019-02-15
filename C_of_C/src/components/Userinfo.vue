@@ -1,6 +1,9 @@
 <template>
   <div class="main">
-    <header class="head">个人信息</header>
+    <header class="head">
+      个人主页
+      <span class="logoff" @click="logoff">退出</span>
+    </header>
     <div class="info-table">
       <form class="info-form">
         <div class="form-div">
@@ -329,6 +332,10 @@ export default {
       this.noeditwx = false;
       this.noeditteam = false;
       this.noeditaddress = false;
+    },
+    logoff: function() {
+      this.$cookies.remove('token');
+      this.$router.push("/login");
     }
   }
 }
@@ -474,5 +481,13 @@ export default {
 .tip {
   font-size: 0.42rem;
   color: #b74620;
+}
+
+.logoff {
+  position: fixed;
+  top: 0.34rem;
+  right: 0.4rem;
+  font-size: 0.46rem;
+  color: #909399;
 }
 </style>
