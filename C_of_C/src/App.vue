@@ -35,29 +35,3 @@ export default {
   margin-top: 0px;
 }
 </style>
-
-<style scoped>
-.wrapper div {
-  height: 1rem;
-}
-.box1 {
-  width: 2rem;
-  background-color: coral;
-}
-.box2 {
-  width: 4rem;
-  background-color: skyblue;
-}
-.box3 {
-  width: 6rem;
-  background-color: palegreen;
-}
-.box4 {
-  width: 8rem;
-  background-color: wheat;
-}
-.box5 {
-  width: 10rem;
-  background-color: darkred;
-}
-</style>

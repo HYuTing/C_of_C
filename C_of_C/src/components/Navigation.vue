@@ -80,14 +80,16 @@ export default {
       });
     },
     toRegister: function() {
-      this.$router.push("/Register");
+      this.$toast('该功能暂未开放');
+      // this.$router.push("/Register");
     },
     toNotice: function() {
-      this.$router.push("/Notice");
+      this.$toast('该功能暂未开放');
+      // this.$router.push("/Notice");
     },
     toUserinfo: function() {
       this.$router.push({
-        path: "/Userinfo",
+        path: "/userinfo",
         query: {
           edit: 0
         }

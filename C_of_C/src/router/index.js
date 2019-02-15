@@ -34,32 +34,32 @@ export default new Router({
       component: Loginup
     },
     {
-      path: '/AddrList',
+      path: '/addrList',
       name: 'AddrList',
       component: AddrList
     },
     {
-      path: '/Register',
+      path: '/register',
       name: 'Register',
       component: Register
     },
     {
-      path: '/Userinfo',
+      path: '/userinfo',
       name: 'Userinfo',
       component: Userinfo
     },
     {
-      path: '/Notice',
+      path: '/notice',
       name: 'Notice',
       component: Notice
     },
     {
-      path: '/Detail',
+      path: '/detail',
       name: 'Detail',
       component: Detail
     },
     {
-      path: '/NoticeDetail',
+      path: '/noticedetail',
       name: 'NoticeDetail',
       component: NoticeDetail
     },
