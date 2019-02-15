@@ -90,7 +90,7 @@
               @click="handleDelete(scope.$index, scope.row)"
               type="text"
               size="small">
-              <span style="margin-left: 10px; color: #F56C6C;">删除</span>
+              <span class="delete-btn">删除</span>
             </el-button>
           </template>
         </el-table-column>
@@ -229,9 +229,40 @@ export default {
   methods: {
     handleClick(row) {
       console.log(row);
+
+      this.$prompt('您正在为用户 '+row.name+' 修改密码：', '修改密码', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(({ value }) => { // value值就是input的value
+        this.$message({
+          type: 'success',
+          message: '修改成功！'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        });
+      });
     },
     handleDelete(index, row) {
       console.log(index, row);
+
+      this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
@@ -280,5 +311,10 @@ export default {
 .block {
   margin: 20px auto;
   text-align: center;
+}
+
+.delete-btn {
+  margin-left: 10px;
+  color: #F56C6C;
 }
 </style>
