@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    管理员端开始啦
+    管理员端开始啦啦
     <button @click="Login">
       登 录
     </button>
