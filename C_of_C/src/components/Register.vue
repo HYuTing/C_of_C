@@ -4,6 +4,11 @@
       <div class="register-btn">
         <div class="border" @click="register">签 到</div>
       </div>
+      <p class="message">
+        {{message}}
+        <br/>
+        <span class="time" v-if="unlock">{{time}}</span>
+      </p>
     </div>
     <div class="status2">
       <header class="head">签到</header>
@@ -41,7 +46,10 @@ export default {
       lotteryResult: '',
       donationNum: '',
       editstatus: true,
-      focusState: false
+      focusState: false,
+      message: '',
+      time: '',
+      unlock: false
     }
   },
   components: {
@@ -49,19 +57,13 @@ export default {
   },
   created() {
     var _this = this;
-    // console.log(typeof(this.$cookies.get('signCheck')));
     if(this.$cookies.get('signCheck') === 'true') {
-      // console.log('?');
       this.axios({
         url: this.baseUrl + '/lottery',
-        // url: '/api/lottery',
-        method: 'get',
-        headers: {
-          "S-TOKEN": this.$cookies.get('token')
-        }
+        method: 'get'
       })
       .then(function(res) {
-        // console.log(res);
+        console.log(res);
         _this.lotteryCode = res.data.data.lotteryCode;
         if(res.data.data.lotteryResult) {
           _this.befoDraw = false;
@@ -71,16 +73,11 @@ export default {
       })
       .catch(function(error) {
         console.log(error);
-        _this.$toast('获取信息失败');
       });
 
       this.axios({
         url: this.baseUrl + '/donation',
-        // url: '/api/donation',
-        method: 'get',
-        headers: {
-          "S-TOKEN": this.$cookies.get('token')
-        }
+        method: 'get'
       })
       .then(function(res) {
         console.log(res);
@@ -91,12 +88,58 @@ export default {
       })
       .catch(function(error) {
         console.log(error);
-        _this.$toast('获取信息失败');
       });
 
     }
     else {
       this.status1 = true;
+      this.axios({
+        url: this.baseUrl + '/sign',
+        method: 'get'
+      })
+      .then(function(res) {
+        console.log(res.data);
+        if(!res.data.data) {
+          _this.message = '暂时没有签到活动'
+        }
+        else {
+          var beginy, beginm, begind, beginhour, beginminute;
+          var endy, endm, endd, endhour, endminute;
+
+          let begintime = res.data.data.signBeginTimestamp;
+          begintime = parseInt(begintime*1000);
+          let begindate = new Date(begintime);
+          beginy = begindate.getFullYear();
+          let MM = begindate.getMonth() + 1;
+          MM = MM < 10 ? ('0' + MM) : MM;
+          beginm = MM;
+          let d = begindate.getDate();
+          d = d < 10 ? ('0' + d) : d;
+          begind = d;
+          beginhour = begindate.getHours()<10?('0'+begindate.getHours()):begindate.getHours();
+          beginminute = begindate.getMinutes()<10?('0'+begindate.getMinutes()):begindate.getMinutes();
+
+          let endtime = res.data.data.signEndTimestamp;
+          endtime = parseInt(endtime*1000);
+          let enddate = new Date(endtime);
+          endy = enddate.getFullYear();
+          MM = enddate.getMonth() + 1;
+          MM = MM < 10 ? ('0' + MM) : MM;
+          endm = MM;
+          d = enddate.getDate();
+          d = d < 10 ? ('0' + d) : d;
+          endd = d;
+          endhour = enddate.getHours()<10?('0'+enddate.getHours()):enddate.getHours();
+          endminute = enddate.getMinutes()<10?('0'+enddate.getMinutes()):enddate.getMinutes();
+
+          _this.message = '签到时间'
+          _this.time = beginm+'-'+begind+' '+beginhour+':'+beginminute+' -- '+endm+'-'+endd+' '+endhour+':'+endminute;
+          _this.unlock = true;
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
     }
   },
   watch: {
@@ -113,82 +156,59 @@ export default {
   methods: {
     register: function() {
       var _this = this;
-      this.$getToken();
-
-      if(this.$getToken()) {
-        this.axios({
-          url: this.baseUrl + '/sign/check',
-          // url: '/api/user/info/search',
-          method: 'get',
-          headers: {
-            "S-TOKEN": this.$cookies.get('token')
-          }
-        })
-        .then(function(res) {
-          console.log(res);
-          _this.$toast('签到成功');
-          setTimeout(function() {
-            _this.axios({
-              url: _this.baseUrl + '/lottery',
-              // url: '/api/user/info/search',
-              method: 'get',
-              headers: {
-                "S-TOKEN": _this.$cookies.get('token')
-              }
-            })
-            .then(function(res) {
-              // console.log(res);
-              _this.lotteryCode = res.data.data.lotteryCode;
-              if(res.data.data.lotteryResult) {
-                _this.befoDraw = false;
-                _this.lotteryResult = res.data.data.lotteryResult;
-              }
-              _this.$cookies.set('signCheck', 'true', 3600*24*8);
-            })
-            .catch(function(error) {
-              console.log(error);
-              _this.$toast('获取信息失败');
-            })
-            _this.status1 = false;
-          }, 1000);
-        })
-        .catch(function(error) {
-          console.log(error);
-          _this.$toast('不在签到时间范围内');
-        })
-      }
+      this.axios({
+        url: this.baseUrl + '/sign/check',
+        method: 'get'
+      })
+      .then(function(res) {
+        console.log(res);
+        _this.$toast('签到成功');
+        setTimeout(function() {
+          _this.axios({
+            url: _this.baseUrl + '/lottery',
+            method: 'get'
+          })
+          .then(function(res) {
+            // console.log(res);
+            _this.lotteryCode = res.data.data.lotteryCode;
+            if(res.data.data.lotteryResult) {
+              _this.befoDraw = false;
+              _this.lotteryResult = res.data.data.lotteryResult;
+            }
+            _this.$cookies.set('signCheck', 'true', 3600*24*8);
+          })
+          .catch(function(error) {
+            console.log(error);
+          })
+          _this.status1 = false;
+        }, 1000);
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
     },
     donation: function() {
       var _this = this;
 
       var re = /^\d+\.?\d{0,2}$/;
       // console.log(re.test(_this.donationNum));
-      this.$getToken();
 
-      if(this.$getToken()) {
+      if(re.test(_this.donationNum)) {
+        this.axios({
+          url: this.baseUrl + '/donation/update?donationNumber=' + _this.donationNum,
+          method: 'post'
+        })
+        .then(function(res) {
+          // console.log(res);
+          _this.$toast('感谢您的捐赠');
+          _this.editstatus = !_this.editstatus;
+        })
+        .catch(function(error) {
+          console.log(error);
+        })
 
-        if(re.test(_this.donationNum)) {
-          this.axios({
-            url: this.baseUrl + '/donation/update?donationNumber=' + _this.donationNum,
-            // url: '/api/donation/update?donationNumber=0.00',
-            method: 'post',
-            headers: {
-              "S-TOKEN": this.$cookies.get('token')
-            }
-          })
-          .then(function(res) {
-            // console.log(res);
-            _this.$toast('感谢您的捐赠');
-            _this.editstatus = !_this.editstatus;
-          })
-          .catch(function(error) {
-            console.log(error);
-            _this.$toast('请求失败');
-          })
-
-        }else {
-          this.$toast('金额格式错误');
-        }
+      }else {
+        this.$toast('金额格式错误');
       }
     },
     changeNum: function() {
@@ -227,7 +247,7 @@ export default {
 
 .register-btn {
   position: absolute;
-  top: 5.36rem;
+  top: 3.9rem;
   left: 0;
   right: 0;
   margin: auto;
@@ -250,8 +270,22 @@ export default {
   border: 0.084rem solid #fff4e7b3;
   border-radius: 50%;
   font-size: 1rem;
-  color: #fff4e7e6;
+  color: #fffaf4e6;
   background: transparent;
+}
+
+.message {
+  position: absolute;
+  top: 9rem;
+  left: 0;
+  right: 0;
+  margin: auto;
+  color: #bb5c36;
+}
+
+.time {
+  display: inline-block;
+  margin-top: 0.3rem;
 }
 
 .head {

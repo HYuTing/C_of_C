@@ -56,7 +56,6 @@ export default {
       else {
         this.axios({
           url: this.baseUrl + '/user/login',
-          // url: '/api/user/login',
           method: 'post',
           data: {
             "userName": this.loginForm.username,
@@ -66,15 +65,22 @@ export default {
         .then((res) => {
           // console.log(res.headers);
           // console.log(res.headers['s-token']);
-          this.$cookies.set('token', res.headers['s-token'], 3600*24*7);
+          this.$cookies.set('token', res.headers['s-token'], 5);
+          this.$cookies.set('token2', res.headers['s-token'], 3600*24*14);
           this.$cookies.set('signCheck', res.data.data.signCheck, 3600*24*7);
           this.$cookies.set('infoCheck', res.data.data.infoCheck, 3600*24*7);
           if(res.status === 200) {
             this.$toast('登录成功');
-            // console.log(res.data.data.infoCheck);
             var infoCheck = res.data.data.infoCheck;
             if(infoCheck === true) {
-              _this.$router.push("/addrList");
+              this.$router.push({
+                name: "AddrList",
+                params: {
+                  pageNum: 1,
+                  search_conditionid: '0',
+                  search_conditionval: ''
+                }
+              });
             }
             else {
               _this.$router.push({
@@ -88,7 +94,6 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          this.$toast('账号或密码错误');
         })
       }
     }

@@ -52,7 +52,6 @@ export default {
     },
 
     check(val) {
-      // console.log(this.check);
       if(this.check.length >= this.loginForm.password.length) {
         if(this.check == this.loginForm.password) {
           this.checkpassword = require('../assets/checkpassword1.png')
@@ -68,8 +67,6 @@ export default {
   },
   methods: {
     LoginUp: function() {
-      // console.log(this.loginForm.username);
-      // console.log(this.loginForm.password);
       var _this = this;
 
       if(this.loginForm.username == ''){
@@ -85,7 +82,6 @@ export default {
       if(this.loginForm.username !='' && this.loginForm.password != '' && this.checkpassword == require('../assets/checkpassword1.png')) {
         this.axios({
           url: this.baseUrl + '/user/register',
-          // url: '/api/user/register',
           method: 'post',
           data: {
             "userName": this.loginForm.username,

@@ -35,11 +35,7 @@ export default {
 
     this.axios({
       url: this.baseUrl + '/message/list',
-      // url: '/api/user/info/search',
-      method: 'get',
-      headers: {
-        "S-TOKEN": this.$cookies.get('token')
-      }
+      method: 'get'
     })
     .then(function(res) {
       // console.log(res);
@@ -48,22 +44,17 @@ export default {
     })
     .catch(function(error) {
       console.log(error);
-      _this.$toast('信息读取失败');
     })
   },
   methods: {
     toDetail: function(val) {
       var _this = this;
-      this.$getToken();
-      if(this.$getToken()) {
-        // console.log(val);
-        this.$router.push({
-          path: "/NoticeDetail",
-          query: {
-            noticeId: val
-          }
-        });
-      }
+      this.$router.push({
+        path: "/NoticeDetail",
+        query: {
+          noticeId: val
+        }
+      });
     },
     year: function(val) {
       // console.log(val);

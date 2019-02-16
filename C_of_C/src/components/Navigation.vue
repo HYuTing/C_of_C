@@ -75,7 +75,9 @@ export default {
       this.$router.push({
         name: "AddrList",
         params: {
-          pageNum: 1
+          pageNum: 1,
+          search_conditionid: '0',
+          search_conditionval: ''
         }
       });
     },

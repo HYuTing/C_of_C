@@ -45,12 +45,15 @@
           <span class="necessary" v-show="edit">*</span>
           <div class="input-div spacial">
             职业：<span class="info" v-show="noedit">{{occupation}}</span>
-            <select class="select occupation" v-model="occupationid" v-show="edit">
-              <option value="occupation1">公务员</option>
+
+            <select class="select occupation" v-model="occupation" v-show="edit">
+              <option :value="item.name" v-for="item in occupationlist" v-bind:key="item.id">{{item.name}}</option>
+              <!-- <option value="occupation1">公务员</option>
               <option value="occupation2">事业单位</option>
-              <option value="occupation3">企业与自由职业</option>
-              <option value="occupation4">无业或退休</option>
+              <option value="occupation3">企业或自由职业</option>
+              <option value="occupation4">无业或退休</option> -->
             </select>
+
           </div>
         </div>
         <div class="form-div">
@@ -66,9 +69,11 @@
             </select>
             <span v-show="noedit">镇</span>
             <span class="info" v-show="noedit">{{village}} 村</span>
+
             <select class="select village" v-model="village" v-show="edit">
-              <option v-for="(item, index) in items" v-bind:key="index">{{item}}</option>
+              <option v-for="(item, index) in items" v-bind:key="index" :value="item">{{item}}</option>
             </select>
+
           </div>
         </div>
         <div class="form-div">
@@ -106,6 +111,7 @@ export default {
   name: 'Userinfo',
   data () {
     return {
+      flag: 1,
       noedit: false,
       edit: true,
       noeditQQ: false,
@@ -116,18 +122,35 @@ export default {
       cellphone: '',
       qqnumber: '',
       wechat: '',
-      occupationid: '',
       occupation: '',
       townid: '',
       town: '',
       village: '',
       team: '',
       address: '',
+      occupationlist: [
+        {
+          id: 1,
+          name: '公务员'
+        },
+        {
+          id: 2,
+          name: '事业单位'
+        },
+        {
+          id: 3,
+          name: '企业或自由职业'
+        },
+        {
+          id: 4,
+          name: '无业或退休'
+        }
+      ],
       items: [],
       item0: ['西乌垞','东乌垞','新乌垞','山柄','东店','西埔','西埔口','山亭','蒋山','利山','港里','西前','莆禧','东仙','文甲'],
       item1: ['后坑','安柄','柳厝','沁头','秀华','秀田','秀前','琼山','忠门','王厝'],
       item2: ['何山','东坑','前范','度口','东埔','下坑','塔林','乐屿','西山','度下','梯亭','吉成','东吴'],
-      item3: ['联星','坂尾','霞塘','西元','月埔','双告山','霞塘','西元','月埔','双告山','前康','岱(蚮)前','东潘','洋埭']
+      item3: ['东潘','洋埭','砺山','岱(蚮)前','前康','西园','双告山','月埔','霞塘','坂尾','联星']
     }
   },
   components: {
@@ -139,16 +162,15 @@ export default {
     if(param == 0) {
       this.noedit = true
       this.edit = false;
+
       this.axios({
         url: this.baseUrl + '/user/info',
-        // url: '/api/user/info',
-        method: 'get',
-        headers: {
-          "S-TOKEN": this.$cookies.get('token')
-        }
+        method: 'get'
       })
       .then(function(res) {
         // console.log(res);
+        _this.flag = 0;
+
         _this.username = res.data.data.userInfoName;
         _this.cellphone = res.data.data.userInfoPhone;
         _this.qqnumber = res.data.data.userInfoQQ;
@@ -172,18 +194,6 @@ export default {
           _this.noeditaddress = true;
         }
 
-        if(_this.occupation === '公务员') {
-          _this.occupationid = 'occupation1'
-        }
-        else if(_this.occupation === '事业单位') {
-          _this.occupationid = 'occupation2'
-        }
-        else if(_this.occupation === '企业与自由职业') {
-          _this.occupationid = 'occupation3'
-        }
-        else if(_this.occupation === '无业或退休') {
-          _this.occupationid = 'occupation4'
-        }
         if(_this.town == '山亭') {
           _this.townid = 'st';
           _this.items = _this.item0;
@@ -200,10 +210,10 @@ export default {
           _this.townid = 'yt';
           _this.items = _this.item3;
         }
+
       })
       .catch(function(error) {
         console.log(error);
-        _this.$toast('信息读取失败');
       })
     }
   },
@@ -217,37 +227,35 @@ export default {
         this.$toast('手机号错误');
       }
     },
-    occupationid(val) {
-      if(val == 'occupation1') {
-        this.occupation = '公务员'
-      }
-      else if(val == 'occupation2') {
-        this.occupation = '事业单位'
-      }
-      else if(val == 'occupation3') {
-        this.occupation = '企业与自由职业'
-      }
-      else if(val == 'occupation4') {
-        this.occupation = '无业或退休'
-      }
-    },
     townid(val) {
-      //console.log(val);
+      // console.log(val);
       if(val == 'st') {
         this.town = '山亭';
         this.items = this.item0;
+        if(this.village === '' || this.flag === 1) {
+          this.village = this.items[0];
+        }
       }
       else if(val == 'zm') {
         this.town = '忠门';
         this.items = this.item1;
+        if(this.village === '' || this.flag === 1) {
+          this.village = this.items[0];
+        }
       }
       else if(val == 'dp') {
         this.town = '东埔';
         this.items = this.item2;
+        if(this.village === '' || this.flag === 1) {
+          this.village = this.items[0];
+        }
       }
       else if(val == 'yt') {
         this.town = '月塘';
         this.items = this.item3;
+        if(this.village === '' || this.flag === 1) {
+          this.village = this.items[0];
+        }
       }
     }
   },
@@ -255,77 +263,67 @@ export default {
   methods: {
     save: function() {
       var _this = this;
-      this.$getToken();
-
-      if(this.$getToken()) {
-        if(this.username == '') {
-          this.$toast('姓名不能为空');
-        }
-        else if(this.cellphone == '') {
-          this.$toast('手机号不能为空');
-        }
-        else if(this.cellphone.length < 11) {
-          this.$toast('手机号错误');
-        }
-        else if(this.occupation == '') {
-          this.$toast(' 职业不能为空');
-        }
-        else if(this.town == '') {
-          this.$toast(' 镇不能为空');
+      if(this.username == '') {
+        this.$toast('姓名不能为空');
+      }
+      else if(this.cellphone == '') {
+        this.$toast('手机号不能为空');
+      }
+      else if(this.cellphone.length < 11) {
+        this.$toast('手机号错误');
+      }
+      else if(this.occupation == '') {
+        this.$toast(' 职业不能为空');
+      }
+      else if(this.town == '') {
+        this.$toast(' 镇不能为空');
+      }
+      else {
+        if(this.village == '' || !(this.village)) {
+          this.$toast(' 村不能为空');
         }
         else {
-          // console.log(this.village);
-          if(this.village == '' || !(this.village)) {
-            this.$toast(' 村不能为空');
-          }
-          else {
-            this.axios({
-              url: this.baseUrl + '/user/info',
-              // url: '/api/user/info',
-              method: 'post',
-              data: {
-                "userInfoAddress": this.address,
-                "userInfoName": this.username,
-                "userInfoOccupation": this.occupation,
-                "userInfoPhone": this.cellphone,
-                "userInfoQQ": this.qqnumber,
-                "userInfoTown": this.town,
-                "userInfoUnit": this.team,
-                "userInfoVillage": this.village,
-                "userInfoWechat": this.wechat
-              },
-              headers: {
-                "S-TOKEN": this.$cookies.get('token')
-              }
-            })
-            .then(function(res) {
-              // console.log(res);
-              _this.$toast('保存成功');
-              _this.noedit = !_this.noedit;
-              _this.edit = !_this.edit;
-              if(_this.qqnumber === '') {
-                _this.noeditQQ = true;
-              }
-              if(_this.wechat === '') {
-                _this.noeditwx = true;
-              }
-              if(_this.team === '') {
-                _this.noeditteam = true;
-              }
-              if(_this.address === '') {
-                _this.noeditaddress = true;
-              }
-            })
-            .catch(function(error) {
-              // console.log(error);
-              _this.$toast('保存失败');
-            })
-          }
+          this.axios({
+            url: this.baseUrl + '/user/info',
+            method: 'post',
+            data: {
+              "userInfoAddress": this.address,
+              "userInfoName": this.username,
+              "userInfoOccupation": this.occupation,
+              "userInfoPhone": this.cellphone,
+              "userInfoQQ": this.qqnumber,
+              "userInfoTown": this.town,
+              "userInfoUnit": this.team,
+              "userInfoVillage": this.village,
+              "userInfoWechat": this.wechat
+            }
+          })
+          .then(function(res) {
+            // console.log(res);
+            _this.$toast('保存成功');
+            _this.noedit = !_this.noedit;
+            _this.edit = !_this.edit;
+            if(_this.qqnumber === '') {
+              _this.noeditQQ = true;
+            }
+            if(_this.wechat === '') {
+              _this.noeditwx = true;
+            }
+            if(_this.team === '') {
+              _this.noeditteam = true;
+            }
+            if(_this.address === '') {
+              _this.noeditaddress = true;
+            }
+          })
+          .catch(function(error) {
+            // console.log(error);
+          })
         }
       }
     },
     editinfo: function() {
-      this.$getToken();
+      this.flag = 1;
       this.noedit = !this.noedit;
       this.edit = !this.edit;
       this.noeditQQ = false;
@@ -335,6 +333,9 @@ export default {
     },
     logoff: function() {
       this.$cookies.remove('token');
+      this.$cookies.remove('token2');
+      this.$cookies.remove('signCheck');
+      this.$cookies.remove('infoCheck');
       this.$router.push("/login");
     }
   }
@@ -346,7 +347,6 @@ export default {
   width: 100%;
   height: 100%;
   font-size: 0.52rem;
-  /* background-color: #f4f4f4; */
   background-color: #fff;
 }
 

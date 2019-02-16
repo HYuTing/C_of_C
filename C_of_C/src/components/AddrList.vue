@@ -126,38 +126,63 @@ export default {
       this.curPageNum = 1;
     }
 
-    this.searchCondition = this.couponList[0].id;  //设置select的默认值
+    this.searchValue = '';
+    this.name = '';
+    this.town = '';
+    this.village = '';
+    this.occupation = '';
+    this.team = '';
+
+    if(this.$route.params.search_conditionid === '0' || this.$route.params.search_conditionid === undefined) {
+      this.searchCondition = this.couponList[0].id;  //设置select的默认值
+    }
+    else if(this.$route.params.search_conditionid === '1') {
+      this.searchCondition = this.couponList[1].id;
+      this.name = this.$route.params.search_conditionval;
+    }
+    else if(this.$route.params.search_conditionid === '2') {
+      this.searchCondition = this.couponList[2].id;
+      this.town = this.$route.params.search_conditionval;
+    }
+    else if(this.$route.params.search_conditionid === '3') {
+      this.searchCondition = this.couponList[3].id;
+      this.village = this.$route.params.search_conditionval;
+    }
+    else if(this.$route.params.search_conditionid === '4') {
+      this.searchCondition = this.couponList[4].id;
+      this.occupation = this.$route.params.search_conditionval;
+    }
+    else if(this.$route.params.search_conditionid === '5') {
+      this.searchCondition = this.couponList[5].id;
+      this.team = this.$route.params.search_conditionval;
+    }
+
+    this.searchValue = this.$route.params.search_conditionval;
 
     this.axios({
       url: this.baseUrl + '/user/info/search',
-      // url: '/api/user/info/search',
       method: 'post',
-      headers: {
-        "S-TOKEN": this.$cookies.get('token')
-      },
       data: {
         "pageNum": this.curPageNum,
         "pageSize": this.pageSize,
-        "userInfoName": "",
-        "userInfoOccupation": "",
-        "userInfoTown": "",
-        "userInfoUnit": "",
-        "userInfoVillage": ""
+        "userInfoName": this.name,
+        "userInfoOccupation": this.occupation,
+        "userInfoTown": this.town,
+        "userInfoUnit": this.team,
+        "userInfoVillage": this.village
       }
     })
     .then(function(res) {
-      // console.log(res);
+      console.log(res);
       _this.maxPageNum = res.data.data.maxPageNum;
       _this.currentAddrlist = res.data.data.userInfoVOList;
     })
     .catch(function(error) {
       console.log(error);
-      _this.$toast('信息读取失败');
     })
   },
   watch: {
     searchCondition(val) {
-      this.searchValue = '';
       this.name = '';
       this.town = '';
       this.village = '';
@@ -168,9 +193,7 @@ export default {
   methods: {
     prev: function() {
       var _this = this;
-      this.$getToken();
 
-      if(this.$getToken()) {
         if(this.curPageNum === 1) {
           this.$toast('没有上一页了');
         }
@@ -182,11 +205,7 @@ export default {
 
             this.axios({
               url: this.baseUrl + '/user/info/search',
-              // url: '/api/user/info/search',
               method: 'post',
-              headers: {
-                "S-TOKEN": this.$cookies.get('token')
-              },
               data: {
                 "pageNum": this.curPageNum,
                 "pageSize": this.pageSize,
@@ -205,16 +224,12 @@ export default {
             })
             .catch(function(error) {
               console.log(error);
-              _this.$toast('信息读取失败');
             })
-        }
       }
     },
     next: function() {
       var _this = this;
-      this.$getToken();
 
-      if(this.$getToken()) {
         if(this.curPageNum === this.maxPageNum) {
           this.$toast('没有下一页了');
         }
@@ -226,11 +241,7 @@ export default {
 
             this.axios({
               url: this.baseUrl + '/user/info/search',
-              // url: '/api/user/info/search',
               method: 'post',
-              headers: {
-                "S-TOKEN": this.$cookies.get('token')
-              },
               data: {
                 "pageNum": this.curPageNum,
                 "pageSize": this.pageSize,
@@ -249,28 +260,19 @@ export default {
             })
             .catch(function(error) {
               console.log(error);
-              _this.$toast('信息读取失败');
             })
         }
-      }
     },
     gotoPage: function() {
-      // console.log(this.gotoPageNum);
       var _this = this;
-      this.$getToken();
 
-      if(this.$getToken()) {
         if(0 < this.gotoPageNum && this.gotoPageNum <= this.maxPageNum) {
           this.loading = true;
           this.success = false;
 
             this.axios({
               url: this.baseUrl + '/user/info/search',
-              // url: '/api/user/info/search',
               method: 'post',
-              headers: {
-                "S-TOKEN": this.$cookies.get('token')
-              },
               data: {
                 "pageNum": this.gotoPageNum,
                 "pageSize": this.pageSize,
@@ -291,22 +293,18 @@ export default {
             })
             .catch(function(error) {
               console.log(error);
-              _this.$toast('信息读取失败');
             })
         }
         else {
           this.$toast('页码错误');
         }
-      }
     },
     getSelected: function() {
       // console.log(this.searchCondition)
     },
     searchInfo: function() {
       var _this = this;
-      this.$getToken();
 
-      if(this.$getToken()) {
         if(this.searchCondition == 1) {
           this.name = this.searchValue;
         }
@@ -322,11 +320,6 @@ export default {
         else if(this.searchCondition == 5) {
           this.team = this.searchValue;
         }
-        // console.log('name:' + this.name);
-        // console.log('town:' + this.town);
-        // console.log('village:' + this.village);
-        // console.log('occupation:' + this.occupation);
-        // console.log('team:' + this.team);
 
         this.curPageNum = 1;
         this.loading = true;
@@ -334,11 +327,7 @@ export default {
         this.fail = false;
         this.axios({
           url: this.baseUrl + '/user/info/search',
-          // url: '/api/user/info/search',
           method: 'post',
-          headers: {
-            "S-TOKEN": this.$cookies.get('token')
-          },
           data: {
             "pageNum": this.curPageNum,
             "pageSize": this.pageSize,
@@ -365,16 +354,13 @@ export default {
         })
         .catch(function(error) {
           console.log(error);
-          _this.$toast('信息读取失败');
         })
-      }
 
     },
     renovate: function() {
       var _this = this;
-      this.$getToken();
 
-      if(this.$getToken()) {
+        this.searchCondition = '0';
         this.searchValue = '';
         this.name = '';
         this.town = '';
@@ -387,11 +373,7 @@ export default {
 
         this.axios({
           url: this.baseUrl + '/user/info/search',
-          // url: '/api/user/info/search',
           method: 'post',
-          headers: {
-            "S-TOKEN": this.$cookies.get('token')
-          },
           data: {
             "pageNum": 1,
             "pageSize": this.pageSize,
@@ -412,24 +394,19 @@ export default {
         })
         .catch(function(error) {
           console.log(error);
-          _this.$toast('信息读取失败');
         })
-      }
     },
     toDetail: function(id) {
-      // console.log(id);
       var _this = this;
-      this.$getToken();
-
-      if(this.$getToken()) {
-        this.$router.push({
-          name: "Detail",
-          params: {
-            userId: id,
-            curPage: _this.curPageNum
-          }
-        });
-      }
+      this.$router.push({
+        name: "Detail",
+        params: {
+          userId: id,
+          curPage: _this.curPageNum,
+          search_conditionid: _this.searchCondition,
+          search_conditionval: _this.searchValue
+        }
+      });
     }
   }
 }

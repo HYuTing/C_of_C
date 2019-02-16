@@ -34,14 +34,9 @@ export default {
     var param = this.$route.query.noticeId;
     var _this = this;
 
-    // console.log(param);
     this.axios({
       url: this.baseUrl + '/message/detail?messageId=' + param,
-      // url: '/api/message/detail?messageId=' + param,
-      method: 'get',
-      headers: {
-        "S-TOKEN": this.$cookies.get('token')
-      }
+      method: 'get'
     })
     .then(function(res) {
       console.log(res);
@@ -64,7 +59,6 @@ export default {
     })
     .catch(function(error) {
       console.log(error);
-      _this.$toast('信息读取失败');
     })
   },
   methods: {

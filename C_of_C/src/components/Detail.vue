@@ -96,14 +96,9 @@ export default {
 
     this.pagenum = this.$route.params.curPage;
 
-    // console.log(param);
     this.axios({
       url: this.baseUrl + '/user/info/detail?userId=' + param,
-      // url: '/api/user/info/detail?userId=' + param,
-      method: 'get',
-      headers: {
-        "S-TOKEN": this.$cookies.get('token')
-      }
+      method: 'get'
     })
     .then(function(res) {
       // console.log(res);
@@ -133,21 +128,18 @@ export default {
     })
     .catch(function(error) {
       console.log(error);
-      _this.$toast('信息读取失败');
     })
   },
   methods: {
     reback: function() {
-      this.$getToken();
-
-      if(this.$getToken()) {
-        this.$router.push({
-          name: "AddrList",
-          params: {
-            pageNum: this.pagenum
-          }
-        });
-      }
+      this.$router.push({
+        name: "AddrList",
+        params: {
+          pageNum: this.$route.params.curPage,
+          search_conditionid: this.$route.params.search_conditionid,
+          search_conditionval: this.$route.params.search_conditionval
+        }
+      });
     }
   }
 }
@@ -158,7 +150,6 @@ export default {
   width: 100%;
   height: 100%;
   font-size: 0.52rem;
-  /* background-color: #f4f4f4; */
   background-color: #fff;
 }
 
