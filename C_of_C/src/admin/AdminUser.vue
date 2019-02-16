@@ -12,8 +12,7 @@
         :data="tableData4"
         style="width: 100%"
         stripe
-        height="440"
-        >
+        height="445">
         <el-table-column
           prop="number"
           label="序号"
@@ -105,20 +104,20 @@
           :total="totalnum"
           background>
         </el-pagination>
-  </div>
+        </div>
     </div>
   </div>
 </template>
 
 <script>
-import MyTop from "./top.vue"
-import MyNav from "./nav.vue"
+import MyTop from "./top.vue";
+import MyNav from "./nav.vue";
 
 export default {
-  name: 'AdminUser',
-  data () {
+  name: "AdminUser",
+  data() {
     return {
-      input: '',
+      input: "rrr",
       tableData4: [
         {
           number: "1",
@@ -134,7 +133,7 @@ export default {
           delete: <el-button type="danger" icon="el-icon-delete" circle />
         },
         {
-          number: "1",
+          number: "2",
           name: "王小虎",
           tel: "1234567890",
           QQ: "1234567890",
@@ -146,7 +145,7 @@ export default {
           delete: <el-button type="danger" icon="el-icon-delete" circle />
         },
         {
-          number: "1",
+          number: "3",
           name: "王小虎",
           tel: "1234567890",
           QQ: "1234567890",
@@ -158,7 +157,7 @@ export default {
           delete: <el-button type="danger" icon="el-icon-delete" circle />
         },
         {
-          number: "1",
+          number: "4",
           name: "王小虎",
           tel: "1234567890",
           QQ: "1234567890",
@@ -220,7 +219,7 @@ export default {
       ],
       currentPage3: 1,
       totalnum: 300
-    }
+    };
   },
   components: {
     MyTop,
@@ -230,39 +229,83 @@ export default {
     handleClick(row) {
       console.log(row);
 
-      this.$prompt('您正在为用户 '+row.name+' 修改密码：', '修改密码', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(({ value }) => { // value值就是input的value
-        this.$message({
-          type: 'success',
-          message: '修改成功！'
+      this.$prompt("您正在为用户 " + row.name + " 修改密码：", "修改密码", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(({ value }) => {
+          // value值就是input的value
+
+          this.axios({
+            url:  'http://localhost:8080/#/admin/user_management',
+            // url: '/api/',
+            method: 'post',
+            headers: {
+              "S-TOKEN": this.$cookies.get('token')
+            },
+            data:{
+              "userId": row.number,
+              "userPass": value,
+            }
+          })
+          .then(function(res) {
+            console.log(res);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+
+          this.$message({
+            type: "success",
+            message: "修改成功！"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消输入"
+          });
         });
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消输入'
-        });
-      });
     },
     handleDelete(index, row) {
       console.log(index, row);
 
-      this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
+      this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+
+          this.axios({
+            url:  'http://localhost:8080/#/admin/user_management',
+            // url: '/api/',
+            method: 'post',
+            headers: {
+              "S-TOKEN": this.$cookies.get('token')
+            },
+            data:{
+              "userId": row.number,
+            }
+          })
+          .then(function(res) {
+            console.log(res);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
         });
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });
-      });
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
@@ -271,7 +314,7 @@ export default {
       console.log(`当前页: ${val}`);
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -315,6 +358,6 @@ export default {
 
 .delete-btn {
   margin-left: 10px;
-  color: #F56C6C;
+  color: #f56c6c;
 }
 </style>
