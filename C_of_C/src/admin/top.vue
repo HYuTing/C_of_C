@@ -2,7 +2,7 @@
   <div class="top">
     <span>莆田忠门籍在榕乡亲通讯平台</span>
     <div class="top2">
-      欢迎您 {{username}}<span class="text2">|</span><span class="quit">退出</span>
+      欢迎您 &nbsp;{{username}}<span class="text2">|</span><span class="quit" @click="logoff">退出</span>
     </div>
   </div>
 </template>
@@ -12,8 +12,29 @@ export default {
   name: "MyTop",
   data() {
     return {
-      username:"西二在线",
-    };
+      username: '',
+    }
+  },
+  created() {
+    this.username = this.$cookies.get('adminname');
+  },
+  methods: {
+    logoff: function() {
+      this.$confirm('是否退出登录?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$cookies.remove('token');
+        this.$cookies.remove('token2');
+        this.$router.push("/admin_login");
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      });
+    }
   }
 };
 </script>

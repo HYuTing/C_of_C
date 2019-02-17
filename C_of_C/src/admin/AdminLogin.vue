@@ -65,8 +65,9 @@ export default {
           console.log('登录中...');
           // console.log(res.headers);
           // console.log(res.headers['s-token']);
-          this.$cookies.set('token', res.headers['s-token'], 5);
+          this.$cookies.set('token', res.headers['s-token'], 3600*24*7);
           this.$cookies.set('token2', res.headers['s-token'], 3600*24*14);
+          this.$cookies.set('adminname', _this.adminname, 3600*24*7);
           if(res.status === 200) {
             this.$message({
               message: '登录成功',
