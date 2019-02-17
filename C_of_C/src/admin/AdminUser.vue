@@ -117,7 +117,7 @@ export default {
   name: "AdminUser",
   data() {
     return {
-      input: "rrr",
+      input: "",
       tableData4: [
         {
           number: "1",
@@ -130,7 +130,7 @@ export default {
           working_place: "达达集团",
           address: "福建省福州市*****",
           username: "guan123",
-          delete: <el-button type="danger" icon="el-icon-delete" circle />
+
         },
         {
           number: "2",
@@ -142,7 +142,7 @@ export default {
           working_place: "阿里巴巴",
           address: "福建省福州市*****",
           username: "wang123",
-          delete: <el-button type="danger" icon="el-icon-delete" circle />
+
         },
         {
           number: "3",
@@ -154,7 +154,7 @@ export default {
           working_place: "阿里巴巴",
           address: "福建省福州市*****",
           username: "wang123",
-          delete: <el-button type="danger" icon="el-icon-delete" circle />
+
         },
         {
           number: "4",
@@ -166,7 +166,7 @@ export default {
           working_place: "阿里巴巴",
           address: "福建省福州市*****",
           username: "wang123",
-          delete: <el-button type="danger" icon="el-icon-delete" circle />
+
         },
         {
           number: "1",
@@ -178,7 +178,7 @@ export default {
           working_place: "阿里巴巴",
           address: "福建省福州市*****",
           username: "wang123",
-          delete: <el-button type="danger" icon="el-icon-delete" circle />
+
         },
         {
           number: "1",
@@ -190,7 +190,7 @@ export default {
           working_place: "阿里巴巴",
           address: "福建省福州市*****",
           username: "wang123",
-          delete: <el-button type="danger" icon="el-icon-delete" circle />
+
         },
         {
           number: "1",
@@ -202,7 +202,7 @@ export default {
           working_place: "阿里巴巴",
           address: "福建省福州市*****",
           username: "wang123",
-          delete: <el-button type="danger" icon="el-icon-delete" circle />
+
         },
         {
           number: "1",
@@ -214,7 +214,7 @@ export default {
           working_place: "阿里巴巴",
           address: "福建省福州市*****",
           username: "wang123",
-          delete: <el-button type="danger" icon="el-icon-delete" circle />
+
         }
       ],
       currentPage3: 1,
@@ -237,7 +237,7 @@ export default {
           // value值就是input的value
 
           this.axios({
-            url:  'http://localhost:8080/#/admin/user_management',
+            url: this.baseUrl + '/user/changePass',
             // url: '/api/',
             method: 'post',
             headers: {
@@ -278,7 +278,7 @@ export default {
         .then(() => {
 
           this.axios({
-            url:  'http://localhost:8080/#/admin/user_management',
+            url:  this.baseUrl + '/user/delete',
             // url: '/api/',
             method: 'post',
             headers: {
