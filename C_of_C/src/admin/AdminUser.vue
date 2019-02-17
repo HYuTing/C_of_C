@@ -321,7 +321,11 @@ export default {
 .main {
   width: 100%;
   height: 100%;
+<<<<<<< HEAD
   background: #f4f4f4;
+=======
+  background-color: #f4f4f4;
+>>>>>>> 9225b88a5421fe9d2e8ffd0e1e0a4a5bfd631e15
 }
 
 .container {

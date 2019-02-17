@@ -1,19 +1,20 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import AddrList from '@/components/AddrList'
+import AdminDelete from '@/admin/AdminDelete'
+import AdminLogin from '@/admin/AdminLogin'
+import AdminMessage from '@/admin/AdminMessage'
+import AdminPay from '@/admin/AdminPay'
+import AdminRegis from '@/admin/AdminRegis'
+import AdminUser from '@/admin/AdminUser'
+import Detail from '@/components/Detail'
 import HelloWorld from '@/components/HelloWorld'
 import Login from '@/components/Login'
 import Loginup from '@/components/Loginup'
-import AddrList from '@/components/AddrList'
-import Register from '@/components/Register'
-import Userinfo from '@/components/Userinfo'
 import Notice from '@/components/Notice'
-import Detail from '@/components/Detail'
 import NoticeDetail from '@/components/NoticeDetail'
-import AdminLogin from '@/admin/AdminLogin'
-import AdminUser from '@/admin/AdminUser'
-import AdminPay from '@/admin/AdminPay'
-import AdminRegis from '@/admin/AdminRegis'
-
+import Register from '@/components/Register'
+import Router from 'vue-router'
+import Userinfo from '@/components/Userinfo'
+import Vue from 'vue'
 Vue.use(Router)
 
 export default new Router({
@@ -82,6 +83,16 @@ export default new Router({
       path: '/admin/payregis_management',
       name: 'AdminRegis',
       component: AdminRegis
+    },
+    {
+      path: '/admin/message',
+      name: 'AdminMessage',
+      component: AdminMessage
+    },
+    {
+      path: '/admin/delete',
+      name: 'AdminDelete',
+      component: AdminDelete
     }
   ]
 })
