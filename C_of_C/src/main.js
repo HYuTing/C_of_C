@@ -23,9 +23,9 @@ Vue.use(toastRegistry)
 Vue.prototype.axios = axios
 Vue.config.productionTip = false
 
-// Vue.prototype.baseUrl = '/api';
-Vue.prototype.baseUrl = 'http://chamber.huanglexing.com';
-// Vue.prototype.userToken = '';
+Vue.prototype.baseUrl = '/api';
+// Vue.prototype.baseUrl = 'http://chamber.huanglexing.com';
+// Vue.prototype.baseUrl = 'https://chamber.w2fzu.com';
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {

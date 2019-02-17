@@ -173,7 +173,7 @@ export default {
       }
     })
     .then(function(res) {
-      console.log(res);
+      // console.log(res);
       _this.maxPageNum = res.data.data.maxPageNum;
       _this.currentAddrlist = res.data.data.userInfoVOList;
     })

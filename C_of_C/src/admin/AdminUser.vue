@@ -321,6 +321,7 @@ export default {
 .main {
   width: 100%;
   height: 100%;
+  background: #f4f4f4;
 }
 
 .container {
@@ -328,7 +329,6 @@ export default {
   padding-left: 220px;
   padding-bottom: 20px;
   text-align: left;
-  background-color: #f4f4f4;
 }
 
 .top {
