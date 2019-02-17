@@ -32,7 +32,7 @@
         <span slot="title">发布消息</span>
       </el-menu-item>
 
-      <el-menu-item index="6">
+      <el-menu-item index="6" route="/admin/delete">
         <i class="el-icon-delete"></i>
         <span slot="title">清空记录</span>
       </el-menu-item>

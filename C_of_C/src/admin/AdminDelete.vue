@@ -1,21 +1,10 @@
 <template>
   <div class="main">
     <MyTop></MyTop>
-    <MyNav :navid="'5'"></MyNav>
+    <MyNav :navid="'6'"></MyNav>
     <div class="container">
       <div class="content1">
-        <el-form :label-position="labelPosition" ref="form" :model="form" label-width="50px">
-          <el-form-item style="text-align:left;" label="主题">
-            <el-input v-model="form.name"></el-input>
-          </el-form-item>
-          <el-form-item label="正文">
-            <el-input type="textarea" :rows="15" v-model="form.desc"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit()">发送</el-button>
-            <el-button>取消</el-button>
-          </el-form-item>
-        </el-form>
+        <el-button @click="onDelete()" class="btn" type="danger">删除记录</el-button>
       </div>
     </div>
   </div>
@@ -42,7 +31,7 @@ export default {
     MyNav
   },
   methods: {
-      onSubmit() {
+      onDelete() {
         alert(this.url);
       }
   }
@@ -64,9 +53,16 @@ export default {
   background-color: #f4f4f4;
 }
 .content1 {
-  margin: 20px 0;
   width: 1200px;
+  height: 400px;
   padding: 40px 15px;
   background-color: #fff;
+}
+.btn {
+  display: block;
+  margin: 100px auto;
+  width: 250px;
+  height: 100px;
+  font-size: 30px;
 }
 </style>

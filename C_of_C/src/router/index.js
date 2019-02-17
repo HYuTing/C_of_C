@@ -1,4 +1,5 @@
 import AddrList from '@/components/AddrList'
+import AdminDelete from '@/admin/AdminDelete'
 import AdminLogin from '@/admin/AdminLogin'
 import AdminMessage from '@/admin/AdminMessage'
 import AdminPay from '@/admin/AdminPay'
@@ -87,6 +88,11 @@ export default new Router({
       path: '/admin/message',
       name: 'AdminMessage',
       component: AdminMessage
+    },
+    {
+      path: '/admin/delete',
+      name: 'AdminDelete',
+      component: AdminDelete
     }
   ]
 })
