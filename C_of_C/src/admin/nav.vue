@@ -72,6 +72,7 @@ export default {
   left: 0;
   display: flex;
   height: 100%;
+  z-index: 90;
 }
 
 li {

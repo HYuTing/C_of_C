@@ -3,7 +3,7 @@
     <MyTop></MyTop>
     <MyNav :navid="'1'"></MyNav>
     <div class="container">
-      <div class="top">
+      <div class="search-div">
         <el-input prefix-icon="el-icon-search" v-model="input" placeholder="请输入姓名"></el-input>
         <el-button type="primary" icon="el-icon-search" class="search-btn">搜索</el-button>
       </div>
@@ -16,7 +16,7 @@
         <el-table-column
           prop="number"
           label="序号"
-          width="50"
+          width="60"
           align="center">
         </el-table-column>
         <el-table-column
@@ -329,9 +329,10 @@ export default {
   padding-left: 220px;
   padding-bottom: 20px;
   text-align: left;
+  background-color: #f4f4f4;
 }
 
-.top {
+.search-div {
   position: relative;
   padding-right: 100px;
 }
