@@ -27,7 +27,7 @@
         </el-menu-item-group>
       </el-submenu>
 
-      <el-menu-item index="5">
+      <el-menu-item index="5" route="/admin/message">
         <i class="el-icon-message"></i>
         <span slot="title">发布消息</span>
       </el-menu-item>
