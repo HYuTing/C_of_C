@@ -168,7 +168,7 @@ export default {
 .container-left{
   flex: 1 1 auto;
   width: 100%;
-  min-width: 500px;
+  min-width: 600px;
 }
 
 .search-div {
