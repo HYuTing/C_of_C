@@ -19,10 +19,10 @@
           <el-button type="primary" icon="el-icon-search">搜索</el-button>
         </div>
         <p class="box-card1"><span>添加付款用户</span><el-button size="small" type="primary">添加</el-button></p>
-        <template class="table0">
-            <el-table
-        :data="tableData3"
-        style="width: 1001px"
+          <el-table
+        :data="tableData4"
+        stripe
+        style="width: 100%"
         height="405px">
           <el-table-column align="center" prop="number" label="序号" width="100px"></el-table-column>
           <el-table-column align="center" prop="name" label="姓名" width="270px"></el-table-column>
@@ -30,7 +30,6 @@
           <el-table-column align="center" prop="money" label="金额 (元)" width="250px"></el-table-column>
           <el-table-column align="center" prop="modify" label="操作" width="80px"></el-table-column>
           </el-table>
-        </template>
         <div class="block">
         <el-pagination
           @size-change="handleSizeChange"
@@ -112,9 +111,16 @@ export default {
       ],
       value: "山亭",
       input: "",
-      tableData3: [
+      tableData4: [
         {
           number: "1",
+          name: "王小虎",
+          native_place: "忠门镇忠门村",
+          money:"1000",
+          modify:<el-button icon="el-icon-edit"></el-button>
+        },
+        {
+          number: "2",
           name: "王小虎",
           native_place: "忠门镇忠门村",
           money:"1000",
