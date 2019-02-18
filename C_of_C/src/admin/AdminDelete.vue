@@ -4,7 +4,7 @@
     <MyNav :navid="'6'"></MyNav>
     <div class="container">
       <div class="content1">
-        <el-button @click="onDelete()" class="btn" type="danger">删除记录</el-button>
+        <el-button @click="Delete()" class="btn" type="danger">删除记录</el-button>
       </div>
     </div>
   </div>
@@ -31,9 +31,42 @@ export default {
     MyNav
   },
   methods: {
-      onDelete() {
-        alert(this.url);
-      }
+      Delete() {
+      console.log("delete");
+
+      this.$confirm("此操作将永久删除记录, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+      .then(() => {
+          this.axios({
+            url:  this.baseUrl + '/record/delete',
+            method: 'get',
+            headers: {
+              "S-TOKEN": this.$cookies.get('token')
+            },
+          })
+          .then(function(res) {
+            console.log(res);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+
+    })
+    .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+    });
+    },
   }
 };
 </script>
