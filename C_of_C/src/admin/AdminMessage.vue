@@ -26,7 +26,7 @@ import MyTop from "./top.vue"
 import MyNav from "./nav.vue"
 
 export default {
-  name: "content",
+  name: "AdminMessage",
   data() {
     return {
       labelPosition:"right",

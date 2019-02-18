@@ -3,6 +3,8 @@ import AdminDelete from '@/admin/AdminDelete'
 import AdminLogin from '@/admin/AdminLogin'
 import AdminMessage from '@/admin/AdminMessage'
 import AdminPay from '@/admin/AdminPay'
+import AdminRaffle from '@/admin/AdminRaffle'
+import AdminRaffle2 from '@/admin/AdminRaffle2'
 import AdminRegis from '@/admin/AdminRegis'
 import AdminUser from '@/admin/AdminUser'
 import Detail from '@/components/Detail'
@@ -93,6 +95,16 @@ export default new Router({
       path: '/admin/delete',
       name: 'AdminDelete',
       component: AdminDelete
+    },
+    {
+      path: '/admin/raffle2',
+      name: 'AdminRaffle2',
+      component: AdminRaffle2
+    },
+    {
+      path: '/admin/raffle',
+      name: 'AdminRaffle',
+      component: AdminRaffle
     }
   ]
 })

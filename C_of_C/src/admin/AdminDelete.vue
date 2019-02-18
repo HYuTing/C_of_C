@@ -15,7 +15,7 @@ import MyTop from "./top.vue"
 import MyNav from "./nav.vue"
 
 export default {
-  name: "content",
+  name: "AdminDelete",
   data() {
     return {
       labelPosition:"right",
@@ -54,7 +54,6 @@ export default {
 }
 .content1 {
   margin: 20px 0;
-  width: 1200px;
   height: 400px;
   padding: 40px 15px;
   background-color: #fff;

@@ -22,8 +22,8 @@
           <span slot="title" style="font-size: 14px;">抽奖管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="4-1">抽奖码与奖品</el-menu-item>
-          <el-menu-item index="4-2">抽奖</el-menu-item>
+          <el-menu-item index="4-1" route="/admin/raffle">抽奖码与奖品</el-menu-item>
+          <el-menu-item index="4-2" route="/admin/raffle2">抽奖</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
 
