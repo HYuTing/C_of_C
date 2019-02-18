@@ -21,7 +21,7 @@
         :data="tableData"
         stripe
         style="width: 100%;"
-        height="445">
+        height="450">
           <el-table-column align="center" prop="number" label="序号" width="60"></el-table-column>
           <el-table-column align="center" prop="name" label="姓名" width="90"></el-table-column>
           <el-table-column align="center" prop="native_place" label="原籍" width="120"></el-table-column>
@@ -250,6 +250,8 @@ export default {
 }
 
 .box-card2 h4 {
+  display: block;
+  width: 100%;
   font-size: 15px;
   font-weight: 400;
   display: inline-block;

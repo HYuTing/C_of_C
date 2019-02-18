@@ -53,6 +53,7 @@ export default {
   background-color: #f4f4f4;
 }
 .content1 {
+  margin: 20px 0;
   width: 1200px;
   height: 400px;
   padding: 40px 15px;
