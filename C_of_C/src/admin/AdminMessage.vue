@@ -3,7 +3,7 @@
     <MyTop></MyTop>
     <MyNav :navid="'5'"></MyNav>
     <div class="container">
-      <div class="content1">
+      <!-- <div class="content1">
         <el-form :label-position="labelPosition" ref="form" :model="form" label-width="50px">
           <el-form-item style="text-align:left;" label="主题">
             <el-input v-model="form.name"></el-input>
@@ -16,7 +16,7 @@
             <el-button>取消</el-button>
           </el-form-item>
         </el-form>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -63,10 +63,5 @@ export default {
   text-align: left;
   background-color: #f4f4f4;
 }
-.content1 {
-  margin: 20px 0;
-  width: 1200px;
-  padding: 40px 15px;
-  background-color: #fff;
-}
+
 </style>

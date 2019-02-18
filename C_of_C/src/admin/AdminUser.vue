@@ -325,6 +325,7 @@ export default {
 }
 
 .container {
+  min-width: 600px;
   padding: 70px 20px;
   padding-left: 220px;
   padding-bottom: 20px;
@@ -344,10 +345,9 @@ export default {
 }
 
 .box-card {
-  line-height: 24px;
-  padding: 10px 20px;
+  padding: 13px 20px;
   margin: 15px 0;
-  border-radius: 2px;
+  border-radius: 3px;
   font-size: 14px;
   background: #fff;
 }

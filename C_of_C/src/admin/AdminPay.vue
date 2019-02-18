@@ -16,7 +16,7 @@
           <el-input prefix-icon="el-icon-search" v-model="input" placeholder="请输入姓名"></el-input>
           <el-button type="primary" icon="el-icon-search" class="search-btn">搜索</el-button>
         </div>
-        <p class="box-card1"><span>付款用户列表</span></p>
+        <p class="box-card1">付款用户列表</p>
         <el-table
         :data="tableData"
         stripe
@@ -26,7 +26,7 @@
           <el-table-column align="center" prop="name" label="姓名" width="90"></el-table-column>
           <el-table-column align="center" prop="native_place" label="原籍" width="120"></el-table-column>
           <el-table-column align="center" prop="money" label="金额 (元)"></el-table-column>
-          <el-table-column align="center" prop="modify" label="操作" width="120"></el-table-column>
+          <el-table-column align="center" prop="modify" label="修改金额" width="120"></el-table-column>
         </el-table>
         <div class="block">
           <el-pagination
@@ -159,6 +159,7 @@ export default {
 
 .container {
   display: flex;
+  min-width: 860px;
   padding-top: 70px;
   padding-left: 220px;
   text-align: left;
@@ -183,10 +184,9 @@ export default {
 }
 
 .box-card1 {
-  line-height: 24px;
-  padding: 10px 20px;
+  padding: 13px 20px;
   margin: 15px 0;
-  border-radius: 2px;
+  border-radius: 3px;
   font-size: 14px;
   background: #fff;
 }
@@ -195,17 +195,6 @@ export default {
   margin: 20px auto;
   text-align: center;
 }
-/* .bottom {
-  margin: 10px 0 10px;
-  height: 40px;
-  width: 1001px;
-}
-
-.payment2 h4{
-  font-weight: 400;
-  display: block;
-  margin: 0 auto 10px;
-} */
 
 .box-card3 {
   line-height: 24px;
