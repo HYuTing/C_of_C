@@ -119,7 +119,7 @@ export default {
 }
 
 .box-card {
-  padding: 13px 20px;
+  padding: 11px 20px;
   margin: 15px 0;
   border-radius: 3px;
   font-size: 14px;

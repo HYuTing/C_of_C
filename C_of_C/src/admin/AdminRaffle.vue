@@ -2,56 +2,88 @@
   <div class="main">
     <MyTop></MyTop>
     <MyNav :navid="'4-1'"></MyNav>
-      <div class="container">
-        <div class="content1">
-            <p class="box-card1">
-              <span>抽奖码列表</span><el-button @click="add1()" size="small" type="primary">添加</el-button>
+    <div class="container">
+      <div class="prize-setting">
+        <p class="box-card1">奖品设定</p>
+        <el-row>
+          <el-col :span="5"><div class="grid-content">
+            <p class="prizesetting">
+              特等奖：
+              <el-input
+                placeholder="个数"
+                v-model="specialaward"
+                clearable
+                style="width: 72px;"
+                size="mini">
+              </el-input>
             </p>
-            <div class="bottom_content">
-              <el-table :data="tableData" stripe  height="350px">
-              <el-table-column align="center" prop="number" label="序号" width="100px"></el-table-column>
-              <el-table-column align="center" prop="name" label="姓名"></el-table-column>
-              <el-table-column align="center" prop="username" label="用户名"></el-table-column>
-              <el-table-column align="center" prop="raffle_code" label="抽奖码"></el-table-column>
-              <el-table-column align="center" prop="raffle_result" label="抽奖结果"></el-table-column>
-              </el-table>
-            </div>
-        </div>
-        <div class="content1">
-            <p class="box-card">
-              <span>奖品设定</span>
+          </div></el-col>
+          <el-col :span="5"><div class="grid-content">
+            <p class="prizesetting">
+              一等奖：
+              <el-input
+                placeholder="个数"
+                v-model="firstprize"
+                clearable
+                style="width: 72px;"
+                size="mini">
+              </el-input>
             </p>
-            <div class="bottom_content">
-              <el-table :data="tableData" height="47px">
-                <el-table-column align="center" label="等级" width="280px"></el-table-column>
-                <el-table-column align="center" label="数量" width="300px"></el-table-column>
-                <el-table-column align="center" label="等级" width="280px"></el-table-column>
-                <el-table-column align="center" label="数量" width="300px"></el-table-column>
-              </el-table>
-              <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
-                <div class="form">
-                <el-form-item class="form_item"  label="特等奖">
-                  <el-input class="input" v-model="formLabelAlign.te" ></el-input>
-                </el-form-item>
-                <el-form-item class="form_item"  label="一等奖">
-                  <el-input class="input" v-model="formLabelAlign.first" ></el-input>
-                </el-form-item>
-                </div>
-                <div class="form">
-                <el-form-item class="form_item"  label="二等奖">
-                  <el-input class="input" v-model="formLabelAlign.second" ></el-input>
-                </el-form-item>
-                <el-form-item class="form_item"  label="三等奖">
-                  <el-input class="input" v-model="formLabelAlign.third" ></el-input>
-                </el-form-item>
-                </div>
-                <el-form-item style="margin-bottom:10px;display:flex;justify-content:center">
-                  <el-button style="margin:-100px;" type="primary" @click="onSubmit('formLabelAlign')">保存</el-button>
-                </el-form-item>
-              </el-form>
-            </div>
-        </div>
+          </div></el-col>
+          <el-col :span="5"><div class="grid-content">
+            <p class="prizesetting">
+              二等奖：
+              <el-input
+                placeholder="个数"
+                v-model="secondprize"
+                clearable
+                style="width: 72px;"
+                size="mini">
+              </el-input>
+            </p>
+          </div></el-col>
+          <el-col :span="5"><div class="grid-content">
+            <p class="prizesetting">
+              三等奖：
+              <el-input
+                placeholder="个数"
+                v-model="thirdprize"
+                clearable
+                style="width: 72px;"
+                size="mini">
+              </el-input>
+            </p>
+          </div></el-col>
+          <el-col :span="4"><div class="grid-content">
+            <p class="prizesetting" style="text-align: right;">
+              <el-button @click="prizesetting()" size="mini" type="primary">确定</el-button>
+            </p>
+          </div></el-col>
+        </el-row>
       </div>
+      <p class="box-card">
+        <span class="tip">抽奖码列表</span>
+        <el-button @click="adduser()" size="mini" type="primary">添加</el-button>
+      </p>
+      <el-table :data="tableData" stripe height="350px">
+        <el-table-column align="center" prop="number" label="序号" width="60"></el-table-column>
+        <el-table-column align="center" prop="name" label="姓名"></el-table-column>
+        <el-table-column align="center" prop="username" label="用户名"></el-table-column>
+        <el-table-column align="center" prop="raffle_code" label="抽奖码"></el-table-column>
+        <el-table-column align="center" prop="raffle_result" label="抽奖结果"></el-table-column>
+      </el-table>
+      <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="currentPage3"
+          :page-size="8"
+          layout="prev, pager, next, jumper"
+          :total="totalnum"
+          background>
+        </el-pagination>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -63,6 +95,10 @@ export default {
   name: "AdminRaffle",
   data() {
     return {
+      specialaward: '',
+      firstprize: '',
+      secondprize: '',
+      thirdprize: '',
       tableData: [
         {
           number: "1",
@@ -79,13 +115,8 @@ export default {
           raffle_result: "特等奖"
         }
       ],
-      labelPosition: "left",
-      formLabelAlign: {
-        te: "",
-        first: "",
-        second: "",
-        thrid: ""
-      }
+      currentPage3: 1,
+      totalnum: 300
     };
   },
   components: {
@@ -93,9 +124,18 @@ export default {
     MyNav
   },
   methods: {
-      onDelete() {
-        alert(this.url);
-      }
+    prizesetting: function() {
+
+    },
+    adduser: function() {
+
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    }
   }
 };
 </script>
@@ -105,84 +145,59 @@ export default {
   height: 100%;
   background-color: #f4f4f4;
 }
+
 .container {
   padding: 70px 20px;
   padding-left: 220px;
   padding-bottom: 20px;
   text-align: left;
+  font-size: 14px;
   background-color: #f4f4f4;
 }
-.box-card1 {
-  padding: 6px 20px;
-  margin: 0px 0 15px;
-  border-radius: 3px;
-  font-size: 14px;
-  background: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+
 .box-card {
-  padding: 13px 20px;
+  padding: 11px 20px;
   margin: 15px 0;
   border-radius: 3px;
   font-size: 14px;
+  text-align: right;
   background: #fff;
 }
-.bottom_content {
-  width: 100%;
-  margin: 2px 0 0px;
-  padding: 1px 0px 1px;
+
+.tip {
+  float: left;
+  line-height: 28px;
+}
+
+.box-card1 {
+  margin-bottom: 15px;
+}
+
+.prize-setting {
+  padding: 11px 20px;
+  margin-bottom: 15px;
+  border-radius: 3px;
+  font-size: 14px;
   background-color: #fff;
 }
 
-.bottom_content1 {
-  width: 900px;
-  height: 30px;
-  margin: 30px auto;
-  display: flex;
-  justify-content: space-between;
+.grid-content {
+  background-color: transparent;
 }
-.bottom_content2 {
-  width: 250px;
-  display: flex;
-  justify-content: space-between;
+
+.prizesetting {
+  /* text-align: center; */
+  line-height: 36px;
 }
-.bottom_content3 {
-  display: flex;
-  margin: 20px 10px 200px;
-  justify-content: space-around;
+
+.p-head {
+  font-weight: bold;
+  color: #909399;
+  border-bottom: 1px solid #EBEEF5;
 }
-.bottom_content4 {
-  display: inline-block;
-}
-.bottom_content4_title {
-  text-align: center;
-  font-weight: 600;
-  font-size: 17px;
-  margin: 10px;
-}
-font {
-  font-weight: 200px;
-}
-.bottom_btn {
-  display: block;
+
+.block {
   margin: 20px auto;
-}
-.form {
-  display: flex;
-  justify-content: flex-start;
-  margin: 10px 0px;
-}
-.form_item {
-  margin-bottom: 0px;
-  margin-left: 120px;
-  display: flex;
-  justify-content: flex-start;
-  width: 460px;
-}
-.input {
-  margin-left: 100px;
-  width: 100px;
+  text-align: center;
 }
 </style>
