@@ -3,7 +3,7 @@
     <MyTop></MyTop>
     <MyNav :navid="'5'"></MyNav>
     <div class="container">
-      <!-- <div class="content1">
+      <div class="message-div">
         <el-form :label-position="labelPosition" ref="form" :model="form" label-width="50px">
           <el-form-item style="text-align:left;" label="主题">
             <el-input v-model="form.name"></el-input>
@@ -12,11 +12,11 @@
             <el-input type="textarea" :rows="15" v-model="form.desc"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit()">发送</el-button>
-            <el-button>取消</el-button>
+            <el-button type="primary" @click="onSubmit()">发布</el-button>
+            <el-button @click="reset()">重置</el-button>
           </el-form-item>
         </el-form>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -32,7 +32,6 @@ export default {
       labelPosition:"right",
       form: {
           name: '',
-          region: '',
           desc: ''
         }
     };
@@ -42,9 +41,15 @@ export default {
     MyNav
   },
   methods: {
-      onSubmit() {
-        alert(this.url);
-      }
+    onSubmit() {
+      this.$message({
+        message: '发布成功',
+        type: 'success'
+      });
+    },
+    reset() {
+
+    }
   }
 };
 </script>
@@ -64,4 +69,9 @@ export default {
   background-color: #f4f4f4;
 }
 
+.message-div {
+  padding: 30px 25px 15px 15px;
+  border-radius: 3px;
+  background-color: #fff;
+}
 </style>

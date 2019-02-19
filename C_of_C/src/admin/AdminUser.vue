@@ -230,42 +230,43 @@ export default {
       console.log(row);
 
       this.$prompt("您正在为用户 " + row.name + " 修改密码：", "修改密码", {
+        inputPlaceholder: '新密码',
         confirmButtonText: "确定",
         cancelButtonText: "取消"
       })
-        .then(({ value }) => {
-          // value值就是input的value
+      .then(({ value }) => {
+        // value值就是input的value
 
-          this.axios({
-            url: this.baseUrl + '/user/changePass',
-            // url: '/api/',
-            method: 'post',
-            headers: {
-              "S-TOKEN": this.$cookies.get('token')
-            },
-            data:{
-              "userId": row.number,
-              "userPass": value,
-            }
-          })
-          .then(function(res) {
-            console.log(res);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-
-          this.$message({
-            type: "success",
-            message: "修改成功！"
-          });
+        this.axios({
+          url: this.baseUrl + '/user/changePass',
+          // url: '/api/',
+          method: 'post',
+          headers: {
+            "S-TOKEN": this.$cookies.get('token')
+          },
+          data:{
+            "userId": row.number,
+            "userPass": value,
+          }
         })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "取消输入"
-          });
+        .then(function(res) {
+          console.log(res);
+        })
+        .catch(function(error) {
+          console.log(error);
         });
+
+        this.$message({
+          type: "success",
+          message: "修改成功！"
+        });
+      })
+      .catch(() => {
+        this.$message({
+          type: "info",
+          message: "取消输入"
+        });
+      });
     },
     handleDelete(index, row) {
       console.log(index, row);

@@ -42,7 +42,7 @@
           </el-date-picker>
           <!-- <p class="demonstration">您选择了{{registertime[0]}} 至 {{registertime[1]}}</p> -->
         </div>
-        <el-button type="primary">开启签到</el-button>
+        <el-button type="primary" @click="setTime()">开启签到</el-button>
       </div>
     </div>
   </div>
@@ -69,6 +69,26 @@ export default {
   methods: {
     Login: function() {
 
+    },
+    setTime: function() {
+      // 请求接口 如果发现已经设置过签到时间，则弹窗提示
+      if(true) {  // 记得自己写条件哦
+        this.$confirm('已经设置过签到时间, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '设置成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消设置'
+          });
+        });
+      }
     }
   }
 };

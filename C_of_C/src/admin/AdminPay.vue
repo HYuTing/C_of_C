@@ -26,7 +26,15 @@
           <el-table-column align="center" prop="name" label="姓名" width="90"></el-table-column>
           <el-table-column align="center" prop="native_place" label="原籍" width="120"></el-table-column>
           <el-table-column align="center" prop="money" label="金额 (元)"></el-table-column>
-          <el-table-column align="center" prop="modify" label="修改金额" width="120"></el-table-column>
+          <el-table-column align="center" label="修改金额" width="120">
+            <template slot-scope="scope">
+              <el-button
+                @click="revise(scope.row)"
+                icon="el-icon-edit"
+                size="medium">
+              </el-button>
+            </template>
+        </el-table-column>
         </el-table>
         <div class="block">
           <el-pagination
@@ -43,7 +51,7 @@
 
       <div class="container-right">
         <div class="opera-div">
-          <el-button type="primary" plain>新增付款</el-button>
+          <el-button type="primary" plain @click="addnew()">新增付款</el-button>
           <el-button type="success" plain style="position: absolute; right: 0;">生成排行榜</el-button>
         </div>
         <div v-for="(item, index) in countList" v-bind:key="index" class="box-card2">
@@ -90,15 +98,13 @@ export default {
           number: "1",
           name: "王小虎",
           native_place: "忠门镇忠门村",
-          money:"1000",
-          modify:<el-button icon="el-icon-edit"></el-button>
+          money:"1000"
         },
         {
           number: "2",
           name: "王小虎",
           native_place: "忠门镇忠门村",
-          money:"1000",
-          modify:<el-button icon="el-icon-edit"></el-button>
+          money:"1000"
         }
       ],
       currentPage3: 1,
@@ -137,14 +143,34 @@ export default {
     MyNav
   },
   methods: {
-    Login: function() {
-
+    revise: function(row) {
+      this.$prompt("您正在为用户 " + row.name + " 修改捐款金额：", "修改金额", {
+        inputPlaceholder: '捐款金额',
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+      .then(({ value }) => {
+        // value值就是input的value
+        this.$message({
+          type: "success",
+          message: "修改成功！"
+        });
+      })
+      .catch(() => {
+        this.$message({
+          type: "info",
+          message: "取消输入"
+        });
+      });
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+    },
+    addnew: function() {
+
     }
   }
 }
