@@ -54,11 +54,10 @@
               </el-input>
             </p>
           </div></el-col>
-          <el-col :span="4"><div class="grid-content">
-            <p class="prizesetting" style="text-align: right;">
-              <el-button @click="prizesetting()" size="mini" type="primary">确定</el-button>
-            </p>
-          </div></el-col>
+            <el-col style="margin-top:10px;">
+              <el-button size="small" type="primary" @click="prizesetting">提交</el-button>
+              <el-button size="small" @click="prizereset">重置</el-button>
+            </el-col>
         </el-row>
       </div>
       <p class="box-card">
@@ -127,6 +126,12 @@ export default {
     prizesetting: function() {
 
     },
+    prizereset: function() {
+      this.specialaward="";
+      this.firstprize="";
+      this.secondprize="";
+      this.thirdprize="";
+    },
     adduser: function() {
 
     },
@@ -156,7 +161,7 @@ export default {
 }
 
 .box-card {
-  padding: 11px 20px;
+  padding: 7px 20px;
   margin: 15px 0;
   border-radius: 3px;
   font-size: 14px;
