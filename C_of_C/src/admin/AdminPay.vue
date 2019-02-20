@@ -14,7 +14,7 @@
             </el-option>
           </el-select>
           <el-input prefix-icon="el-icon-search" v-model="input" placeholder="请输入姓名"></el-input>
-          <el-button type="primary" icon="el-icon-search" class="search-btn">搜索</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="search()" class="search-btn">搜索</el-button>
         </div>
         <p class="box-card1">付款用户列表</p>
         <el-table
@@ -51,7 +51,30 @@
 
       <div class="container-right">
         <div class="opera-div">
-          <el-button type="primary" plain @click="addnew()">新增付款</el-button>
+          <el-button type="primary" plain @click="dialogFormVisible = true">新增付款</el-button>
+          <el-dialog title="添加付款用户" :visible.sync="dialogFormVisible" width="400px">
+            <el-form :model="form">
+              <el-form-item label="原籍："  :label-width="formLabelWidth">
+                <el-cascader
+                  expand-trigger="hover"
+                  :options="region"
+                  v-model="form.region1"
+                  @change="handleChange">
+                </el-cascader>
+              </el-form-item>
+              <el-form-item label="姓名：" :label-width="formLabelWidth">
+                <el-input v-model="form.name" style="width:220px"></el-input>
+              </el-form-item>
+              <el-form-item label="金额：" :label-width="formLabelWidth">
+                <el-input v-model="form.money" style="width:220px"></el-input>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="cancel()">取 消</el-button>
+              <el-button type="primary" @click="confirm()">确 定</el-button>
+            </div>
+          </el-dialog>
+
           <el-button type="success" plain style="position: absolute; right: 0;">生成排行榜</el-button>
         </div>
         <div v-for="(item, index) in countList" v-bind:key="index" class="box-card2">
@@ -61,8 +84,11 @@
           <h4>总人数：{{item.people}}人</h4>
         </div>
       </div>
+
     </div>
+
   </div>
+
 </template>
 
 <script>
@@ -73,6 +99,14 @@ export default {
   name: 'AdminPay',
   data () {
     return {
+      dialogFormVisible: false,
+      form: {
+        region1: '',
+        region2: '',
+        name: '',
+        money: '',
+      },
+      formLabelWidth: '70px',
       options: [
         {
           value: "选项1",
@@ -89,6 +123,28 @@ export default {
         {
           value: "选项4",
           label: "月塘"
+        }
+      ],
+      region: [
+        {
+          value: "选项1",
+          label: "山亭",
+          children:[{label:'西乌垞'},{label:'东乌垞'},{label:'新乌垞'},{label:'山柄'},{label:'东店'},{label:'西埔'},{label:'西埔口'},{label:'山亭'},{label:'蒋山'},{label:'利山'},{label:'港里'},{label:'西前'},{label:'莆禧'},{label:'东仙'},{label:'文甲'}],
+        },
+        {
+          value: "选项2",
+          label: "忠门",
+          children:[{label:'后坑'},{label:'安柄'},{label:'柳厝'},{label:'沁头'},{label:'秀华'},{label:'秀田'},{label:'秀前'},{label:'琼山'},{label:'忠门'},{label:'王厝'},],
+        },
+        {
+          value: "选项3",
+          label: "东浦",
+          children:['何山','东坑','前范','度口','东埔','下坑','塔林','乐屿','西山','度下','梯亭','吉成','东吴'],
+        },
+        {
+          value: "选项4",
+          label: "月塘",
+          children:['东潘','洋埭','砺山','岱(蚮)前','前康','西园','双告山','月埔','霞塘','坂尾','联星']
         }
       ],
       value: '',
@@ -143,6 +199,23 @@ export default {
     MyNav
   },
   methods: {
+    form_reset(){
+      this.form.region1=""
+      this.form.region2=""
+      this.form.name=""
+      this.form.money=""
+    },
+    confirm(){
+      this.form_reset()
+      this.dialogFormVisible = false
+    },
+    cancel(){
+      this.form_reset()
+      this.dialogFormVisible = false
+    },
+    search(){
+      alert("123");
+    },
     revise: function(row) {
       this.$prompt("您正在为用户 " + row.name + " 修改捐款金额：", "修改金额", {
         inputPlaceholder: '捐款金额',
@@ -163,15 +236,14 @@ export default {
         });
       });
     },
+    addnew() {
+    },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
-    addnew: function() {
-
-    }
   }
 }
 </script>
