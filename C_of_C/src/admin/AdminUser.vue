@@ -231,11 +231,8 @@ export default {
       })
         .then(() => {
           this.axios({
-            url: this.baseUrl + "/user/delete",
+            url: this.baseUrl + "/user/delete?userId="+row.userId,
             method: "post",
-            data: {
-              userId: row.userId
-            }
           })
             .then(function(res) {
               console.log(res);

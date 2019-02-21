@@ -22,11 +22,11 @@
         stripe
         style="width: 100%;"
         height="450">
-          <el-table-column align="center" prop="number" label="序号" width="60"></el-table-column>
-          <el-table-column align="center" prop="name" label="姓名" width="90"></el-table-column>
-          <el-table-column align="center" prop="native_place" label="原籍" width="120"></el-table-column>
-          <el-table-column align="center" prop="money" label="金额 (元)"></el-table-column>
-          <el-table-column align="center" label="修改金额" width="120">
+          <el-table-column align="center" prop="number" label="序号" width="80"></el-table-column>
+          <el-table-column align="center" prop="userInfoName" label="姓名" width="200"></el-table-column>
+          <el-table-column align="center" prop="userInfoTown" label="原籍" width="280"></el-table-column>
+          <el-table-column align="center" prop="donationNumber" label="金额 (元)"></el-table-column>
+          <el-table-column align="center" label="修改金额" width="150">
             <template slot-scope="scope">
               <el-button
                 @click="revise(scope.row)"
@@ -40,8 +40,8 @@
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page.sync="currentPage3"
-            :page-size="8"
+            :current-page.sync="curPageNum"
+            :page-size="pageSize"
             layout="prev, pager, next, jumper"
             :total="totalnum"
             background>
@@ -51,19 +51,18 @@
 
       <div class="container-right">
         <div class="opera-div">
-          <el-button type="primary" plain @click="dialogFormVisible = true">新增付款</el-button>
+          <el-button type="primary" plain @click="reset()">新增付款</el-button>
           <el-dialog title="添加付款用户" :visible.sync="dialogFormVisible" width="400px">
             <el-form :model="form">
+              <el-form-item label="姓名：" :label-width="formLabelWidth">
+                <el-input v-model="form.name" style="width:220px"></el-input>
+              </el-form-item>
               <el-form-item label="原籍："  :label-width="formLabelWidth">
                 <el-cascader
                   expand-trigger="hover"
                   :options="region"
-                  v-model="form.region1"
-                  @change="handleChange">
+                  v-model="form.region1">
                 </el-cascader>
-              </el-form-item>
-              <el-form-item label="姓名：" :label-width="formLabelWidth">
-                <el-input v-model="form.name" style="width:220px"></el-input>
               </el-form-item>
               <el-form-item label="金额：" :label-width="formLabelWidth">
                 <el-input v-model="form.money" style="width:220px"></el-input>
@@ -100,9 +99,12 @@ export default {
   data () {
     return {
       dialogFormVisible: false,
+      curPageNum: 1,
+      totalnum: 10,
+      pageSize: 2,
+      minNumber:2,
       form: {
-        region1: '',
-        region2: '',
+        region1: [],
         name: '',
         money: '',
       },
@@ -127,44 +129,29 @@ export default {
       ],
       region: [
         {
-          value: "选项1",
+          value: "山亭",
           label: "山亭",
-          children:[{label:'西乌垞'},{label:'东乌垞'},{label:'新乌垞'},{label:'山柄'},{label:'东店'},{label:'西埔'},{label:'西埔口'},{label:'山亭'},{label:'蒋山'},{label:'利山'},{label:'港里'},{label:'西前'},{label:'莆禧'},{label:'东仙'},{label:'文甲'}],
+          children:[{value:"西乌垞",label:'西乌垞'},{value:"东乌垞",label:'东乌垞'},{label:'新乌垞'},{label:'山柄'},{label:'东店'},{label:'西埔'},{label:'西埔口'},{label:'山亭'},{label:'蒋山'},{label:'利山'},{label:'港里'},{label:'西前'},{label:'莆禧'},{label:'东仙'},{label:'文甲'}],
         },
         {
-          value: "选项2",
+          value: "忠门",
           label: "忠门",
-          children:[{label:'后坑'},{label:'安柄'},{label:'柳厝'},{label:'沁头'},{label:'秀华'},{label:'秀田'},{label:'秀前'},{label:'琼山'},{label:'忠门'},{label:'王厝'},],
+          children:[{value:"后坑",label:'后坑'},{value:"安柄",label:'安柄'},{label:'柳厝'},{label:'沁头'},{label:'秀华'},{label:'秀田'},{label:'秀前'},{label:'琼山'},{label:'忠门'},{label:'王厝'},],
         },
         {
-          value: "选项3",
+          value: "东浦",
           label: "东浦",
-          children:['何山','东坑','前范','度口','东埔','下坑','塔林','乐屿','西山','度下','梯亭','吉成','东吴'],
+          children:[{value:'何山',label:'何山'},{value:'东坑',label:'东坑'},{label:'前范'},{label:'度口'},{label:'东埔'},{label:'下坑'},{label:'塔林'},{label:'乐屿'},{label:'西山'},{label:'度下'},{label:'梯亭'},{label:'吉成'},{label:'东吴'}],
         },
         {
-          value: "选项4",
+          value: "月塘",
           label: "月塘",
-          children:['东潘','洋埭','砺山','岱(蚮)前','前康','西园','双告山','月埔','霞塘','坂尾','联星']
+          children:[{value:'东潘',label:'东潘'},{vaule:'洋埭',label:'洋埭'},{label:'砺山'},{label:'岱(蚮)前'},{label:'前康'},{label:'西园'},{label:'双告山'},{label:'月埔'},{label:'霞塘'},{label:'坂尾'},{label:'联星'}]
         }
       ],
       value: '',
       input: '',
-      tableData: [
-        {
-          number: "1",
-          name: "王小虎",
-          native_place: "忠门镇忠门村",
-          money:"1000"
-        },
-        {
-          number: "2",
-          name: "王小虎",
-          native_place: "忠门镇忠门村",
-          money:"1000"
-        }
-      ],
-      currentPage3: 1,
-      totalnum: 300,
+      tableData: [],
       countList: [
         {
           name: '忠门籍',
@@ -198,36 +185,101 @@ export default {
     MyTop,
     MyNav
   },
+  created() {
+    this.axios({
+      url: this.baseUrl + "/donation/search",
+      method: "post",
+      data:{
+        "pageNum": this.curPageNum,
+        "pageSize": this.pageSize,
+      }
+    })
+      .then(res => {
+        this.tableData = res.data.data.donationVOList;
+        this.totalnum = res.data.data.maxPageNum * this.pageSize;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
   methods: {
-    form_reset(){
-      this.form.region1=""
-      this.form.region2=""
+    reset(){
+      this.form.region1=[]
       this.form.name=""
       this.form.money=""
+      this.dialogFormVisible = true
     },
     confirm(){
-      this.form_reset()
       this.dialogFormVisible = false
+      this.axios({
+        url: this.baseUrl + "/donation/user/add",
+        method: "post",
+        data:{
+          "donationNumber": this.form.money,
+          "userInfoName": this.form.name,
+          "userInfoTown": this.form.region1[0],
+          "userInfoVillage": this.form.region1[1]
+        }
+      })
+        .then(res => {
+          console.log(res.data);
+          //console.log(res.data.data.userInfoName);
+          this.tableData = res.data.data.userInfoVOList;
+          this.totalnum = res.data.data.maxPageNum * this.pageSize;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     cancel(){
-      this.form_reset()
       this.dialogFormVisible = false
     },
     search(){
-      alert("123");
+      this.axios({
+        url: this.baseUrl + "/donation/search",
+        method: "post",
+        data: {
+          pageNum: this.curPageNum,
+          pageSize: this.pageSize,
+          userInfoName: this.input
+        }
+      })
+        .then(res => {
+          console.log(res.data);
+          //console.log(res.data.data.userInfoName);
+          this.tableData = res.data.data.donationVOList;
+          this.totalnum = res.data.data.maxPageNum * this.pageSize;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     revise: function(row) {
-      this.$prompt("您正在为用户 " + row.name + " 修改捐款金额：", "修改金额", {
+      this.$prompt("您正在为用户 " + row.userInfoName + " 修改捐款金额：", "修改金额", {
         inputPlaceholder: '捐款金额',
         confirmButtonText: "确定",
         cancelButtonText: "取消"
       })
       .then(({ value }) => {
         // value值就是input的value
-        this.$message({
-          type: "success",
-          message: "修改成功！"
-        });
+        this.axios({
+          url: this.baseUrl + "/donation/user/update",
+          method: "post",
+          data: {
+            userId: row.userId,
+            donationNumber: value
+          }
+        })
+          .then(res => {
+            console.log(res.data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+          this.$message({
+            type: "success",
+            message: "修改成功！"
+          });
       })
       .catch(() => {
         this.$message({
@@ -243,6 +295,25 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.curPageNum = val;
+      this.axios({
+        url: this.baseUrl + "/donation/search",
+        method: "post",
+        data: {
+          pageNum: this.curPageNum,
+          pageSize: this.pageSize,
+          userInfoName: this.input
+        }
+      })
+        .then(res => {
+          console.log(res.data);
+          //console.log(res.data.data.userInfoName);
+          this.tableData = res.data.data.donationVOList;
+          this.totalnum = res.data.data.maxPageNum * this.pageSize;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
   }
 }
