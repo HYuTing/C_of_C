@@ -12,11 +12,18 @@
         :data="tableData"
         style="width: 100%"
         stripe
-        height="455">
+        height="504">
         <el-table-column
-          prop="number"
+          type="index"
+          :index="indexMethod"
           label="序号"
-          width="60"
+          width="80"
+          align="center">
+        </el-table-column>
+        <el-table-column
+          prop="userName"
+          label="用户名"
+          width="120"
           align="center">
         </el-table-column>
         <el-table-column
@@ -32,45 +39,45 @@
           align="center">
         </el-table-column>
         <el-table-column
-          prop="QQ"
+          prop="userInfoTown"
+          label="镇"
+          width="80"
+          align="center">
+        </el-table-column>
+        <el-table-column
+          prop="userInfoVillage"
+          label="村"
+          width="80"
+          align="center">
+        </el-table-column>
+        <el-table-column
+          prop="userInfoQQ"
           label="QQ"
           width="120"
           align="center">
         </el-table-column>
         <el-table-column
-          prop="wechat"
+          prop="userInfoWechat"
           label="微信"
           width="120"
           align="center">
         </el-table-column>
         <el-table-column
-          prop="career"
+          prop="userInfoOccupation"
           label="职业"
           width="120"
           align="center">
         </el-table-column>
         <el-table-column
-          prop="native_place"
-          label="原籍"
-          width="120"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          prop="working_place"
+          prop="userInfoUnit"
           label="单位"
           width="120"
           align="center">
         </el-table-column>
         <el-table-column
-          prop="address"
+          prop="userInfoAddress"
           label="地址"
           width="200"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          prop="username"
-          label="用户名"
-          width="120"
           align="center">
         </el-table-column>
         <el-table-column
@@ -86,7 +93,7 @@
               修改密码
             </el-button>
             <el-button
-              @click="handleDelete(scope.$index, scope.row)"
+              @click="handleDelete(scope.$index, tableData)"
               type="text"
               size="small">
               <span class="delete-btn">删除</span>
@@ -118,23 +125,10 @@ export default {
   data() {
     return {
       input: "",
-      tableData: [
-        /*{
-          number: "1",
-          name: "官道达",
-          tel: "12345678990",
-          QQ: "1234567890",
-          wechat: "sddasdasasd",
-          career: "董事长或退休",
-          native_place: "福建省福州市",
-          working_place: "达达集团",
-          address: "福建省福州市*****",
-          username: "guan123",
-        }*/
-      ],
+      tableData: [],
       curPageNum: 1,
       totalnum: 0,
-      pageSize: 3
+      pageSize: 8
     };
   },
   components: {
@@ -143,17 +137,17 @@ export default {
   },
   created() {
     this.axios({
-      url: this.baseUrl + "/user/info/search",
+      url: this.baseUrl + "/user/search",
       method: "post",
       data: {
         pageNum: this.curPageNum,
-        pageSize: this.pageSize
+        pageSize: this.pageSize,
+        userInfoName: ''
       }
     })
       .then(res => {
-        console.log(res.data);
-        //console.log(res.data.data.userInfoName);
-        this.tableData = res.data.data.userInfoVOList;
+        // console.log(res.data);
+        this.tableData = res.data.data.userVOList;
         this.totalnum = res.data.data.maxPageNum * this.pageSize;
       })
       .catch(error => {
@@ -161,30 +155,35 @@ export default {
       });
   },
   methods: {
+    indexMethod(index) {
+      return (this.curPageNum-1)*this.pageSize + index + 1;
+    },
+
     Search() {
       this.axios({
-        url: this.baseUrl + "/user/info/search",
+        url: this.baseUrl + "/user/search",
         method: "post",
         data: {
-          pageNum: this.curPageNum,
+          pageNum: 1,
           pageSize: this.pageSize,
           userInfoName: this.input
         }
       })
-        .then(res => {
-          console.log(res.data);
-          this.tableData = res.data.data.userInfoVOList;
-          this.totalnum = res.data.data.maxPageNum * this.pageSize;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      .then(res => {
+        console.log(res.data);
+        this.tableData = res.data.data.userVOList;
+        this.totalnum = res.data.data.maxPageNum * this.pageSize;
+      })
+      .catch(error => {
+        console.log(error);
+      });
     },
+
     handleClick(row) {
       console.log(row);
 
       this.$prompt(
-        "您正在为用户 " + row.userInfoName + " 修改密码：",
+        "您正在为用户 " + row.userName + " 修改密码：",
         "修改密码",
         {
           inputPlaceholder: "新密码",
@@ -193,7 +192,6 @@ export default {
         }
       )
         .then(({ value }) => {
-          // value值就是input的value
           this.axios({
             url: this.baseUrl + "/user/changePass",
             method: "post",
@@ -202,16 +200,15 @@ export default {
               userPass: value
             }
           })
-            .then(function(res) {
-              console.log(res);
-            })
-            .catch(function(error) {
-              console.log(error);
+          .then(function(res) {
+            console.log(res);
+            this.$message({
+              type: "success",
+              message: "修改成功！"
             });
-
-          this.$message({
-            type: "success",
-            message: "修改成功！"
+          })
+          .catch(function(error) {
+            console.log(error);
           });
         })
         .catch(() => {
@@ -221,46 +218,76 @@ export default {
           });
         });
     },
-    handleDelete(index, row) {
-      console.log(index, row);
 
-      this.$confirm("此操作将永久删除该用户 "+ row.userInfoName +", 是否继续?", "提示", {
+    handleDelete(index, row) {
+      var _this = this;
+      // console.log(row.length);
+
+      this.$confirm("此操作将永久删除该用户 "+ row[index].userName +", 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
-        .then(() => {
+      .then(() => {
+        if(this.curPageNum === 1 && row.length === 1) {
+          this.tableData = [];
+        }
+        else {
+          if(this.curPageNum > 1 &&row.length === 1) {
+            this.curPageNum -= 1;
+          }
           this.axios({
-            url: this.baseUrl + "/user/delete?userId="+row.userId,
+            url: this.baseUrl + "/user/delete?userId="+row[index].userId,
             method: "post",
           })
-            .then(function(res) {
-              console.log(res);
+          .then(function(res) {
+
+            _this.axios({
+              url: _this.baseUrl + "/user/search",
+              method: "post",
+              data: {
+                pageNum: _this.curPageNum,
+                pageSize: _this.pageSize,
+                userInfoName: _this.input
+              }
             })
-            .catch(function(error) {
+            .then(res => {
+              console.log(res.data);
+
+              _this.tableData = res.data.data.userVOList;
+              _this.totalnum = res.data.data.maxPageNum * _this.pageSize;
+            })
+            .catch(error => {
               console.log(error);
             });
 
-          this.$message({
-            type: "success",
-            message: "删除成功!"
+            _this.$message({
+              type: "success",
+              message: "删除成功!"
+            });
+          })
+          .catch(function(error) {
+            console.log(error);
           });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
+        }
+      })
+      .catch(() => {
+        this.$message({
+          type: "info",
+          message: "已取消删除"
         });
+      });
     },
+
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },
+
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.curPageNum = val;
       this.axios({
-        url: this.baseUrl + "/user/info/search",
+        url: this.baseUrl + "/user/search",
         method: "post",
         data: {
           pageNum: this.curPageNum,
@@ -268,15 +295,15 @@ export default {
           userInfoName: this.input
         }
       })
-        .then(res => {
-          console.log(res.data);
-          //console.log(res.data.data.userInfoName);
-          this.tableData = res.data.data.userInfoVOList;
-          this.totalnum = res.data.data.maxPageNum * this.pageSize;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      .then(res => {
+        console.log(res.data);
+
+        this.tableData = res.data.data.userVOList;
+        this.totalnum = res.data.data.maxPageNum * this.pageSize;
+      })
+      .catch(error => {
+        console.log(error);
+      });
     }
   }
 };

@@ -27,7 +27,7 @@ export default {
       }).then(() => {
         this.$cookies.remove('token');
         this.$cookies.remove('token2');
-        this.$router.push("/admin_login");
+        this.$router.push("/adminlogin");
       }).catch(() => {
         this.$message({
           type: 'info',

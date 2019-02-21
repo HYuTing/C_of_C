@@ -82,34 +82,43 @@ axios.interceptors.response.use(function (response) {
 }, function (error) {
 　// 对响应错误做点什么
   if(error && error.response.status) {
-    switch(error.response.data.status) {
-      case 401:
-        router.app.$toast('登录过期，请重新登录');
-        router.app.$cookies.remove('token');
-        router.app.$cookies.remove('token2');
-        router.app.$cookies.remove('signCheck');
-        router.app.$cookies.remove('infoCheck');
-        setTimeout(() => {
-          router.app.$router.push("/login");
-        }, 2200);
-        break;
-      case 430:
-        router.app.$toast('该用户名已被注册');
-        break;
-      case 431:
-        router.app.$toast('密码错误');
-        break;
-      case 432:
-        router.app.$toast('用户不存在');
-        break;
-      case 330:
-        router.app.$toast('暂无签到活动');
-        break;
-      case 331:
-        router.app.$toast('不在签到时间范围内');
-        break;
-      default:
-        router.app.$toast('获取信息失败');
+    if(error.response.status === 401) {
+      router.app.$toast('登录过期，请重新登录');
+      router.app.$cookies.remove('token');
+      router.app.$cookies.remove('token2');
+      router.app.$cookies.remove('signCheck');
+      router.app.$cookies.remove('infoCheck');
+      console.log('登录过期，请重新登录');
+      setTimeout(() => {
+        router.app.$router.push("/login");
+      }, 2200);
+    }
+    else if(error.response.status === 418) {
+      switch(error.response.data.status) {
+        case 401:
+          break;
+        case 430:
+          router.app.$toast('该用户名已被注册');
+          break;
+        case 431:
+          router.app.$toast('密码错误');
+          break;
+        case 432:
+          router.app.$toast('用户不存在');
+          break;
+        case 330:
+          router.app.$toast('暂无签到活动');
+          break;
+        case 331:
+          router.app.$toast('不在签到时间范围内');
+          break;
+        default:
+          router.app.$toast('获取信息失败');
+          console.log('获取信息失败');
+      }
+    }
+    else {
+      router.app.$toast('未知错误');
     }
   }
 　return Promise.reject(error)

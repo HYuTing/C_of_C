@@ -68,7 +68,7 @@ export default new Router({
       component: NoticeDetail
     },
     {
-      path: '/admin_login',
+      path: '/adminlogin',
       name: 'AdminLogin',
       component: AdminLogin
     },
