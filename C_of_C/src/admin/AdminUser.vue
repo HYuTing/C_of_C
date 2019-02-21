@@ -5,14 +5,14 @@
     <div class="container">
       <div class="search-div">
         <el-input prefix-icon="el-icon-search" v-model="input" placeholder="请输入姓名"></el-input>
-        <el-button type="primary" icon="el-icon-search" class="search-btn">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" @click="Search()" class="search-btn">搜索</el-button>
       </div>
       <p class="box-card">用户列表</p>
       <el-table
-        :data="tableData4"
+        :data="tableData"
         style="width: 100%"
         stripe
-        height="445">
+        height="455">
         <el-table-column
           prop="number"
           label="序号"
@@ -20,13 +20,13 @@
           align="center">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="userInfoName"
           label="姓名"
           width="90"
           align="center">
         </el-table-column>
         <el-table-column
-          prop="tel"
+          prop="userInfoPhone"
           label="手机号"
           width="120"
           align="center">
@@ -98,8 +98,8 @@
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page.sync="currentPage3"
-          :page-size="8"
+          :current-page.sync="curPageNum"
+          :page-size="pageSize"
           layout="prev, pager, next, jumper"
           :total="totalnum"
           background>
@@ -118,10 +118,10 @@ export default {
   data() {
     return {
       input: "",
-      tableData4: [
-        {
+      tableData: [
+        /*{
           number: "1",
-          name: "官道达打",
+          name: "官道达",
           tel: "12345678990",
           QQ: "1234567890",
           wechat: "sddasdasasd",
@@ -130,143 +130,96 @@ export default {
           working_place: "达达集团",
           address: "福建省福州市*****",
           username: "guan123",
-
-        },
-        {
-          number: "2",
-          name: "王小虎",
-          tel: "1234567890",
-          QQ: "1234567890",
-          career: "公务员",
-          native_place: "忠门镇忠门村",
-          working_place: "阿里巴巴",
-          address: "福建省福州市*****",
-          username: "wang123",
-
-        },
-        {
-          number: "3",
-          name: "王小虎",
-          tel: "1234567890",
-          QQ: "1234567890",
-          career: "公务员",
-          native_place: "忠门镇忠门村",
-          working_place: "阿里巴巴",
-          address: "福建省福州市*****",
-          username: "wang123",
-
-        },
-        {
-          number: "4",
-          name: "王小虎",
-          tel: "1234567890",
-          QQ: "1234567890",
-          career: "公务员",
-          native_place: "忠门镇忠门村",
-          working_place: "阿里巴巴",
-          address: "福建省福州市*****",
-          username: "wang123",
-
-        },
-        {
-          number: "1",
-          name: "王小虎",
-          tel: "1234567890",
-          QQ: "1234567890",
-          career: "公务员",
-          native_place: "忠门镇忠门村",
-          working_place: "阿里巴巴",
-          address: "福建省福州市*****",
-          username: "wang123",
-
-        },
-        {
-          number: "1",
-          name: "王小虎",
-          tel: "1234567890",
-          QQ: "1234567890",
-          career: "公务员",
-          native_place: "忠门镇忠门村",
-          working_place: "阿里巴巴",
-          address: "福建省福州市*****",
-          username: "wang123",
-
-        },
-        {
-          number: "1",
-          name: "王小虎",
-          tel: "1234567890",
-          QQ: "1234567890",
-          career: "公务员",
-          native_place: "忠门镇忠门村",
-          working_place: "阿里巴巴",
-          address: "福建省福州市*****",
-          username: "wang123",
-
-        },
-        {
-          number: "1",
-          name: "王小虎",
-          tel: "1234567890",
-          QQ: "1234567890",
-          career: "公务员",
-          native_place: "忠门镇忠门村",
-          working_place: "阿里巴巴",
-          address: "福建省福州市*****",
-          username: "wang123",
-
-        }
+        }*/
       ],
-      currentPage3: 1,
-      totalnum: 300
+      curPageNum: 1,
+      totalnum: 0,
+      pageSize: 3
     };
   },
   components: {
     MyTop,
     MyNav
   },
+  created() {
+    this.axios({
+      url: this.baseUrl + "/user/info/search",
+      method: "post",
+      data: {
+        pageNum: this.curPageNum,
+        pageSize: this.pageSize
+      }
+    })
+      .then(res => {
+        console.log(res.data);
+        //console.log(res.data.data.userInfoName);
+        this.tableData = res.data.data.userInfoVOList;
+        this.totalnum = res.data.data.maxPageNum * this.pageSize;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
   methods: {
+    Search() {
+      this.axios({
+        url: this.baseUrl + "/user/info/search",
+        method: "post",
+        data: {
+          pageNum: this.curPageNum,
+          pageSize: this.pageSize,
+          userInfoName: this.input
+        }
+      })
+        .then(res => {
+          console.log(res.data);
+          this.tableData = res.data.data.userInfoVOList;
+          this.totalnum = res.data.data.maxPageNum * this.pageSize;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     handleClick(row) {
       console.log(row);
 
-      this.$prompt("您正在为用户 " + row.name + " 修改密码：", "修改密码", {
-        inputPlaceholder: '新密码',
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
-      })
-      .then(({ value }) => {
-        // value值就是input的value
+      this.$prompt(
+        "您正在为用户 " + row.userInfoName + " 修改密码：",
+        "修改密码",
+        {
+          inputPlaceholder: "新密码",
+          confirmButtonText: "确定",
+          cancelButtonText: "取消"
+        }
+      )
+        .then(({ value }) => {
+          // value值就是input的value
+          this.axios({
+            url: this.baseUrl + "/user/changePass",
+            method: "post",
+            data: {
+              userId: row.userId,
+              userPass: value
+            }
+          })
+            .then(function(res) {
+              console.log(res);
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
 
-        this.axios({
-          url: this.baseUrl + '/user/changePass',
-          // url: '/api/',
-          method: 'post',
-          headers: {
-            "S-TOKEN": this.$cookies.get('token')
-          },
-          data:{
-            "userId": row.number,
-            "userPass": value,
-          }
+          this.$message({
+            type: "success",
+            message: "修改成功！"
+          });
         })
-        .then(function(res) {
-          console.log(res);
-        })
-        .catch(function(error) {
-          console.log(error);
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消输入"
+          });
         });
-
-        this.$message({
-          type: "success",
-          message: "修改成功！"
-        });
-      })
-      .catch(() => {
-        this.$message({
-          type: "info",
-          message: "取消输入"
-        });
-      });
     },
     handleDelete(index, row) {
       console.log(index, row);
@@ -277,24 +230,19 @@ export default {
         type: "warning"
       })
         .then(() => {
-
           this.axios({
-            url:  this.baseUrl + '/user/delete',
-            // url: '/api/',
-            method: 'post',
-            headers: {
-              "S-TOKEN": this.$cookies.get('token')
-            },
-            data:{
-              "userId": row.number,
+            url: this.baseUrl + "/user/delete",
+            method: "post",
+            data: {
+              userId: row.userId
             }
           })
-          .then(function(res) {
-            console.log(res);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+            .then(function(res) {
+              console.log(res);
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
 
           this.$message({
             type: "success",
@@ -313,6 +261,25 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.curPageNum = val;
+      this.axios({
+        url: this.baseUrl + "/user/info/search",
+        method: "post",
+        data: {
+          pageNum: this.curPageNum,
+          pageSize: this.pageSize,
+          userInfoName: this.input
+        }
+      })
+        .then(res => {
+          console.log(res.data);
+          //console.log(res.data.data.userInfoName);
+          this.tableData = res.data.data.userInfoVOList;
+          this.totalnum = res.data.data.maxPageNum * this.pageSize;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };
@@ -354,7 +321,7 @@ export default {
 }
 
 .block {
-  margin: 20px auto;
+  margin: 15px auto;
   text-align: center;
 }
 
