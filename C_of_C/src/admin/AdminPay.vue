@@ -5,7 +5,7 @@
     <div class="container">
       <div class="container-left">
         <div class="search-div">
-          <el-select style="width:180px;" v-model="value" placeholder="选择排序方式">
+          <el-select style="width:180px;" v-model="value" @change="Town(value)" placeholder="选择排序方式">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -23,10 +23,11 @@
         style="width: 100%;"
         height="450">
           <el-table-column align="center" prop="number" label="序号" width="80"></el-table-column>
-          <el-table-column align="center" prop="userInfoName" label="姓名" width="200"></el-table-column>
-          <el-table-column align="center" prop="userInfoTown" label="原籍" width="280"></el-table-column>
+          <el-table-column align="center" prop="userInfoName" label="姓名" width="150"></el-table-column>
+          <el-table-column align="center" prop="userInfoTown" label="原籍镇" width="200"></el-table-column>
+          <el-table-column align="center" prop="userInfoVillage" label="原籍村" width="200"></el-table-column>
           <el-table-column align="center" prop="donationNumber" label="金额 (元)"></el-table-column>
-          <el-table-column align="center" label="修改金额" width="150">
+          <el-table-column align="center" label="修改金额" width="120">
             <template slot-scope="scope">
               <el-button
                 @click="revise(scope.row)"
@@ -111,19 +112,19 @@ export default {
       formLabelWidth: '70px',
       options: [
         {
-          value: "选项1",
+          value: "山亭",
           label: "山亭"
         },
         {
-          value: "选项2",
+          value: "忠门",
           label: "忠门"
         },
         {
-          value: "选项3",
+          value: "东浦",
           label: "东浦"
         },
         {
-          value: "选项4",
+          value: "月塘",
           label: "月塘"
         }
       ],
@@ -263,10 +264,10 @@ export default {
       .then(({ value }) => {
         // value值就是input的value
         this.axios({
-          url: this.baseUrl + "/donation/user/update",
+          url: this.baseUrl + "/donation/user/update?donationId="+ row.donationId +"&donationNumber="+value,
           method: "post",
           data: {
-            userId: row.userId,
+            donationId: row.donationId,
             donationNumber: value
           }
         })
@@ -288,7 +289,20 @@ export default {
         });
       });
     },
-    addnew() {
+    Town(value) {
+      this.axios({
+        url: this.baseUrl + "/donation/rank?minNumber=1",
+        method: "get",
+      })
+        .then(res => {
+          console.log(res.data.data.donationRankMap);
+          console.log(res.data.data.donationRankMap.东浦);
+          this.tableData = res.data.data.donationRankMap[value]
+          //this.totalnum = this.tableData.length
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
