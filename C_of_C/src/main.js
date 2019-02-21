@@ -82,7 +82,7 @@ axios.interceptors.response.use(function (response) {
 }, function (error) {
 　// 对响应错误做点什么
   if(error && error.response.status) {
-    switch(error.response.status) {
+    switch(error.response.data.status) {
       case 401:
         router.app.$toast('登录过期，请重新登录');
         router.app.$cookies.remove('token');
