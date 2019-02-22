@@ -225,6 +225,13 @@ export default {
       this.dialogFormVisible = true
     },
     confirm(){
+      if(this.form.region1.length==0||this.form.name==''||this.form.money==''){
+        this.$message({
+          type: "warning",
+          message: "内容不能为空！"
+        });
+        return;
+      }
       this.dialogFormVisible = false
       this.axios({
         url: this.baseUrl + "/donation/user/add",
@@ -237,9 +244,19 @@ export default {
         }
       })
         .then(res => {
-          console.log(res.data);
-          this.tableData = res.data.data.userInfoVOList;
-          this.totalnum = res.data.data.maxPageNum * this.pageSize;
+          this.axios({
+            url: this.baseUrl + "/donation/count",
+            method: "get",
+          })
+            .then(res => {
+              this.countList=res.data.data.townCountMap
+              this.money=res.data.data.money
+              this.people=res.data.data.people
+            })
+            .catch(error => {
+              console.log(error);
+            });
+
           this.axios({
             url: this.baseUrl + "/donation/search",
             method: "post",
@@ -257,14 +274,14 @@ export default {
             .catch(error => {
               console.log(error);
             });
+            this.$message({
+              type: "success",
+              message: "添加成功！"
+            });
         })
         .catch(error => {
           console.log(error);
         });
-      this.$message({
-        type: "success",
-        message: "添加成功！"
-      });
     },
     cancel(){
       this.dialogFormVisible = false
@@ -326,6 +343,18 @@ export default {
           }
         })
           .then(res => {
+            this.axios({
+              url: this.baseUrl + "/donation/count",
+              method: "get",
+            })
+              .then(res => {
+                this.countList=res.data.data.townCountMap
+                this.money=res.data.data.money
+                this.people=res.data.data.people
+              })
+              .catch(error => {
+                console.log(error);
+              });
             this.axios({
               url: this.baseUrl + "/donation/search",
               method: "post",
