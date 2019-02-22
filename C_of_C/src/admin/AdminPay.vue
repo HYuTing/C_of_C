@@ -53,26 +53,32 @@
       <div class="container-right">
         <div class="opera-div">
           <el-button type="primary" plain @click="reset()">新增付款</el-button>
-          <el-dialog title="添加付款用户" :visible.sync="dialogFormVisible" width="400px">
-            <el-form :model="form">
-              <el-form-item label="姓名：" :label-width="formLabelWidth">
-                <el-input v-model="form.name" style="width:220px"></el-input>
+          <el-dialog title="添加付款用户" :visible.sync="dialogFormVisible" width="410px">
+            <el-form :model="numberValidateForm" ref="numberValidateForm" label-width="100px" >
+              <el-form-item label="姓名：" prop="name">
+                <el-input v-model="numberValidateForm.name" style="width:220px"></el-input>
               </el-form-item>
-              <el-form-item label="原籍："  :label-width="formLabelWidth">
+              <el-form-item label="原籍：" prop="region1">
                 <el-cascader
                   expand-trigger="hover"
                   :options="region"
-                  v-model="form.region1">
+                  v-model="numberValidateForm.region1">
                 </el-cascader>
               </el-form-item>
-              <el-form-item label="金额：" :label-width="formLabelWidth">
-                <el-input v-model="form.money" style="width:220px"></el-input>
+              <el-form-item
+                label="金额："
+                prop="number"
+                :rules="[
+                  { type: 'number', message: '金额必须为数字值'}
+                ]"
+              >
+                <el-input  v-model.number="numberValidateForm.number" style="width:220px" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="submitForm('numberValidateForm')">提交</el-button>
+                <el-button @click="resetForm('numberValidateForm')">重置</el-button>
               </el-form-item>
             </el-form>
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="cancel()">取 消</el-button>
-              <el-button type="primary" @click="confirm()">确 定</el-button>
-            </div>
           </el-dialog>
 
           <el-button type="success" @click="ranking" plain style="position: absolute; right: 0;">生成排行榜</el-button>
@@ -105,6 +111,11 @@ export default {
   name: 'AdminPay',
   data () {
     return {
+      numberValidateForm: {
+        region1: [],
+        name:'',
+        number: ''
+      },
       money:null,
       people:null,
       dialogFormVisible: false,
@@ -127,8 +138,8 @@ export default {
           label: "忠门"
         },
         {
-          value: "东浦",
-          label: "东浦"
+          value: "东埔",
+          label: "东埔"
         },
         {
           value: "月塘",
@@ -147,8 +158,8 @@ export default {
           children:[{value:"后坑",label:'后坑'},{value:"安柄",label:'安柄'},{value:'柳厝',label:'柳厝'},{value:'沁头',label:'沁头'},{value:'秀华',label:'秀华'},{value:'秀田',label:'秀田'},{value:'秀前',label:'秀前'},{value:'琼山',label:'琼山'},{value:'忠门',label:'忠门'},{value:'王厝',label:'王厝'},],
         },
         {
-          value: "东浦",
-          label: "东浦",
+          value: "东埔",
+          label: "东埔",
           children:[{value:'何山',label:'何山'},{value:'东坑',label:'东坑'},{value:'前范',label:'前范'},{value:'度口',label:'度口'},{value:'东埔',label:'东埔'},{value:'下坑',label:'下坑'},{value:'塔林',label:'塔林'},{value:'乐屿',label:'乐屿'},{value:'西山',label:'西山'},{value:'度下',label:'度下'},{value:'梯亭',label:'梯亭'},{value:'吉成',label:'吉成'},{value:'东吴',label:'东吴'}],
         },
         {
@@ -169,7 +180,7 @@ export default {
           money: 9000,
           people: 1000
         },
-        东浦镇:{
+        东埔镇:{
           money: 9000,
           people: 1000
         },
@@ -214,6 +225,12 @@ export default {
         console.log(error);
       });
   },
+  watch:{
+    dialogFormVisible(val0,val1){
+      this.$refs["numberValidateForm"].resetFields();
+      this.numberValidateForm.region1=[]
+    }
+  },
   methods: {
     indexMethod(index) {
       return (this.curPageNum-1)*this.pageSize + index + 1;
@@ -224,71 +241,75 @@ export default {
       this.form.money=""
       this.dialogFormVisible = true
     },
-    confirm(){
-      if(this.form.region1.length==0||this.form.name==''||this.form.money==''){
-        this.$message({
-          type: "warning",
-          message: "内容不能为空！"
-        });
-        return;
-      }
-      this.dialogFormVisible = false
-      this.axios({
-        url: this.baseUrl + "/donation/user/add",
-        method: "post",
-        data:{
-          "donationNumber": this.form.money,
-          "userInfoName": this.form.name,
-          "userInfoTown": this.form.region1[0],
-          "userInfoVillage": this.form.region1[1]
-        }
-      })
-        .then(res => {
-          this.axios({
-            url: this.baseUrl + "/donation/count",
-            method: "get",
-          })
-            .then(res => {
-              this.countList=res.data.data.townCountMap
-              this.money=res.data.data.money
-              this.people=res.data.data.people
-            })
-            .catch(error => {
-              console.log(error);
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          if(this.numberValidateForm.region1.length==0||this.numberValidateForm.name==''||this.numberValidateForm.number==''){
+            this.$message({
+              type: "warning",
+              message: "内容不能为空！"
             });
-
+            return;
+          }
+          this.dialogFormVisible = false
           this.axios({
-            url: this.baseUrl + "/donation/search",
+            url: this.baseUrl + "/donation/user/add",
             method: "post",
-            data: {
-              pageNum: this.curPageNum,
-              pageSize: this.pageSize,
-              userInfoName: this.input
+            data:{
+              "donationNumber": this.numberValidateForm.number,
+              "userInfoName": this.numberValidateForm.name,
+              "userInfoTown": this.numberValidateForm.region1[0],
+              "userInfoVillage": this.numberValidateForm.region1[1]
             }
           })
             .then(res => {
-              console.log(res.data);
-              this.tableData = res.data.data.donationVOList;
-              this.totalnum = res.data.data.maxPageNum * this.pageSize;
+              this.axios({
+                url: this.baseUrl + "/donation/count",
+                method: "get",
+              })
+                .then(res => {
+                  this.countList=res.data.data.townCountMap
+                  this.money=res.data.data.money
+                  this.people=res.data.data.people
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+
+              this.axios({
+                url: this.baseUrl + "/donation/search",
+                method: "post",
+                data: {
+                  pageNum: this.curPageNum,
+                  pageSize: this.pageSize,
+                  userInfoName: this.input
+                }
+              })
+                .then(res => {
+                  console.log(res.data);
+                  this.tableData = res.data.data.donationVOList;
+                  this.totalnum = res.data.data.maxPageNum * this.pageSize;
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+                this.$message({
+                  type: "success",
+                  message: "添加成功！"
+                });
             })
             .catch(error => {
               console.log(error);
             });
-            this.$message({
-              type: "success",
-              message: "添加成功！"
-            });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    cancel(){
-      this.dialogFormVisible = false
-      this.$message({
-        type: "info",
-        message: "取消输入"
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
       });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+      this.numberValidateForm.region1=[]
     },
     search(){
       this.axios({

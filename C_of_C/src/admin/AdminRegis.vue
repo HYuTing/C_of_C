@@ -16,7 +16,7 @@
                 <span class="townnum">{{number2}}人</span>
               </div></el-col>
               <el-col :span="6"><div class="grid-content">
-                <span class="townname">东浦镇</span>
+                <span class="townname">东埔镇</span>
                 <span class="townnum">{{number3}}人</span>
               </div></el-col>
               <el-col :span="6"><div class="grid-content">
@@ -27,7 +27,7 @@
           </div>
       </div>
       <p class="box-card">开启签到
-        <span class="demonstration">目前已有一个签到安排，时间为：{{starttime}} - {{endtime}}</span>
+        <span v-show="starttime!=''" class="demonstration">目前已有一个签到安排，时间为：{{starttime}} - {{endtime}}</span>
       </p>
       <div class="settime-div">
         <p class="tips">请选择签到时间</p>
@@ -81,7 +81,6 @@ export default {
         this.number2=res.data.data.townCountMap.忠门.sum;
         this.number3=res.data.data.townCountMap.东埔.sum;
         this.number4=res.data.data.townCountMap.月塘.sum;
-
       })
       .catch(error => {
         console.log(error);
@@ -102,9 +101,6 @@ export default {
       });
   },
   methods: {
-    Login: function() {
-
-    },
     setTime: function() {
       // 请求接口 如果发现已经设置过签到时间，则弹窗提示
       if(this.registertime==null){
@@ -160,6 +156,40 @@ export default {
             message: '已取消设置'
           });
         });
+      }else{
+        var d0=new Date(this.registertime[0]).getTime()
+        var d1=new Date(this.registertime[1]).getTime()
+        this.axios({
+          url: this.baseUrl + "/sign",
+          method: "post",
+          data:{
+            "signBeginTimestamp": d0,
+            "signEndTimestamp": d1
+          }
+        })
+          .then(res => {
+            this.axios({
+              url: this.baseUrl + "/sign",
+              method: "get",
+            })
+              .then(res => {
+                var time = res.data.data.signBeginTimestamp;
+                this.starttime = new Date(time).Format("yyyy-MM-dd hh:mm:ss");
+                var time = res.data.data.signEndTimestamp;
+                this.endtime = new Date(time).Format("yyyy-MM-dd hh:mm:ss");
+                console.log(res)
+              })
+              .catch(error => {
+                console.log(error);
+              });
+            this.$message({
+              type: 'success',
+              message: '设置成功!'
+            });
+          })
+          .catch(error => {
+            console.log(error);
+          });
       }
     }
   }
