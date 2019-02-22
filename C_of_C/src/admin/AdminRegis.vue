@@ -27,7 +27,7 @@
           </div>
       </div>
       <p class="box-card">开启签到
-        <span class="demonstration">目前已有一个签到安排，时间为：</span>
+        <span class="demonstration">目前已有一个签到安排，时间为：{{starttime}} - {{endtime}}</span>
       </p>
       <div class="settime-div">
         <p class="tips">请选择签到时间</p>
@@ -54,17 +54,50 @@ export default {
   name: "AdminRegis",
   data() {
     return {
-      number: 99,
+      number: '',
       number1: 0,
       number2: 0,
       number3: 0,
       number4: 0,
-      registertime: ''
+      registertime: '',
+      starttime:'',
+      endtime: ''
     };
   },
   components: {
     MyTop,
     MyNav
+  },
+  created() {
+    this.axios({
+      url: this.baseUrl + "/sign/count",
+      method: "get",
+    })
+      .then(res => {
+        console.log(res);
+        console.log(this.number2=res.data.data.townCountMap.东埔.sum)
+        this.number = res.data.data.sum;
+        this.number1=res.data.data.townCountMap.山亭.sum;
+        this.number2=res.data.data.townCountMap.忠门.sum;
+        this.number3=res.data.data.townCountMap.东埔.sum;
+        this.number4=res.data.data.townCountMap.月塘.sum;
+
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    this.axios({
+      url: this.baseUrl + "/sign",
+      method: "get",
+    })
+      .then(res => {
+        this.starttime=res.data.data.signBeginTimestamp
+        this.endtime=res.data.data.signEndTimestamp
+        console.log(res)
+      })
+      .catch(error => {
+        console.log(error);
+      });
   },
   methods: {
     Login: function() {

@@ -64,7 +64,7 @@
         <span class="tip">抽奖码列表</span>
         <el-button @click="adduser()" size="mini" type="primary">添加</el-button>
       </p>
-      <el-table :data="tableData" stripe height="350px">
+      <el-table :data="tableData" stripe height="400px">
         <el-table-column align="center" prop="number" label="序号" width="60"></el-table-column>
         <el-table-column align="center" prop="name" label="姓名"></el-table-column>
         <el-table-column align="center" prop="username" label="用户名"></el-table-column>
@@ -176,10 +176,14 @@ export default {
 
 .box-card1 {
   margin-bottom: 15px;
+  line-height: 16px;
+  padding-left: 10px;
+  border-left: 3px solid #409EFF;
+  font-weight: bold;
 }
 
 .prize-setting {
-  padding: 11px 20px;
+  padding: 15px 20px;
   margin-bottom: 15px;
   border-radius: 3px;
   font-size: 14px;

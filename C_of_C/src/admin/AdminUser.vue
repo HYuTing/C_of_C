@@ -12,7 +12,7 @@
         :data="tableData"
         style="width: 100%"
         stripe
-        height="504">
+        height="517">
         <el-table-column
           type="index"
           :index="indexMethod"

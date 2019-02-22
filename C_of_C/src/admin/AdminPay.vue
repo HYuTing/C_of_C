@@ -5,14 +5,14 @@
     <div class="container">
       <div class="container-left">
         <div class="search-div">
-          <el-select style="width:180px;" v-model="value" @change="Town(value)" placeholder="选择排序方式">
+          <!--<el-select style="width:180px;" v-model="value" @change="Town(value)" placeholder="选择排序方式">
             <el-option
               v-for="item in options"
               :key="item.value"
               :label="item.label"
               :value="item.value">
             </el-option>
-          </el-select>
+          </el-select>-->
           <el-input prefix-icon="el-icon-search" v-model="input" placeholder="请输入姓名"></el-input>
           <el-button type="primary" icon="el-icon-search" @click="search()" class="search-btn">搜索</el-button>
         </div>
@@ -22,7 +22,7 @@
         stripe
         style="width: 100%;"
         height="450">
-          <el-table-column align="center" prop="number" label="序号" width="80"></el-table-column>
+          <el-table-column align="center" type="index" :index="indexMethod" label="序号" width="80"></el-table-column>
           <el-table-column align="center" prop="userInfoName" label="姓名" width="150"></el-table-column>
           <el-table-column align="center" prop="userInfoTown" label="原籍镇" width="200"></el-table-column>
           <el-table-column align="center" prop="userInfoVillage" label="原籍村" width="200"></el-table-column>
@@ -102,8 +102,7 @@ export default {
       dialogFormVisible: false,
       curPageNum: 1,
       totalnum: 10,
-      pageSize: 2,
-      minNumber:2,
+      pageSize: 4,
       form: {
         region1: [],
         name: '',
@@ -204,6 +203,9 @@ export default {
       });
   },
   methods: {
+    indexMethod(index) {
+      return (this.curPageNum-1)*this.pageSize + index + 1;
+    },
     reset(){
       this.form.region1=[]
       this.form.name=""
@@ -224,16 +226,40 @@ export default {
       })
         .then(res => {
           console.log(res.data);
-          //console.log(res.data.data.userInfoName);
           this.tableData = res.data.data.userInfoVOList;
           this.totalnum = res.data.data.maxPageNum * this.pageSize;
+          this.axios({
+            url: this.baseUrl + "/donation/search",
+            method: "post",
+            data: {
+              pageNum: this.curPageNum,
+              pageSize: this.pageSize,
+              userInfoName: this.input
+            }
+          })
+            .then(res => {
+              console.log(res.data);
+              this.tableData = res.data.data.donationVOList;
+              this.totalnum = res.data.data.maxPageNum * this.pageSize;
+            })
+            .catch(error => {
+              console.log(error);
+            });
         })
         .catch(error => {
           console.log(error);
         });
+      this.$message({
+        type: "success",
+        message: "添加成功！"
+      });
     },
     cancel(){
       this.dialogFormVisible = false
+      this.$message({
+        type: "info",
+        message: "取消输入"
+      });
     },
     search(){
       this.axios({
@@ -272,14 +298,32 @@ export default {
           }
         })
           .then(res => {
+            this.axios({
+              url: this.baseUrl + "/donation/search",
+              method: "post",
+              data: {
+                pageNum: this.curPageNum,
+                pageSize: this.pageSize,
+                userInfoName: this.input
+              }
+            })
+              .then(res => {
+                console.log(res.data);
+                this.tableData = res.data.data.donationVOList;
+                this.totalnum = res.data.data.maxPageNum * this.pageSize;
+              })
+              .catch(error => {
+                console.log(error);
+              });
+
+            this.$message({
+              type: "success",
+              message: "修改成功！"
+            });
             console.log(res.data);
           })
           .catch(error => {
             console.log(error);
-          });
-          this.$message({
-            type: "success",
-            message: "修改成功！"
           });
       })
       .catch(() => {
@@ -288,21 +332,6 @@ export default {
           message: "取消输入"
         });
       });
-    },
-    Town(value) {
-      this.axios({
-        url: this.baseUrl + "/donation/rank?minNumber=1",
-        method: "get",
-      })
-        .then(res => {
-          console.log(res.data.data.donationRankMap);
-          console.log(res.data.data.donationRankMap.东浦);
-          this.tableData = res.data.data.donationRankMap[value]
-          //this.totalnum = this.tableData.length
-        })
-        .catch(error => {
-          console.log(error);
-        });
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
@@ -321,7 +350,6 @@ export default {
       })
         .then(res => {
           console.log(res.data);
-          //console.log(res.data.data.userInfoName);
           this.tableData = res.data.data.donationVOList;
           this.totalnum = res.data.data.maxPageNum * this.pageSize;
         })
@@ -363,7 +391,7 @@ export default {
 }
 
 .search-btn {
-  margin-left: 15px;
+  margin-left: 10px;
 }
 
 .box-card1 {
