@@ -16,29 +16,37 @@
     <div class="result-div" v-if="!show">
       <div class="result-level">
         <p class="level">特等奖</p>
-        <Num v-for="(item, index) in specailaward" v-bind:key="index" :vv="item.lotteryCode"></Num>
+        <div v-if="flag">
+          <Num v-for="(item, index) in specailaward" v-bind:key="index" :vv="item.lotteryCode"></Num>
+        </div>
       </div>
       <div class="result-level">
         <p class="level">一等奖</p>
-        <Num v-for="(item, index) in fst" v-bind:key="index" :vv="item.lotteryCode"></Num>
+        <div v-if="flag">
+          <Num v-for="(item, index) in fst" v-bind:key="index" :vv="item.lotteryCode"></Num>
+        </div>
       </div>
       <div class="result-level">
         <p class="level">二等奖</p>
-        <Num v-for="(item, index) in snd" v-bind:key="index" :vv="item.lotteryCode"></Num>
+        <div v-if="flag">
+          <Num v-for="(item, index) in snd" v-bind:key="index" :vv="item.lotteryCode"></Num>
+        </div>
       </div>
       <div class="result-level">
         <p class="level">三等奖</p>
-        <Num v-for="(item, index) in trd" v-bind:key="index" :vv="item.lotteryCode"></Num>
+        <div v-if="flag">
+          <Num v-for="(item, index) in trd" v-bind:key="index" :vv="item.lotteryCode"></Num>
+        </div>
       </div>
     </div>
-    <transition name="fade">
+    <!-- <transition name="fade">
     <div v-if="show">
       <el-button @click="start()" class="btn" circle>抽奖</el-button>
     </div>
-    </transition>
+    </transition> -->
     <transition name="fade">
     <div v-if="!show">
-      <el-button @click="reset()" class="re-btn" circle>重置</el-button>
+      <el-button @click="reset()" class="re-btn" circle>抽奖</el-button>
     </div>
     </transition>
   </div>
@@ -51,7 +59,8 @@ export default {
   name: "AdminRaffle2",
   data() {
     return {
-      show: true,
+      show: false,
+      flag: false,
       specailaward: [],
       fst: [],
       snd: [],
@@ -67,20 +76,13 @@ export default {
       method: 'get'
     })
     .then((res) => {
-      console.log(res);
-      if(res.data.data.result.special.length === 0
-        && res.data.data.result.first.length === 0
-        && res.data.data.result.second.length === 0
-        && res.data.data.result.third.length === 0) {
-        this.show = true;
-      }
-      else {
-        this.specailaward = res.data.data.result.special;
-        this.fst = res.data.data.result.first;
-        this.snd = res.data.data.result.second;
-        this.trd = res.data.data.result.third;
-        this.show = false;
-      }
+      // console.log(res);
+      this.specailaward = res.data.data.result.special;
+      this.fst = res.data.data.result.first;
+      this.snd = res.data.data.result.second;
+      this.trd = res.data.data.result.third;
+      this.show = false;
+      this.flag = true;
     })
     .catch((error) => {
       console.log(error);
@@ -88,33 +90,44 @@ export default {
   },
   methods: {
     start: function() {
-      this.show = !this.show;
+      // this.show = !this.show;
+      this.flag = false;
       this.axios({
         url: this.baseUrl + '/lottery/draw',
         method: 'post'
       })
       .then((res) => {
         console.log('抽奖中...');
-        console.log(res.data.data.result);
-        this.specailaward = res.data.data.result.special;
-        this.fst = res.data.data.result.first;
-        this.snd = res.data.data.result.second;
-        this.trd = res.data.data.result.third;
+        // console.log(res.data.data.result);
+        this.$set(this.$data, 'specailaward', res.data.data.result.special);
+        this.$set(this.$data, 'fst', res.data.data.result.first);
+        this.$set(this.$data, 'snd', res.data.data.result.second);
+        this.$set(this.$data, 'trd', res.data.data.result.third);
+        this.flag = true;
       })
       .catch((error) => {
         console.log(error);
       })
     },
     reset: function() {
-      this.$confirm('此操作将清空之前的抽奖记录, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.show = !this.show;
-      }).catch(() => {
+      if(this.specailaward.length === 0
+        && this.fst.length === 0
+        && this.snd.length === 0
+        && this.trd.length === 0) {
 
-      });
+          this.start();
+      }
+      else {
+        this.$confirm('此操作将清空之前的抽奖记录, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.start();
+        }).catch(() => {
+
+        });
+      }
     },
     reback: function() {
       this.$router.go(-1);
@@ -247,9 +260,9 @@ export default {
   position: absolute;
   bottom: 50px;
   right: 50px;
-  font-size: 20px;
-  width: 100px;
-  height: 100px;
+  font-size: 24px;
+  width: 120px;
+  height: 120px;
   border-color: transparent;
   color: #55270d;
   background: linear-gradient(to top, #c76828, #f1c18b);

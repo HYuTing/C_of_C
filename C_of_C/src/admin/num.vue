@@ -10,7 +10,7 @@ export default {
     }
   },
   props: {
-    vv: Number
+    vv: String
   },
   methods: {
     init () {
