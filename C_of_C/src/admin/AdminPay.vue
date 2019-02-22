@@ -75,10 +75,16 @@
             </div>
           </el-dialog>
 
-          <el-button type="success" plain style="position: absolute; right: 0;">生成排行榜</el-button>
+          <el-button type="success" @click="ranking" plain style="position: absolute; right: 0;">生成排行榜</el-button>
+        </div>
+        <div class="box-card2">
+          <span>忠门籍</span>
+          <div class="rule"></div>
+          <h4>总金额：{{money}}元</h4>
+          <h4>总人数：{{people}}人</h4>
         </div>
         <div v-for="(item, index) in countList" v-bind:key="index" class="box-card2">
-          <span>{{item.name}}</span>
+          <span>{{index}}</span>
           <div class="rule"></div>
           <h4>总金额：{{item.money}}元</h4>
           <h4>总人数：{{item.people}}人</h4>
@@ -99,6 +105,8 @@ export default {
   name: 'AdminPay',
   data () {
     return {
+      money:null,
+      people:null,
       dialogFormVisible: false,
       curPageNum: 1,
       totalnum: 10,
@@ -152,33 +160,24 @@ export default {
       value: '',
       input: '',
       tableData: [],
-      countList: [
-        {
-          name: '忠门籍',
-          money: 100000,
-          people: 1000
-        },
-        {
-          name: '山亭镇',
+      countList: {
+        山亭镇 : {
           money: 10000,
           people: 1000
         },
-        {
-          name: '忠门镇',
+        忠门镇:{
           money: 9000,
           people: 1000
         },
-        {
-          name: '东浦镇',
+        东浦镇:{
           money: 9000,
           people: 1000
         },
-        {
-          name: '月塘镇',
+        月塘镇:{
           money: 8000,
           people: 999
         }
-      ]
+      }
     }
   },
   components: {
@@ -197,6 +196,19 @@ export default {
       .then(res => {
         this.tableData = res.data.data.donationVOList;
         this.totalnum = res.data.data.maxPageNum * this.pageSize;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    this.axios({
+      url: this.baseUrl + "/donation/count",
+      method: "get",
+    })
+      .then(res => {
+        this.countList=res.data.data.townCountMap
+        this.money=res.data.data.money
+        this.people=res.data.data.people
       })
       .catch(error => {
         console.log(error);
@@ -280,6 +292,22 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    ranking: function() {
+      this.$prompt("请输入最小金额", "生成排行榜", {
+        inputPlaceholder: '最小金额',
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+      .then(({ value }) => {
+
+      })
+      .catch(() => {
+        this.$message({
+          type: "info",
+          message: "取消输入"
+        });
+      });
     },
     revise: function(row) {
       this.$prompt("您正在为用户 " + row.userInfoName + " 修改捐款金额：", "修改金额", {
