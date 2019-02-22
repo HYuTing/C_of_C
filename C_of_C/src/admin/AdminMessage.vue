@@ -13,7 +13,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit()">发布</el-button>
-            <el-button @click="reset()">重置</el-button>
+            <el-button @click="reset()">清空</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -42,11 +42,46 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$message({
-        message: '发布成功',
-        type: 'success'
+      if(this.form.name==''||this.form.desc==''){
+        this.$message({
+          type: "warning",
+          message: "内容不能为空！"
+        });
+        return;
+      }
+      var _this=this
+      this.$confirm("是否发布消息", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+      .then(() => {
+        this.axios({
+          url: this.baseUrl + "/message/add",
+          method: "post",
+          data:{
+            "content": this.form.desc,
+            "title":this.form.name
+          }
+        })
+        .then(function(res) {
+
+          _this.$message({
+            type: "success",
+            message: "发布成功!"
+          });
+          _this.reset();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+      })
+      .catch(() => {
+        this.$message({
+          type: "info",
+          message: "已取消发布"
+        });
       });
-      this.reset();
     },
     reset() {
       this.form.name="";

@@ -124,7 +124,47 @@ export default {
   },
   methods: {
     prizesetting: function() {
+      if(this.firstprize==''||this.secondprize==''||this.thirdprize==''||this.specialaward==''){
+        this.$message({
+          type: "warning",
+          message: "请输入奖品个数"
+        });
+        return;
+      }
+      var _this=this
+      this.$confirm("是否设置奖品数量", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+      .then(() => {
+        this.axios({
+          url: this.baseUrl + "/lottery/prize",
+          method: "post",
+          data:{
+            "lotteryFirst": this.firstprize,
+            "lotterySecond": this.secondprize,
+            "lotterySpecial": this.specialaward,
+            "lotteryThird": this.thirdprize
+          }
+        })
+        .then(function(res) {
 
+          _this.$message({
+            type: "success",
+            message: "设置成功!"
+          });
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+      })
+      .catch(() => {
+        this.$message({
+          type: "info",
+          message: "已取消设置"
+        });
+      });
     },
     prizereset: function() {
       this.specialaward="";
