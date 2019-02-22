@@ -131,22 +131,22 @@ export default {
         {
           value: "山亭",
           label: "山亭",
-          children:[{value:"西乌垞",label:'西乌垞'},{value:"东乌垞",label:'东乌垞'},{label:'新乌垞'},{label:'山柄'},{label:'东店'},{label:'西埔'},{label:'西埔口'},{label:'山亭'},{label:'蒋山'},{label:'利山'},{label:'港里'},{label:'西前'},{label:'莆禧'},{label:'东仙'},{label:'文甲'}],
+          children:[{value:"西乌垞",label:'西乌垞'},{value:"东乌垞",label:'东乌垞'},{value:'新乌垞',label:'新乌垞'},{value:'山柄',label:'山柄'},{value:'东店',label:'东店'},{value:'西埔',label:'西埔'},{value:'西埔口',label:'西埔口'},{value:'山亭',label:'山亭'},{value:'蒋山',label:'蒋山'},{value:'利山',label:'利山'},{value:'港里',label:'港里'},{value:'西前',label:'西前'},{value:'莆禧',label:'莆禧'},{value:'东仙',label:'东仙'},{value:'文甲',label:'文甲'}],
         },
         {
           value: "忠门",
           label: "忠门",
-          children:[{value:"后坑",label:'后坑'},{value:"安柄",label:'安柄'},{label:'柳厝'},{label:'沁头'},{label:'秀华'},{label:'秀田'},{label:'秀前'},{label:'琼山'},{label:'忠门'},{label:'王厝'},],
+          children:[{value:"后坑",label:'后坑'},{value:"安柄",label:'安柄'},{value:'柳厝',label:'柳厝'},{value:'沁头',label:'沁头'},{value:'秀华',label:'秀华'},{value:'秀田',label:'秀田'},{value:'秀前',label:'秀前'},{value:'琼山',label:'琼山'},{value:'忠门',label:'忠门'},{value:'王厝',label:'王厝'},],
         },
         {
           value: "东浦",
           label: "东浦",
-          children:[{value:'何山',label:'何山'},{value:'东坑',label:'东坑'},{label:'前范'},{label:'度口'},{label:'东埔'},{label:'下坑'},{label:'塔林'},{label:'乐屿'},{label:'西山'},{label:'度下'},{label:'梯亭'},{label:'吉成'},{label:'东吴'}],
+          children:[{value:'何山',label:'何山'},{value:'东坑',label:'东坑'},{value:'前范',label:'前范'},{value:'度口',label:'度口'},{value:'东埔',label:'东埔'},{value:'下坑',label:'下坑'},{value:'塔林',label:'塔林'},{value:'乐屿',label:'乐屿'},{value:'西山',label:'西山'},{value:'度下',label:'度下'},{value:'梯亭',label:'梯亭'},{value:'吉成',label:'吉成'},{value:'东吴',label:'东吴'}],
         },
         {
           value: "月塘",
           label: "月塘",
-          children:[{value:'东潘',label:'东潘'},{vaule:'洋埭',label:'洋埭'},{label:'砺山'},{label:'岱(蚮)前'},{label:'前康'},{label:'西园'},{label:'双告山'},{label:'月埔'},{label:'霞塘'},{label:'坂尾'},{label:'联星'}]
+          children:[{value:'东潘',label:'东潘'},{value:'砺山',label:'砺山'},{value:'洋埭',label:'洋埭'},{value:'岱(蚮)前',label:'岱(蚮)前'},{value:'前康',label:'前康'},{value:'西园',label:'西园'},{value:'双告山',label:'双告山'},{value:'月埔',label:'月埔'},{value:'霞塘',label:'霞塘'},{value:'坂尾',label:'坂尾'},{value:'联星',label:'联星'}]
         }
       ],
       value: '',

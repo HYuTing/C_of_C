@@ -59,7 +59,7 @@ export default {
       number2: 0,
       number3: 0,
       number4: 0,
-      registertime: '',
+      registertime: null,
       starttime:'',
       endtime: ''
     };
@@ -91,8 +91,10 @@ export default {
       method: "get",
     })
       .then(res => {
-        this.starttime=res.data.data.signBeginTimestamp
-        this.endtime=res.data.data.signEndTimestamp
+        var time = res.data.data.signBeginTimestamp;
+        this.starttime = new Date(time).Format("yyyy-MM-dd hh:mm:ss");
+        var time = res.data.data.signEndTimestamp;
+        this.endtime = new Date(time).Format("yyyy-MM-dd hh:mm:ss");
         console.log(res)
       })
       .catch(error => {
@@ -105,16 +107,53 @@ export default {
     },
     setTime: function() {
       // 请求接口 如果发现已经设置过签到时间，则弹窗提示
-      if(true) {  // 记得自己写条件哦
+      if(this.registertime==null){
+        this.$message({
+          type: "warning",
+          message: "时间不能为空！"
+        });
+        return;
+      }
+      if(this.starttime!='') {
         this.$confirm('已经设置过签到时间, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '设置成功!'
-          });
+          var d0=new Date(this.registertime[0]).getTime()
+          var d1=new Date(this.registertime[1]).getTime()
+          this.axios({
+            url: this.baseUrl + "/sign",
+            method: "post",
+            data:{
+              "signBeginTimestamp": d0,
+              "signEndTimestamp": d1
+            }
+          })
+            .then(res => {
+              this.axios({
+                url: this.baseUrl + "/sign",
+                method: "get",
+              })
+                .then(res => {
+                  var time = res.data.data.signBeginTimestamp;
+                  this.starttime = new Date(time).Format("yyyy-MM-dd hh:mm:ss");
+                  var time = res.data.data.signEndTimestamp;
+                  this.endtime = new Date(time).Format("yyyy-MM-dd hh:mm:ss");
+                  console.log(res)
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+              this.$message({
+                type: 'success',
+                message: '设置成功!'
+              });
+            })
+            .catch(error => {
+              console.log(error);
+            });
+
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -125,6 +164,25 @@ export default {
     }
   }
 };
+
+Date.prototype.Format = function(fmt)
+{
+  var o = {
+    "M+" : this.getMonth()+1,                 //月份
+    "d+" : this.getDate(),                    //日
+    "h+" : this.getHours(),                   //小时
+    "m+" : this.getMinutes(),                 //分
+    "s+" : this.getSeconds(),                 //秒
+    "q+" : Math.floor((this.getMonth()+3)/3), //季度
+    "S"  : this.getMilliseconds()             //毫秒
+  };
+  if(/(y+)/.test(fmt))
+    fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+  for(var k in o)
+    if(new RegExp("("+ k +")").test(fmt))
+  fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+  return fmt;
+}
 </script>
 
 <style scoped>
