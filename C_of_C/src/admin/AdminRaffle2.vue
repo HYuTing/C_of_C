@@ -20,17 +20,14 @@
       </div>
       <div class="result-level">
         <p class="level">一等奖</p>
-        <Num :vv="12345677" v-if="!show"></Num>
         <Num v-for="(item, index) in fst" v-bind:key="index" :vv="item.lotteryCode"></Num>
       </div>
       <div class="result-level">
         <p class="level">二等奖</p>
-        <Num :vv="12345677" v-if="!show"></Num>
         <Num v-for="(item, index) in snd" v-bind:key="index" :vv="item.lotteryCode"></Num>
       </div>
       <div class="result-level">
         <p class="level">三等奖</p>
-        <Num :vv="12345677" v-if="!show"></Num>
         <Num v-for="(item, index) in trd" v-bind:key="index" :vv="item.lotteryCode"></Num>
       </div>
     </div>
@@ -41,7 +38,7 @@
     </transition>
     <transition name="fade">
     <div v-if="!show">
-      <el-button @click="start()" class="re-btn" circle>重置</el-button>
+      <el-button @click="reset()" class="re-btn" circle>重置</el-button>
     </div>
     </transition>
   </div>
@@ -55,14 +52,7 @@ export default {
   data() {
     return {
       show: true,
-      specailaward: [
-        {
-          lotteryCode: 123456789
-        },
-        {
-          lotteryCode: 234567899
-        }
-      ],
+      specailaward: [],
       fst: [],
       snd: [],
       trd: []
@@ -70,6 +60,31 @@ export default {
   },
   components: {
     Num
+  },
+  created() {
+    this.axios({
+      url: this.baseUrl + '/lottery/draw',
+      method: 'get'
+    })
+    .then((res) => {
+      console.log(res);
+      if(res.data.data.result.special.length === 0
+        && res.data.data.result.first.length === 0
+        && res.data.data.result.second.length === 0
+        && res.data.data.result.third.length === 0) {
+        this.show = true;
+      }
+      else {
+        this.specailaward = res.data.data.result.special;
+        this.fst = res.data.data.result.first;
+        this.snd = res.data.data.result.second;
+        this.trd = res.data.data.result.third;
+        this.show = false;
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    })
   },
   methods: {
     start: function() {
@@ -80,15 +95,28 @@ export default {
       })
       .then((res) => {
         console.log('抽奖中...');
-        if(res.status === 200) {
-
-        }
+        console.log(res.data.data.result);
+        this.specailaward = res.data.data.result.special;
+        this.fst = res.data.data.result.first;
+        this.snd = res.data.data.result.second;
+        this.trd = res.data.data.result.third;
       })
       .catch((error) => {
         console.log(error);
       })
     },
-    reback: function(){
+    reset: function() {
+      this.$confirm('此操作将清空之前的抽奖记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.show = !this.show;
+      }).catch(() => {
+
+      });
+    },
+    reback: function() {
       this.$router.go(-1);
     }
   }

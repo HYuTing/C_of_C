@@ -62,16 +62,35 @@ export default {
   name: "AdminRanking",
   data() {
     return {
-
+      value: 42
     };
-  },
-  created() {
-
   },
   methods: {
     reback: function(){
       this.$router.push("/admin/payment_management");
+    },
+    a() {
+      this.value ++
+      console.log(this.value)
+      setTimeout(this.a,1000)
+    },
+    getInfo() {
+      this.axios({
+        url: this.baseUrl + '/donation/rank?minNumber=' + 1,
+        method: 'get'
+      })
+      .then((res) => {
+        console.log(res);
+
+      })
+      .catch((error) => {
+        console.log(error);
+      })
     }
+  },
+  mounted() {
+    // setTimeout(this.a,1000);
+    this.getInfo;
   }
 };
 </script>

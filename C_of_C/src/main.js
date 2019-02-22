@@ -119,6 +119,12 @@ axios.interceptors.response.use(function (response) {
         case 331:
           router.app.$toast('不在签到时间范围内');
           break;
+        case 131:
+          router.app.$message.error('还没有人签到过');
+          break;
+        case 133:
+          router.app.$message.error('奖品数大于参与抽奖人数');
+          break;
         default:
           router.app.$toast('获取信息失败');
           console.log('获取信息失败');
