@@ -27,6 +27,39 @@ Vue.prototype.baseUrl = '/api';
 // Vue.prototype.baseUrl = 'http://chamber.huanglexing.com';
 // Vue.prototype.baseUrl = 'https://chamber.w2fzu.com';
 
+
+function checkToken() {
+  $.ajax({
+    url: router.app.baseUrl + '/user/tokenCheck',
+    type: "get",
+    headers: {
+      'S-TOKEN': router.app.$cookies.get('token2')
+    },
+    async: false,
+    dataType: "json",
+    success: function(res) {
+      router.app.$cookies.set('token', router.app.$cookies.get('token2'), 3600*24*7);
+      router.app.$cookies.set('token2', router.app.$cookies.get('token2'), 3600*24*8);
+      router.app.$cookies.set('signCheck', router.app.$cookies.get('signCheck'), 3600*24*7);
+      router.app.$cookies.set('infoCheck', router.app.$cookies.get('infoCheck'), 3600*24*7);
+      console.log("test->>" +router.app.$cookies.get('token'));
+      config.headers.common['S-TOKEN'] = router.app.$cookies.get('token');
+    },
+    error: function(err) {
+      router.app.$toast('登录过期，请重新登录');
+      router.app.$cookies.remove('token');
+      router.app.$cookies.remove('token2');
+      router.app.$cookies.remove('signCheck');
+      router.app.$cookies.remove('infoCheck');
+      setTimeout(() => {
+        router.app.$router.push("/login");
+      }, 2200);
+    }
+  })
+}
+
+Vue.prototype.$checkToken = checkToken;
+
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
 　// 在发送请求之前做些什么
@@ -34,33 +67,7 @@ axios.interceptors.request.use(function (config) {
   if(token === null) {
     if(router.app.$cookies.get('token2')) {
       // console.log('token2存在');
-      $.ajax({
-        url: router.app.baseUrl + '/user/tokenCheck',
-        type: "get",
-        headers: {
-          'S-TOKEN': router.app.$cookies.get('token2')
-        },
-        async: false,
-        dataType: "json",
-        success: function(res) {
-          router.app.$cookies.set('token', router.app.$cookies.get('token2'), 3600*24*7);
-          router.app.$cookies.set('token2', router.app.$cookies.get('token2'), 3600*24*8);
-          router.app.$cookies.set('signCheck', router.app.$cookies.get('signCheck'), 3600*24*7);
-          router.app.$cookies.set('infoCheck', router.app.$cookies.get('infoCheck'), 3600*24*7);
-          console.log("test->>" +router.app.$cookies.get('token'));
-          config.headers.common['S-TOKEN'] = router.app.$cookies.get('token');
-        },
-        error: function(err) {
-          router.app.$toast('登录过期，请重新登录');
-          router.app.$cookies.remove('token');
-          router.app.$cookies.remove('token2');
-          router.app.$cookies.remove('signCheck');
-          router.app.$cookies.remove('infoCheck');
-          setTimeout(() => {
-            router.app.$router.push("/login");
-          }, 2200);
-        }
-      })
+      checkToken();
     }
   }
   else {
@@ -132,10 +139,3 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
-
-
-function getToken() {
-
-}
-
-Vue.prototype.$getToken = getToken;

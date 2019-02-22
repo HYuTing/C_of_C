@@ -31,10 +31,16 @@ export default {
     }
   },
   created() {
-    if(this.$cookies.get('token') && this.$cookies.get('infoCheck')) {
+    console.log(this.$cookies.get('token'));
+    console.log(this.$cookies.get('infoCheck'));
+    console.log(typeof(this.$cookies.get('infoCheck')));
+    // 你个小鲨鱼，如果token已经过期了，token2还在呢？？
+    if(this.$cookies.get('token2') && this.$cookies.get('infoCheck')==='true') {
       this.$router.push("/addrList");
     }
-    else if(this.$cookies.get('token') && !this.$cookies.get('infoCheck')) {
+    else if(this.$cookies.get('token2') && this.$cookies.get('infoCheck')==='false') {
+
+      this.$checkToken();
       this.$router.push({
         path: "/userinfo",
         query: {
