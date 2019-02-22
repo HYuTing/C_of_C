@@ -87,7 +87,8 @@
           align="center">
           <template slot-scope="scope">
             <el-button
-              @click="handleClick(scope.row)"
+              @click="password(scope.row)"
+              plain
               type="text"
               size="small">
               修改密码
@@ -112,6 +113,20 @@
           background>
         </el-pagination>
       </div>
+      <el-dialog :title='"您正在为用户 "+user+" 修改密码："' :visible.sync="dialogFormVisible" width="450px">
+        <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="密码" prop="pass">
+            <el-input type="password" v-model="ruleForm2.pass" style="width:250px" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码" prop="checkPass">
+            <el-input type="password" v-model="ruleForm2.checkPass" style="width:250px" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
+            <el-button @click="resetForm('ruleForm2')">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -123,12 +138,46 @@ import MyNav from "./nav.vue";
 export default {
   name: "AdminUser",
   data() {
+      var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else {
+          if (this.ruleForm2.checkPass !== '') {
+            this.$refs.ruleForm2.validateField('checkPass');
+          }
+          callback();
+        }
+      };
+      var validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入密码'));
+        } else if (value !== this.ruleForm2.pass) {
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
+      };
     return {
+      userid:'',
+      user:'',
+      dialogFormVisible: false,
       input: "",
       tableData: [],
       curPageNum: 1,
       totalnum: 0,
-      pageSize: 8
+      pageSize: 8,
+      ruleForm2: {
+          pass: '',
+          checkPass: ''
+      },
+      rules2: {
+        pass: [
+          { validator: validatePass, trigger: 'blur' }
+        ],
+        checkPass: [
+          { validator: validatePass2, trigger: 'blur' }
+        ],
+      }
     };
   },
   components: {
@@ -154,7 +203,44 @@ export default {
         console.log(error);
       });
   },
+  watch:{
+    dialogFormVisible(val0,val1){
+      this.$refs["ruleForm2"].resetFields();
+    }
+  },
   methods: {
+    submitForm(formName) {
+      var _this=this;
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.axios({
+            url: this.baseUrl + "/user/changePass",
+            method: "post",
+            data: {
+              userId: this.userid,
+              userPass: this.ruleForm2.pass
+            }
+          })
+          .then(function(res) {
+            console.log(res);
+            _this.$message({
+              type: "success",
+              message: "修改成功！"
+            });
+            _this.dialogFormVisible = false
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
     indexMethod(index) {
       return (this.curPageNum-1)*this.pageSize + index + 1;
     },
@@ -218,7 +304,11 @@ export default {
           });
         });
     },
-
+    password(row){
+      this.dialogFormVisible = true
+      this.user=row.userInfoName
+      this.userid=row.userId
+    },
     handleDelete(index, row) {
       var _this = this;
       // console.log(row.length);
