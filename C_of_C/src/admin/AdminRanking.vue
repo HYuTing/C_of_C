@@ -10,35 +10,26 @@
         <div class="topthree">
           <div class="fst">
             <img src="../assets/fst2.png" class="fst-icon">
-            <p class="fst-name">黄乐兴</p>
-            <p>1000000.00</p>
+            <p class="fst-name">{{st[1].userInfoName}}</p>
+            <p>{{st[1].donationNumber}}</p>
           </div>
           <div class="fst">
             <img src="../assets/fst1.png" class="fst-icon">
-            <p class="first-name">黄乐兴</p>
-            <p>1000000.00</p>
+            <p class="first-name">{{st[0].userInfoName}}</p>
+            <p>{{st[0].donationNumber}}</p>
           </div>
           <div class="fst">
             <img src="../assets/fst3.png" class="fst-icon">
-            <p class="fst-name">黄乐兴</p>
-            <p>1000000.00</p>
+            <p class="fst-name">{{st[2].userInfoName}}</p>
+            <p>{{st[2].donationNumber}}</p>
           </div>
         </div>
         <div class="others">
-          <p class="list">4<span class="name">黄乐兴</span><span class="num">1000000.00 元</span></p>
-          <p class="list">4<span class="name">黄乐兴</span><span class="num">1000000.00 元</span></p>
-          <p class="list">4<span class="name">黄乐兴</span><span class="num">1000000.00 元</span></p>
-          <p class="list">4<span class="name">黄乐兴</span><span class="num">1000000.00 元</span></p>
-          <p class="list">4<span class="name">黄乐兴</span><span class="num">1000000.00 元</span></p>
-          <p class="list">4<span class="name">黄乐兴</span><span class="num">1000000.00 元</span></p>
-          <p class="list">4<span class="name">黄乐兴</span><span class="num">1000000.00 元</span></p>
-          <p class="list">4<span class="name">黄乐兴</span><span class="num">1000000.00 元</span></p>
-          <p class="list">4<span class="name">黄乐兴</span><span class="num">1000000.00 元</span></p>
-          <p class="list">4<span class="name">黄乐兴</span><span class="num">1000000.00 元</span></p>
-          <p class="list">4<span class="name">黄乐兴</span><span class="num">1000000.00 元</span></p>
-          <p class="list">4<span class="name">黄乐兴</span><span class="num">1000000.00 元</span></p>
-          <p class="list">4<span class="name">黄乐兴</span><span class="num">1000000.00 元</span></p>
-          <p class="list">4<span class="name">黄乐兴</span><span class="num">1000000.00 元</span></p>
+          <p class="list" v-for="(item, index) in DataTable1" v-bind:key="index">
+            {{pageSize*n1 + index + 1}}
+            <span class="name">{{item.userInfoName}}</span>
+            <span class="num">{{item.donationNumber}} 元</span>
+          </p>
         </div>
       </div>
       <div class="ranking-list">
@@ -58,12 +49,84 @@
 </template>
 
 <script>
+// var thisVue = document;
 export default {
   name: "AdminRanking",
   data() {
     return {
-      value: 42
+      value: 42,
+      pageSize: 10,
+      st: [{userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}],
+      DataTable1: [],
+      n1: 0,
+      total1: 0,
+      zm: [
+        {
+          userInfoName: '黄',
+          donationNumber: 0
+        },
+        {
+          userInfoName: '乐',
+          donationNumber: 0
+        },{
+          userInfoName: '兴',
+          donationNumber: 0
+        }
+      ],
+      DataTable2: [],
+      dp: [
+        {
+          userInfoName: '黄',
+          donationNumber: 0
+        },
+        {
+          userInfoName: '乐',
+          donationNumber: 0
+        },{
+          userInfoName: '兴',
+          donationNumber: 0
+        }
+      ],
+      DataTable3: [],
+      yt: [
+        {
+          userInfoName: '黄',
+          donationNumber: 0
+        },
+        {
+          userInfoName: '乐',
+          donationNumber: 0
+        },{
+          userInfoName: '兴',
+          donationNumber: 0
+        }
+      ],
+      DataTable4: [],
     };
+  },
+  created() {
+    this.axios({
+      url: this.baseUrl + '/donation/rank?minNumber=' + 1,
+      method: 'get'
+    })
+    .then((res) => {
+      console.log(res);
+      for(var i=0; i<3; i++) {
+        if(res.data.data.donationRankMap["东埔"][i]) {
+          console.log(res.data.data.donationRankMap["东埔"][i]);
+          this.$set(this.st, i, res.data.data.donationRankMap["东埔"][i]);
+        }
+      }
+      var dp_len = res.data.data.donationRankMap["东埔"].length
+      this.total1 = parseInt(dp_len/this.pageSize);
+      for(var i=3; i<dp_len; i++) {
+        this.DataTable1[i-3] = res.data.data.donationRankMap["东埔"][i];
+      }
+      console.log(this.DataTable1);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
   },
   methods: {
     reback: function(){
@@ -75,25 +138,16 @@ export default {
       setTimeout(this.a,1000)
     },
     getInfo() {
-      this.axios({
-        url: this.baseUrl + '/donation/rank?minNumber=' + 1,
-        method: 'get'
-      })
-      .then((res) => {
-        console.log(res);
 
-      })
-      .catch((error) => {
-        console.log(error);
-      })
     }
   },
   mounted() {
-    // setTimeout(this.a,1000);
-    this.getInfo;
+      setTimeout(this.getInfo,100);
+      // this.getInfo;
   }
 };
 </script>
+
 <style scoped>
 .main {
   position: relative;
@@ -164,6 +218,7 @@ export default {
 }
 
 .fst-name {
+  line-height: 26px;
   margin-top: 7px;
   margin-bottom: 10px;
   font-size: 20px;
@@ -171,6 +226,7 @@ export default {
 }
 
 .first-name {
+  line-height: 26px;
   margin-top: 2px;
   margin-bottom: 10px;
   font-size: 20px;
