@@ -205,7 +205,7 @@ export default {
   },
   watch:{
     dialogFormVisible(val0,val1){
-      this.$refs["ruleForm2"].resetFields();
+      this.resetForm("ruleForm2")
     }
   },
   methods: {
@@ -239,7 +239,9 @@ export default {
       });
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      if (this.$refs[formName] !== undefined) {
+        this.$refs[formName].resetFields();
+      }
     },
     indexMethod(index) {
       return (this.curPageNum-1)*this.pageSize + index + 1;
