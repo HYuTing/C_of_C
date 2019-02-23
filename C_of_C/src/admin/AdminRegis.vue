@@ -91,9 +91,9 @@ export default {
     })
       .then(res => {
         var time = res.data.data.signBeginTimestamp;
-        this.starttime = new Date(time).Format("yyyy-MM-dd hh:mm:ss");
+        this.starttime = new Date(time*1000).Format("yyyy-MM-dd hh:mm:ss");
         var time = res.data.data.signEndTimestamp;
-        this.endtime = new Date(time).Format("yyyy-MM-dd hh:mm:ss");
+        this.endtime = new Date(time*1000).Format("yyyy-MM-dd hh:mm:ss");
         console.log(res)
       })
       .catch(error => {
@@ -122,8 +122,8 @@ export default {
             url: this.baseUrl + "/sign",
             method: "post",
             data:{
-              "signBeginTimestamp": d0,
-              "signEndTimestamp": d1
+              "signBeginTimestamp": d0/1000,
+              "signEndTimestamp": d1/1000
             }
           })
             .then(res => {
@@ -133,9 +133,9 @@ export default {
               })
                 .then(res => {
                   var time = res.data.data.signBeginTimestamp;
-                  this.starttime = new Date(time).Format("yyyy-MM-dd hh:mm:ss");
+                  this.starttime = new Date(time*1000).Format("yyyy-MM-dd hh:mm:ss");
                   var time = res.data.data.signEndTimestamp;
-                  this.endtime = new Date(time).Format("yyyy-MM-dd hh:mm:ss");
+                  this.endtime = new Date(time*1000).Format("yyyy-MM-dd hh:mm:ss");
                   console.log(res)
                 })
                 .catch(error => {

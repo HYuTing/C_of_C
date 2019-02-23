@@ -62,21 +62,21 @@
       </div>
       <p class="box-card">
         <span class="tip">抽奖码列表</span>
-        <el-button @click="adduser()" size="mini" type="primary">添加</el-button>
+        <el-button @click="prizeadduser()" size="mini" type="primary">添加</el-button>
       </p>
       <el-table :data="tableData" stripe height="400px">
-        <el-table-column align="center" prop="number" label="序号" width="60"></el-table-column>
-        <el-table-column align="center" prop="name" label="姓名"></el-table-column>
-        <el-table-column align="center" prop="username" label="用户名"></el-table-column>
-        <el-table-column align="center" prop="raffle_code" label="抽奖码"></el-table-column>
-        <el-table-column align="center" prop="raffle_result" label="抽奖结果"></el-table-column>
+        <el-table-column align="center" type="index" :index="indexMethod" label="序号" width="80"></el-table-column>
+        <el-table-column align="center" prop="userInfoName" label="姓名"></el-table-column>
+        <el-table-column align="center" prop="userName" label="用户名"></el-table-column>
+        <el-table-column align="center" prop="lotteryCode" label="抽奖码"></el-table-column>
+        <el-table-column align="center" prop="lotteryResult" label="抽奖结果"></el-table-column>
       </el-table>
       <div class="block">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page.sync="currentPage3"
-          :page-size="8"
+          :current-page.sync="currentPage"
+          :page-size="pageSize"
           layout="prev, pager, next, jumper"
           :total="totalnum"
           background>
@@ -94,6 +94,9 @@ export default {
   name: "AdminRaffle",
   data() {
     return {
+      currentPage: 1,
+      totalnum: 9,
+      pageSize: 4,
       specialaward: '',
       firstprize: '',
       secondprize: '',
@@ -114,13 +117,30 @@ export default {
           raffle_result: "特等奖"
         }
       ],
-      currentPage3: 1,
-      totalnum: 300
     };
   },
   components: {
     MyTop,
     MyNav
+  },
+  created(){
+    this.axios({
+      url: this.baseUrl + "/lottery/all",
+      method: "post",
+      data: {
+        pageNum: this.currentPage,
+        pageSize: this.pageSize
+      }
+    })
+      .then(res => {
+        // console.log(res.data);
+        this.tableData = res.data.data.lotteryVOList;
+        console.log(this.tableData)
+        this.totalnum = res.data.data.maxPageNum * this.pageSize;
+      })
+      .catch(error => {
+        console.log(error);
+      });
   },
   methods: {
     prizesetting: function() {
@@ -172,15 +192,81 @@ export default {
       this.secondprize="";
       this.thirdprize="";
     },
-    adduser: function() {
+    prizeadduser: function() {
+      this.$prompt("请输入您的姓名", "添加抽奖码", {
+        inputPlaceholder: '姓名',
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+      .then(({ value }) => {
+        // value值就是input的value
+        this.axios({
+          url: this.baseUrl + "/lottery/special?name="+ value,
+          method: "get",
+        })
+          .then(res => {
+            this.axios({
+              url: this.baseUrl + "/lottery/all",
+              method: "post",
+              data: {
+                pageNum: this.currentPage,
+                pageSize: this.pageSize
+              }
+            })
+              .then(res => {
+                // console.log(res.data);
+                this.tableData = res.data.data.lotteryVOList;
+                console.log(this.tableData)
+                this.totalnum = res.data.data.maxPageNum * this.pageSize;
+              })
+              .catch(error => {
+                console.log(error);
+              });
 
+            this.$message({
+              type: "success",
+              message: "添加成功！"
+            });
+            console.log(res.data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      })
+      .catch(() => {
+        this.$message({
+          type: "info",
+          message: "取消输入"
+        });
+      });
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-    }
+      this.currentPage = val;
+      this.axios({
+        url: this.baseUrl + "/lottery/all",
+        method: "post",
+        data: {
+          pageNum: this.currentPage,
+          pageSize: this.pageSize
+        }
+      })
+        .then(res => {
+          // console.log(res.data);
+          this.tableData = res.data.data.lotteryVOList;
+          console.log(this.tableData)
+          this.totalnum = res.data.data.maxPageNum * this.pageSize;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    indexMethod(index) {
+      return (this.currentPage-1)*this.pageSize + index + 1;
+    },
   }
 };
 </script>
