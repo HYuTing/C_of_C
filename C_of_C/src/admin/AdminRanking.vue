@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="others">
-          <p class="list" v-for="(item, index) in DataTable1" v-bind:key="index">
+          <p class="list" v-for="(item, index) in showData1" v-bind:key="index">
             {{pageSize*n1 + index + 1}}
             <span class="name">{{item.userInfoName}}</span>
             <span class="num">{{item.donationNumber}} 元</span>
@@ -34,22 +34,90 @@
       </div>
       <div class="ranking-list">
         <p class="town-name">忠门镇</p>
-
+        <div class="topthree">
+          <div class="fst">
+            <img src="../assets/fst2.png" class="fst-icon">
+            <p class="fst-name">{{zm[1].userInfoName}}</p>
+            <p>{{zm[1].donationNumber}}</p>
+          </div>
+          <div class="fst">
+            <img src="../assets/fst1.png" class="fst-icon">
+            <p class="first-name">{{zm[0].userInfoName}}</p>
+            <p>{{zm[0].donationNumber}}</p>
+          </div>
+          <div class="fst">
+            <img src="../assets/fst3.png" class="fst-icon">
+            <p class="fst-name">{{zm[2].userInfoName}}</p>
+            <p>{{zm[2].donationNumber}}</p>
+          </div>
+        </div>
+        <div class="others">
+          <p class="list" v-for="(item, index) in showData2" v-bind:key="index">
+            {{pageSize*n2 + index + 1}}
+            <span class="name">{{item.userInfoName}}</span>
+            <span class="num">{{item.donationNumber}} 元</span>
+          </p>
+        </div>
       </div>
       <div class="ranking-list">
         <p class="town-name">东埔镇</p>
-
+        <div class="topthree">
+          <div class="fst">
+            <img src="../assets/fst2.png" class="fst-icon">
+            <p class="fst-name">{{dp[1].userInfoName}}</p>
+            <p>{{dp[1].donationNumber}}</p>
+          </div>
+          <div class="fst">
+            <img src="../assets/fst1.png" class="fst-icon">
+            <p class="first-name">{{dp[0].userInfoName}}</p>
+            <p>{{dp[0].donationNumber}}</p>
+          </div>
+          <div class="fst">
+            <img src="../assets/fst3.png" class="fst-icon">
+            <p class="fst-name">{{dp[2].userInfoName}}</p>
+            <p>{{dp[2].donationNumber}}</p>
+          </div>
+        </div>
+        <div class="others">
+          <p class="list" v-for="(item, index) in showData3" v-bind:key="index">
+            {{pageSize*n3 + index + 1}}
+            <span class="name">{{item.userInfoName}}</span>
+            <span class="num">{{item.donationNumber}} 元</span>
+          </p>
+        </div>
       </div>
       <div class="ranking-list">
         <p class="town-name">月塘镇</p>
-
+        <div class="topthree">
+          <div class="fst">
+            <img src="../assets/fst2.png" class="fst-icon">
+            <p class="fst-name">{{yt[1].userInfoName}}</p>
+            <p>{{yt[1].donationNumber}}</p>
+          </div>
+          <div class="fst">
+            <img src="../assets/fst1.png" class="fst-icon">
+            <p class="first-name">{{yt[0].userInfoName}}</p>
+            <p>{{yt[0].donationNumber}}</p>
+          </div>
+          <div class="fst">
+            <img src="../assets/fst3.png" class="fst-icon">
+            <p class="fst-name">{{yt[2].userInfoName}}</p>
+            <p>{{yt[2].donationNumber}}</p>
+          </div>
+        </div>
+        <div class="others">
+          <p class="list" v-for="(item, index) in showData4" v-bind:key="index">
+            {{pageSize*n4 + index + 1}}
+            <span class="name">{{item.userInfoName}}</span>
+            <span class="num">{{item.donationNumber}} 元</span>
+          </p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// var thisVue = document;
 export default {
   name: "AdminRanking",
   data() {
@@ -57,72 +125,46 @@ export default {
       value: 42,
       pageSize: 10,
       st: [{userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}],
+      showData1: [],
       DataTable1: [],
       n1: 0,
       total1: 0,
-      zm: [
-        {
-          userInfoName: '黄',
-          donationNumber: 0
-        },
-        {
-          userInfoName: '乐',
-          donationNumber: 0
-        },{
-          userInfoName: '兴',
-          donationNumber: 0
-        }
-      ],
+
+      zm: [{userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}],
+      showData2: [],
       DataTable2: [],
-      dp: [
-        {
-          userInfoName: '黄',
-          donationNumber: 0
-        },
-        {
-          userInfoName: '乐',
-          donationNumber: 0
-        },{
-          userInfoName: '兴',
-          donationNumber: 0
-        }
-      ],
+      n2: 0,
+      total2: 0,
+
+      dp: [{userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}],
+      showData3: [],
       DataTable3: [],
-      yt: [
-        {
-          userInfoName: '黄',
-          donationNumber: 0
-        },
-        {
-          userInfoName: '乐',
-          donationNumber: 0
-        },{
-          userInfoName: '兴',
-          donationNumber: 0
-        }
-      ],
+      n3: 0,
+      total3: 0,
+
+      yt: [{userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}],
+      showData4: [],
       DataTable4: [],
+      n4: 0,
+      total4: 0,
     };
   },
   created() {
+    // var param = this.$route.query.minNum;  // 从父组件接受的参数
+
     this.axios({
       url: this.baseUrl + '/donation/rank?minNumber=' + 1,
       method: 'get'
     })
     .then((res) => {
       console.log(res);
-      for(var i=0; i<3; i++) {
-        if(res.data.data.donationRankMap["东埔"][i]) {
-          console.log(res.data.data.donationRankMap["东埔"][i]);
-          this.$set(this.st, i, res.data.data.donationRankMap["东埔"][i]);
-        }
-      }
-      var dp_len = res.data.data.donationRankMap["东埔"].length
-      this.total1 = parseInt(dp_len/this.pageSize);
-      for(var i=3; i<dp_len; i++) {
-        this.DataTable1[i-3] = res.data.data.donationRankMap["东埔"][i];
-      }
-      console.log(this.DataTable1);
+
+      initail(this, res.data.data, '山亭');
+      initail(this, res.data.data, '忠门');
+      initail(this, res.data.data, '东埔');
+      initail(this, res.data.data, '月塘');
+
+
     })
     .catch((error) => {
       console.log(error);
@@ -142,10 +184,69 @@ export default {
     }
   },
   mounted() {
-      setTimeout(this.getInfo,100);
-      // this.getInfo;
+    setTimeout(this.getInfo,100);
+    // this.getInfo;
   }
 };
+
+function initail(Vm, res, name) {
+  var len = res.donationRankMap[name].length;
+  len<3 ? len = len : len = 3;
+
+  var lens = res.donationRankMap[name].length;
+  if(name === '山亭') {
+    for(var i=0; i<len; i++) {
+      if(res.donationRankMap[name][i]) {
+        // console.log(res.donationRankMap[name][i]);
+        Vm.$set(Vm.st, i, res.donationRankMap[name][i]);
+      }
+    }
+    Vm.total1 = parseInt((lens-3)/Vm.pageSize);
+    for(var i=3; i<lens; i++) {
+      Vm.$set(Vm.DataTable1, i-3, res.donationRankMap[name][i]);
+    }
+  }
+  else if(name === '忠门') {
+    for(var i=0; i<len; i++) {
+      if(res.donationRankMap[name][i]) {
+        // console.log(res.donationRankMap[name][i]);
+        Vm.$set(Vm.zm, i, res.donationRankMap[name][i]);
+      }
+    }
+    Vm.total2 = parseInt((lens-3)/Vm.pageSize);
+    for(var i=3; i<lens; i++) {
+      Vm.DataTable2[i-3] = res.donationRankMap[name][i];
+    }
+  }
+  else if(name === '东埔') {
+    for(var i=0; i<len; i++) {
+      if(res.donationRankMap[name][i]) {
+        // console.log(res.donationRankMap[name][i]);
+        Vm.$set(Vm.dp, i, res.donationRankMap[name][i]);
+      }
+    }
+    Vm.total3 = parseInt((lens-3)/Vm.pageSize);
+    for(var i=3; i<lens; i++) {
+      Vm.DataTable3[i-3] = res.donationRankMap[name][i];
+    }
+  }
+  else if(name === '月塘') {
+    for(var i=0; i<len; i++) {
+      if(res.donationRankMap[name][i]) {
+        // console.log(res.donationRankMap[name][i]);
+        Vm.$set(Vm.yt, i, res.donationRankMap[name][i]);
+      }
+    }
+    Vm.total4 = parseInt((lens-3)/Vm.pageSize);
+    for(var i=3; i<lens; i++) {
+      Vm.$set(Vm.DataTable4, i-3, res.donationRankMap[name][i]);
+    }
+  }
+}
+
+function showUpdata(Vm, name) {
+
+}
 </script>
 
 <style scoped>
