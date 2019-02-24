@@ -26,7 +26,7 @@
         </div>
         <div class="others">
           <p class="list" v-for="(item, index) in showData1" v-bind:key="index">
-            {{pageSize*n1 + index + 1}}
+            {{pageSize*n1 + index + 4}}
             <span class="name">{{item.userInfoName}}</span>
             <span class="num">{{item.donationNumber}} 元</span>
           </p>
@@ -118,12 +118,15 @@
 </template>
 
 <script>
+import $ from 'jquery'
+
 export default {
   name: "AdminRanking",
   data() {
     return {
       value: 42,
-      pageSize: 10,
+      pageSize: 2,
+      timer: '',
       st: [{userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}],
       showData1: [],
       DataTable1: [],
@@ -164,7 +167,7 @@ export default {
       initail(this, res.data.data, '东埔');
       initail(this, res.data.data, '月塘');
 
-
+      initailData(this, "山亭");
     })
     .catch((error) => {
       console.log(error);
@@ -180,13 +183,54 @@ export default {
       setTimeout(this.a,1000)
     },
     getInfo() {
-
+      var _this = this;
+      this.n1 ++;
+      if(this.n1 > this.total1) {
+        this.n1 = 0;
+        $.ajax({
+          url: this.baseUrl + '/donation/rank?minNumber=' + 1,
+          method: 'get',
+          headers: {
+            'S-TOKEN': this.$cookies.get('token2')
+          },
+          async: false,
+          dataType: "json",
+          success: function(res) {
+            console.log(res.data);
+            initail(_this, res.data, '山亭');
+          },
+          error: function(err) {
+            console.log(err);
+          }
+        })
+      }
+      var len;
+      if(this.n1 === this.total1) {
+        len = this.DataTable1.length%this.pageSize;
+      }
+      else {
+        len = this.pageSize;
+      }
+      console.log("第"+this.n1+"次"+len);
+      this.showData1 = [];
+      for(var j=0, i=this.n1*this.pageSize; i<this.n1*this.pageSize+len; j++, i++) {
+        this.$set(this.showData1, j, this.DataTable1[i]);
+      }
+      console.log("第"+this.n1+"次"+this.showData1);
     }
   },
   mounted() {
-    setTimeout(this.getInfo,100);
-    // this.getInfo;
+    this.timer = setInterval(this.getInfo,5000);
+  },
+  beforeDestroy() { //清除定时器
+    clearInterval(this.timer);
+    console.log("beforeDestroy");
+  },
+  destroyed() { //清除定时器
+    //clearInterval(this.timer);
+    console.log("destroyed");
   }
+
 };
 
 function initail(Vm, res, name) {
@@ -194,19 +238,18 @@ function initail(Vm, res, name) {
   len<3 ? len = len : len = 3;
 
   var lens = res.donationRankMap[name].length;
-  if(name === '山亭') {
+  if(name === "山亭") {
     for(var i=0; i<len; i++) {
       if(res.donationRankMap[name][i]) {
         // console.log(res.donationRankMap[name][i]);
         Vm.$set(Vm.st, i, res.donationRankMap[name][i]);
       }
     }
-    Vm.total1 = parseInt((lens-3)/Vm.pageSize);
     for(var i=3; i<lens; i++) {
       Vm.$set(Vm.DataTable1, i-3, res.donationRankMap[name][i]);
     }
   }
-  else if(name === '忠门') {
+  else if(name === "忠门") {
     for(var i=0; i<len; i++) {
       if(res.donationRankMap[name][i]) {
         // console.log(res.donationRankMap[name][i]);
@@ -218,7 +261,7 @@ function initail(Vm, res, name) {
       Vm.DataTable2[i-3] = res.donationRankMap[name][i];
     }
   }
-  else if(name === '东埔') {
+  else if(name === "东埔") {
     for(var i=0; i<len; i++) {
       if(res.donationRankMap[name][i]) {
         // console.log(res.donationRankMap[name][i]);
@@ -230,7 +273,7 @@ function initail(Vm, res, name) {
       Vm.DataTable3[i-3] = res.donationRankMap[name][i];
     }
   }
-  else if(name === '月塘') {
+  else if(name === "月塘") {
     for(var i=0; i<len; i++) {
       if(res.donationRankMap[name][i]) {
         // console.log(res.donationRankMap[name][i]);
@@ -244,8 +287,34 @@ function initail(Vm, res, name) {
   }
 }
 
-function showUpdata(Vm, name) {
-
+function initailData(Vm, name) {
+  var len=0;
+  if(name === "山亭") {
+    Vm.total1 = parseInt(Vm.DataTable1.length/Vm.pageSize);
+    Vm.n1 = 0;
+    if(Vm.n1 === Vm.total1) {
+      len = Vm.DataTable1.length%Vm.pageSize;
+    }
+    else {len = Vm.pageSize;}
+    console.log("第"+Vm.n1+"次"+len);
+    Vm.showData1 = [];
+    for(var j=0, i=Vm.n1*Vm.pageSize; i<Vm.n1*Vm.pageSize+len; j++, i++) {
+      Vm.$set(Vm.showData1, j, Vm.DataTable1[i]);
+    }
+    console.log("第"+Vm.n1+"次"+Vm.showData1);
+  }
+  else if(name === "忠门") {
+    Vm.total2 = parseInt(Vm.DataTable2.length/Vm.pageSize);
+    console.log(Vm.total2);
+  }
+  else if(name === "东埔") {
+    Vm.total3 = parseInt(Vm.DataTable3.length/Vm.pageSize);
+    console.log(Vm.total3);
+  }
+  else if(name === "月塘") {
+    Vm.total4 = parseInt(Vm.DataTable4.length/Vm.pageSize);
+    console.log(Vm.total4);
+  }
 }
 </script>
 

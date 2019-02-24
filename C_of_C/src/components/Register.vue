@@ -10,7 +10,7 @@
         <span class="time" v-if="unlock">{{time}}</span>
       </p>
     </div>
-    <div class="status2">
+    <div class="status2" v-if="!status1">
       <header class="head">签到</header>
       <div class="lottery">
         <div class="lottery-div">

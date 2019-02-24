@@ -227,8 +227,7 @@ export default {
   },
   watch:{
     dialogFormVisible(val0,val1){
-      this.$refs["numberValidateForm"].resetFields();
-      this.numberValidateForm.region1=[]
+      this.resetForm("ruleForm2");
     }
   },
   methods: {
@@ -308,8 +307,9 @@ export default {
       });
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
-      this.numberValidateForm.region1=[]
+      if(this.$refs[formName]!== undefined) {
+        this.$refs[formName].resetFields();
+      }
     },
     search(){
       this.axios({

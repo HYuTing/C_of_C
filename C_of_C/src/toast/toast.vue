@@ -1,9 +1,9 @@
 <template>
-  <div class="wrap" v-if="showWrap" :class="showContent ?'fadein':'fadeout'">{{text}}</div>
+  <div class="wrapp" v-if="showWrap" :class="showContent ?'fadein':'fadeout'">{{text}}</div>
 </template>
 
 <style scoped>
-.wrap{
+.wrapp{
   position: fixed;
   left: 50%;
   top:50%;
