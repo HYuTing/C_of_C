@@ -55,10 +55,10 @@ export default {
   data() {
     return {
       number: '',
-      number1: 0,
-      number2: 0,
-      number3: 0,
-      number4: 0,
+      number1: -1,
+      number2: -1,
+      number3: -1,
+      number4: -1,
       registertime: null,
       starttime:'',
       endtime: ''
@@ -75,12 +75,15 @@ export default {
     })
       .then(res => {
         console.log(res);
-        console.log(this.number2=res.data.data.townCountMap.东埔.sum)
         this.number = res.data.data.sum;
-        this.number1=res.data.data.townCountMap.山亭.sum;
-        this.number2=res.data.data.townCountMap.忠门.sum;
-        this.number3=res.data.data.townCountMap.东埔.sum;
-        this.number4=res.data.data.townCountMap.月塘.sum;
+        if(res.data.data.townCountMap.山亭==null)this.number1=0;
+        else this.number1=res.data.data.townCountMap.山亭.sum;
+        if(res.data.data.townCountMap.忠门==null)this.number2=0;
+        else this.number2=res.data.data.townCountMap.忠门.sum;
+        if(res.data.data.townCountMap.东埔==null)this.number3=0;
+        else this.number3=res.data.data.townCountMap.东埔.sum;
+        if(res.data.data.townCountMap.月塘==null)this.number4=0;
+        else this.number4=res.data.data.townCountMap.月塘.sum;
       })
       .catch(error => {
         console.log(error);
