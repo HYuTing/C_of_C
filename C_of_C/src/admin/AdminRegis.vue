@@ -55,10 +55,10 @@ export default {
   data() {
     return {
       number: '',
-      number1: -1,
-      number2: -1,
-      number3: -1,
-      number4: -1,
+      number1: '',
+      number2: '',
+      number3: '',
+      number4: '',
       registertime: null,
       starttime:'',
       endtime: ''

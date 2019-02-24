@@ -65,10 +65,7 @@
                   v-model="numberValidateForm.region1">
                 </el-cascader>
               </el-form-item>
-              <el-form-item
-                label="金额："
-                prop="number"
-              >
+              <el-form-item label="金额：" prop="number">
                 <el-input  v-model="numberValidateForm.number" style="width:220px" autocomplete="off"></el-input>
               </el-form-item>
               <el-form-item>
@@ -248,7 +245,7 @@ export default {
   },
   watch:{
     dialogFormVisible(val0,val1){
-      this.resetForm("ruleForm2");
+      this.resetForm('numberValidateForm')
     }
   },
   methods: {
