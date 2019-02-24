@@ -6,7 +6,7 @@
         <span slot="title">用户管理</span>
       </el-menu-item>
 
-      <el-menu-item index="2" route="/admin/payment_management">
+      <div v-show="show"><el-menu-item index="2" route="/admin/payment_management">
         <i class="el-icon-goods"></i>
         <span slot="title">付款管理</span>
       </el-menu-item>
@@ -36,6 +36,7 @@
         <i class="el-icon-delete"></i>
         <span slot="title">清空记录</span>
       </el-menu-item>
+      </div>
     </el-menu>
 
   </div>
@@ -46,8 +47,15 @@ export default {
   name: "MyNav",
   data() {
     return {
+      show:true,
       isCollapse: false
     };
+  },
+  created(){
+    if(this.$cookies.get('identity')==="10002")
+    this.show=false
+  },
+  watch:{
   },
   props: {
     navid: String
