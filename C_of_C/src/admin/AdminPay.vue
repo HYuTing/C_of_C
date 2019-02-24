@@ -54,7 +54,7 @@
         <div class="opera-div">
           <el-button type="primary" plain @click="reset()">新增付款</el-button>
           <el-dialog title="添加付款用户" :visible.sync="dialogFormVisible" width="410px">
-            <el-form :model="numberValidateForm" ref="numberValidateForm" label-width="100px" >
+            <el-form :model="numberValidateForm" :rules="rules1" ref="numberValidateForm" label-width="100px" >
               <el-form-item label="姓名：" prop="name">
                 <el-input v-model="numberValidateForm.name" style="width:220px"></el-input>
               </el-form-item>
@@ -68,11 +68,8 @@
               <el-form-item
                 label="金额："
                 prop="number"
-                :rules="[
-                  { type: 'number', message: '金额必须为数字值'}
-                ]"
               >
-                <el-input  v-model.number="numberValidateForm.number" style="width:220px" autocomplete="off"></el-input>
+                <el-input  v-model="numberValidateForm.number" style="width:220px" autocomplete="off"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="submitForm('numberValidateForm')">提交</el-button>
@@ -110,7 +107,31 @@ import MyNav from "./nav.vue"
 export default {
   name: 'AdminPay',
   data () {
+      var validateNumber = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入金额'));
+        } else if(!/^\d+(\.\d{1,2})?$/.test(value)){
+          callback(new Error('请输入正确的金额'));
+        } else {
+          callback();
+        }
+      };
+      var validateName = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入姓名'));
+        } else {
+          callback();
+        }
+      };
     return {
+      rules1: {
+        name: [
+          { validator: validateName, trigger: 'blur' }
+        ],
+        number: [
+          { validator: validateNumber }
+        ],
+      },
       numberValidateForm: {
         region1: [],
         name:'',
