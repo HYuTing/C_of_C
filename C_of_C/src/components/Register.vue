@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div v-if="status1" class="status1">
+    <div v-if="status1" class="status1" :style="{backgroundImage: 'url('+image_bg+')'}">
       <div class="register-btn">
         <div class="border" @click="register">签 到</div>
       </div>
@@ -40,6 +40,7 @@ export default {
   name: 'AddrList',
   data () {
     return {
+      image_bg: '../../static/df.png',
       status1: true,
       lotteryCode: '',
       befoDraw: true,
@@ -240,7 +241,7 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: url('../assets/df.png') no-repeat;
+  background: no-repeat;
   background-size: 100% 94%;
   z-index: 90;
 }

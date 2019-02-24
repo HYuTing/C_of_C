@@ -63,6 +63,7 @@ export default {
         })
         .then((res) => {
           console.log('登录中...');
+          console.log(res);
           // console.log(res.headers);
           // console.log(res.headers['s-token']);
           this.$cookies.set('token', res.headers['s-token'], 3600*24*7);
@@ -70,13 +71,20 @@ export default {
           this.$cookies.set('adminname', _this.adminname, 3600*24*7);
           this.$cookies.set('signCheck', res.data.data.signCheck, 3600*24*7);
           this.$cookies.set('infoCheck', res.data.data.infoCheck, 3600*24*7);
+          this.$cookies.set('identity', res.data.data.code, 3600*24*7);
           if(res.status === 200) {
-            this.$message({
-              message: '登录成功',
-              type: 'success',
-              duration: 1000
-            });
-            this.$router.push("/admin/user_management");
+            // console.log(typeof(this.$cookies.get('identity')));
+            if(this.$cookies.get('identity') === '10001' || this.$cookies.get('identity') === '10002') {
+              this.$message({
+                message: '登录成功',
+                type: 'success',
+                duration: 1000
+              });
+              this.$router.push("/admin/user_management");
+            }
+            else {
+              this.$message.error('您没有管理员权限');
+            }
           }
         })
         .catch((error) => {
