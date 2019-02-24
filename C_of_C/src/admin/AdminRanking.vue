@@ -50,7 +50,7 @@ export default {
     return {
       value: 42,
       pageSize: 2,
-      minNum: 1,
+      minNum: 0,
       timer: '',
       st: "山亭",
       zm: "忠门",
@@ -62,7 +62,7 @@ export default {
     RankingList
   },
   created() {
-    // var param = this.$route.query.minNum;  // 从父组件接受的参数
+    this.minNum = this.$route.query.minNum;  // 从父组件接受的参数
 
     // this.axios({
     //   url: this.baseUrl + '/donation/rank?minNumber=' + 1,
@@ -82,9 +82,9 @@ export default {
     // })
   },
   methods: {
-    // reback: function(){
-    //   this.$router.push("/admin/payment_management");
-    // },
+    reback: function(){
+      this.$router.push("/admin/payment_management");
+    },
     // a() {
     //   this.value ++
     //   console.log(this.value)

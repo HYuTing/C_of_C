@@ -46,7 +46,7 @@ export default {
   },
   props: {
     townname: String,
-    minNum: Number
+    minNum: String
   },
   created() {
     this.axios({

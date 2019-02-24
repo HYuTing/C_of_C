@@ -359,7 +359,12 @@ export default {
         cancelButtonText: "取消"
       })
       .then(({ value }) => {
-
+        this.$router.push({
+          path: "/admin/rankinglist",
+          query: {
+            minNum: value
+          }
+        });
       })
       .catch(() => {
         this.$message({
