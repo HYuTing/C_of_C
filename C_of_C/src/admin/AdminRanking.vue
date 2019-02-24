@@ -5,7 +5,7 @@
       <p class="title">莆田忠门籍在榕乡亲捐款排行榜</p>
     </div>
     <div class="result-div">
-      <div class="ranking-list">
+      <!-- <div class="ranking-list">
         <p class="town-name">山亭镇</p>
         <div class="topthree">
           <div class="fst">
@@ -31,93 +31,17 @@
             <span class="num">{{item.donationNumber}} 元</span>
           </p>
         </div>
-      </div>
-      <div class="ranking-list">
-        <p class="town-name">忠门镇</p>
-        <div class="topthree">
-          <div class="fst">
-            <img src="../assets/fst2.png" class="fst-icon">
-            <p class="fst-name">{{zm[1].userInfoName}}</p>
-            <p>{{zm[1].donationNumber}}</p>
-          </div>
-          <div class="fst">
-            <img src="../assets/fst1.png" class="fst-icon">
-            <p class="first-name">{{zm[0].userInfoName}}</p>
-            <p>{{zm[0].donationNumber}}</p>
-          </div>
-          <div class="fst">
-            <img src="../assets/fst3.png" class="fst-icon">
-            <p class="fst-name">{{zm[2].userInfoName}}</p>
-            <p>{{zm[2].donationNumber}}</p>
-          </div>
-        </div>
-        <div class="others">
-          <p class="list" v-for="(item, index) in showData2" v-bind:key="index">
-            {{pageSize*n2 + index + 1}}
-            <span class="name">{{item.userInfoName}}</span>
-            <span class="num">{{item.donationNumber}} 元</span>
-          </p>
-        </div>
-      </div>
-      <div class="ranking-list">
-        <p class="town-name">东埔镇</p>
-        <div class="topthree">
-          <div class="fst">
-            <img src="../assets/fst2.png" class="fst-icon">
-            <p class="fst-name">{{dp[1].userInfoName}}</p>
-            <p>{{dp[1].donationNumber}}</p>
-          </div>
-          <div class="fst">
-            <img src="../assets/fst1.png" class="fst-icon">
-            <p class="first-name">{{dp[0].userInfoName}}</p>
-            <p>{{dp[0].donationNumber}}</p>
-          </div>
-          <div class="fst">
-            <img src="../assets/fst3.png" class="fst-icon">
-            <p class="fst-name">{{dp[2].userInfoName}}</p>
-            <p>{{dp[2].donationNumber}}</p>
-          </div>
-        </div>
-        <div class="others">
-          <p class="list" v-for="(item, index) in showData3" v-bind:key="index">
-            {{pageSize*n3 + index + 1}}
-            <span class="name">{{item.userInfoName}}</span>
-            <span class="num">{{item.donationNumber}} 元</span>
-          </p>
-        </div>
-      </div>
-      <div class="ranking-list">
-        <p class="town-name">月塘镇</p>
-        <div class="topthree">
-          <div class="fst">
-            <img src="../assets/fst2.png" class="fst-icon">
-            <p class="fst-name">{{yt[1].userInfoName}}</p>
-            <p>{{yt[1].donationNumber}}</p>
-          </div>
-          <div class="fst">
-            <img src="../assets/fst1.png" class="fst-icon">
-            <p class="first-name">{{yt[0].userInfoName}}</p>
-            <p>{{yt[0].donationNumber}}</p>
-          </div>
-          <div class="fst">
-            <img src="../assets/fst3.png" class="fst-icon">
-            <p class="fst-name">{{yt[2].userInfoName}}</p>
-            <p>{{yt[2].donationNumber}}</p>
-          </div>
-        </div>
-        <div class="others">
-          <p class="list" v-for="(item, index) in showData4" v-bind:key="index">
-            {{pageSize*n4 + index + 1}}
-            <span class="name">{{item.userInfoName}}</span>
-            <span class="num">{{item.donationNumber}} 元</span>
-          </p>
-        </div>
-      </div>
+      </div> -->
+      <RankingList :townname="st" :minNum="minNum"></RankingList>
+      <RankingList :townname="zm" :minNum="minNum"></RankingList>
+      <RankingList :townname="dp" :minNum="minNum"></RankingList>
+      <RankingList :townname="yt" :minNum="minNum"></RankingList>
     </div>
   </div>
 </template>
 
 <script>
+import RankingList from './RankingList.vue'
 import $ from 'jquery'
 
 export default {
@@ -126,110 +50,94 @@ export default {
     return {
       value: 42,
       pageSize: 2,
+      minNum: 1,
       timer: '',
-      st: [{userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}],
-      showData1: [],
-      DataTable1: [],
-      n1: 0,
-      total1: 0,
-
-      zm: [{userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}],
-      showData2: [],
-      DataTable2: [],
-      n2: 0,
-      total2: 0,
-
-      dp: [{userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}],
-      showData3: [],
-      DataTable3: [],
-      n3: 0,
-      total3: 0,
-
-      yt: [{userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}],
-      showData4: [],
-      DataTable4: [],
-      n4: 0,
-      total4: 0,
+      st: "山亭",
+      zm: "忠门",
+      dp: "东埔",
+      yt: "月塘"
     };
+  },
+  components: {
+    RankingList
   },
   created() {
     // var param = this.$route.query.minNum;  // 从父组件接受的参数
 
-    this.axios({
-      url: this.baseUrl + '/donation/rank?minNumber=' + 1,
-      method: 'get'
-    })
-    .then((res) => {
-      console.log(res);
+    // this.axios({
+    //   url: this.baseUrl + '/donation/rank?minNumber=' + 1,
+    //   method: 'get'
+    // })
+    // .then((res) => {
+    //   console.log(res);
 
-      initail(this, res.data.data, '山亭');
-      initail(this, res.data.data, '忠门');
-      initail(this, res.data.data, '东埔');
-      initail(this, res.data.data, '月塘');
+    //   initail(this, res.data.data, '山亭');
+    //   initail(this, res.data.data, '忠门');
+    //   initail(this, res.data.data, '东埔');
 
-      initailData(this, "山亭");
-    })
-    .catch((error) => {
-      console.log(error);
-    })
+    //   initailData(this, "山亭");
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // })
   },
   methods: {
-    reback: function(){
-      this.$router.push("/admin/payment_management");
-    },
-    a() {
-      this.value ++
-      console.log(this.value)
-      setTimeout(this.a,1000)
-    },
-    getInfo() {
-      var _this = this;
-      this.n1 ++;
-      if(this.n1 > this.total1) {
-        this.n1 = 0;
-        $.ajax({
-          url: this.baseUrl + '/donation/rank?minNumber=' + 1,
-          method: 'get',
-          headers: {
-            'S-TOKEN': this.$cookies.get('token2')
-          },
-          async: false,
-          dataType: "json",
-          success: function(res) {
-            console.log(res.data);
-            initail(_this, res.data, '山亭');
-          },
-          error: function(err) {
-            console.log(err);
-          }
-        })
-      }
-      var len;
-      if(this.n1 === this.total1) {
-        len = this.DataTable1.length%this.pageSize;
-      }
-      else {
-        len = this.pageSize;
-      }
-      console.log("第"+this.n1+"次"+len);
-      this.showData1 = [];
-      for(var j=0, i=this.n1*this.pageSize; i<this.n1*this.pageSize+len; j++, i++) {
-        this.$set(this.showData1, j, this.DataTable1[i]);
-      }
-      console.log("第"+this.n1+"次"+this.showData1);
-    }
+    // reback: function(){
+    //   this.$router.push("/admin/payment_management");
+    // },
+    // a() {
+    //   this.value ++
+    //   console.log(this.value)
+    //   setTimeout(this.a,1000)
+    // },
+    // getInfo() {
+    //   var _this = this;
+    //   this.n1 ++;
+    //   if(this.n1 > this.total1) {
+    //     this.n1 = 0;
+    //     $.ajax({
+    //       url: this.baseUrl + '/donation/rank?minNumber=' + 1,
+    //       method: 'get',
+    //       headers: {
+    //         'S-TOKEN': this.$cookies.get('token2')
+    //       },
+    //       async: false,
+    //       dataType: "json",
+    //       success: function(res) {
+    //         console.log(res.data);
+    //         initail(_this, res.data, '山亭');
+    //       },
+    //       error: function(err) {
+    //         console.log(err);
+    //       }
+    //     })
+    //   }
+    //   var len;
+    //   if(this.n1 === this.total1) {
+    //     len = this.DataTable1.length%this.pageSize;
+    //   }
+    //   else {
+    //     len = this.pageSize;
+    //   }
+    //   console.log("第"+this.n1+"次"+len);
+    //   this.showData1 = [];
+    //   for(var j=0, i=this.n1*this.pageSize; i<this.n1*this.pageSize+len; j++, i++) {
+    //     this.$set(this.showData1, j, this.DataTable1[i]);
+    //   }
+    //   console.log("第"+this.n1+"次"+this.showData1);
+    // }
   },
-  mounted() {
-    this.timer = setInterval(this.getInfo,5000);
-  },
-  beforeDestroy() { //清除定时器
-    clearInterval(this.timer);
-    console.log("beforeDestroy");
-  },
-  destroyed() { //清除定时器
-    //clearInterval(this.timer);
-    console.log("destroyed");
-  }
+  // mounted() {
+  //   this.timer = setInterval(this.getInfo,5000);
+  // },
+  // beforeDestroy() { //清除定时器
+  //   clearInterval(this.timer);
+  //   console.log("beforeDestroy");
+  // },
+  // destroyed() { //清除定时器
+  //   //clearInterval(this.timer);
+  //   console.log("destroyed");
+  // }
 
 };
 
