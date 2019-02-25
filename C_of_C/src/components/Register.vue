@@ -20,12 +20,12 @@
         </div>
       </div>
       <div class="donation">
-        <p>捐赠金额：</p>
+        <p>交费金额：</p>
         <div class="donation-div">
           <p class="donation-num"><span class="rmb">￥ </span></p>
           <input type="number" class="donation-input" placeholder="0.00" v-model="donationNum" :disabled="!editstatus" @blur="focusState = false" v-focus="focusState">
         </div>
-        <div class="donation-btn" v-if="editstatus" @click="donation">确认捐赠</div>
+        <div class="donation-btn" v-if="editstatus" @click="donation">确认交费</div>
         <div class="donation-btn change-num" v-if="!editstatus" @click="changeNum">修改金额</div>
       </div>
     </div>
@@ -67,8 +67,20 @@ export default {
         console.log(res);
         _this.lotteryCode = res.data.data.lotteryCode;
         if(res.data.data.lotteryResult) {
+          // 抽奖结果产生
           _this.befoDraw = false;
-          _this.lotteryResult = res.data.data.lotteryResult;
+          if(res.data.data.lotteryResult === "special") {
+            _this.lotteryResult = "特等奖";
+          }
+          else if(res.data.data.lotteryResult === "first") {
+            _this.lotteryResult = "一等奖";
+          }
+          else if(res.data.data.lotteryResult === "second") {
+            _this.lotteryResult = "二等奖";
+          }
+          else if(res.data.data.lotteryResult === "third") {
+            _this.lotteryResult = "三等奖";
+          }
         }
         _this.status1 = false;
       })
@@ -201,7 +213,7 @@ export default {
         })
         .then(function(res) {
           // console.log(res);
-          _this.$toast('感谢您的捐赠');
+          _this.$toast('感谢您的赞助');
           _this.editstatus = !_this.editstatus;
         })
         .catch(function(error) {
@@ -299,7 +311,8 @@ export default {
 }
 
 .lottery {
-  padding: 0.4rem;
+  padding: 0.6rem 0.4rem;
+  padding-bottom: 0.7rem;
   border-top: 3px solid #f4f4f4;
   border-bottom: 4px solid #f4f4f4;
   font-size: 0.6rem;
@@ -307,7 +320,7 @@ export default {
 }
 
 .lottery-div {
-  width: 5.2rem;
+  width: 5.6rem;
   margin: auto;
   text-align: left;
 }
@@ -327,7 +340,7 @@ export default {
 }
 
 .donation {
-  width: 5.2rem;
+  width: 5.6rem;
   margin: 1rem auto;
   text-align: left;
   font-size: 0.6rem;

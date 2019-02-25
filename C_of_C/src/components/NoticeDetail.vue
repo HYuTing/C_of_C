@@ -96,6 +96,7 @@ export default {
 
 .content {
   padding: 0.6rem;
+  padding-bottom: 2rem;
   text-align: left;
 }
 

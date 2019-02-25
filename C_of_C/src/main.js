@@ -42,6 +42,7 @@ function checkToken() {
       router.app.$cookies.set('token2', router.app.$cookies.get('token2'), 3600*24*8);
       router.app.$cookies.set('signCheck', router.app.$cookies.get('signCheck'), 3600*24*7);
       router.app.$cookies.set('infoCheck', router.app.$cookies.get('infoCheck'), 3600*24*7);
+      router.app.$cookies.set('identity', res.data.data.code, 3600*24*7);
       console.log("test->>" +router.app.$cookies.get('token'));
       config.headers.common['S-TOKEN'] = router.app.$cookies.get('token');
     },
@@ -51,6 +52,7 @@ function checkToken() {
       router.app.$cookies.remove('token2');
       router.app.$cookies.remove('signCheck');
       router.app.$cookies.remove('infoCheck');
+      router.app.$cookies.remove('identity');
       setTimeout(() => {
         router.app.$router.push("/login");
       }, 2200);
@@ -91,14 +93,28 @@ axios.interceptors.response.use(function (response) {
   if(error && error.response.status) {
     if(error.response.status === 401) {
       router.app.$toast('登录过期，请重新登录');
-      router.app.$cookies.remove('token');
-      router.app.$cookies.remove('token2');
-      router.app.$cookies.remove('signCheck');
-      router.app.$cookies.remove('infoCheck');
-      console.log('登录过期，请重新登录');
-      setTimeout(() => {
-        router.app.$router.push("/login");
-      }, 2200);
+      if(router.app.$cookies.get('identity') === '10000') {
+        router.app.$cookies.remove('token');
+        router.app.$cookies.remove('token2');
+        router.app.$cookies.remove('signCheck');
+        router.app.$cookies.remove('infoCheck');
+        router.app.$cookies.remove('identity');
+        console.log('登录过期，请重新登录');
+        setTimeout(() => {
+          router.app.$router.push("/login");
+        }, 2200);
+      }
+      else if(router.app.$cookies.get('identity') === '10001' || router.app.$cookies.get('identity') === '10002') {
+        router.app.$cookies.remove('token');
+        router.app.$cookies.remove('token2');
+        router.app.$cookies.remove('signCheck');
+        router.app.$cookies.remove('infoCheck');
+        router.app.$cookies.remove('identity');
+        console.log('登录过期，请重新登录');
+        setTimeout(() => {
+          router.app.$router.push("/adminlogin");
+        }, 2200);
+      }
     }
     else if(error.response.status === 418) {
       switch(error.response.data.status) {

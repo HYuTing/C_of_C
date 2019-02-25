@@ -263,13 +263,14 @@ export default {
   methods: {
     save: function() {
       var _this = this;
+      var re = /^1[0-9]*$/;
       if(this.username == '') {
         this.$toast('姓名不能为空');
       }
       else if(this.cellphone == '') {
         this.$toast('手机号不能为空');
       }
-      else if(this.cellphone.length < 11) {
+      else if(this.cellphone.length < 11 || !re.test(this.cellphone)) {
         this.$toast('手机号错误');
       }
       else if(this.occupation == '') {

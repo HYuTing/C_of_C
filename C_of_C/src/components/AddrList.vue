@@ -574,17 +574,17 @@ function getInfo() {
 }
 
 .num1 {
-  width: 25.25%;
+  width: 25%;
   line-height: 0.74rem;
 }
 .num2 {
-  width: 37.25%;
+  width: 37%;
   line-height: 0.74rem;
   border-left: 1px solid #909399;
   border-right: 1px solid #909399;
 }
 .num3 {
-  width: 37.5%;
+  width: 38%;
   line-height: 0.74rem;
 }
 

@@ -171,7 +171,7 @@ export default {
 
 .info-table {
   padding: 0.62rem;
-  background-color: #fff;
+  padding-bottom: 3rem;
 }
 
 .form-div {
