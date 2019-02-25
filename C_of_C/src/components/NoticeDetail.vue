@@ -6,7 +6,7 @@
     </header>
     <div class="content">
       <p class="title">{{title}}</p>
-      <p class="maincontent">{{content}}</p>
+      <pre class="maincontent">{{content}}</pre>
       <p class="time">发布于 {{year}}/{{month}}/{{date}}</p>
     </div>
     <Navigation :tagid="3"></Navigation>
@@ -111,6 +111,8 @@ export default {
 .maincontent {
   letter-spacing: 1px;
   font-size: 0.56rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .time {
