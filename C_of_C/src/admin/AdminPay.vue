@@ -134,8 +134,8 @@ export default {
         name:'',
         number: ''
       },
-      money:null,
-      people:null,
+      money:0,
+      people:0,
       dialogFormVisible: false,
       curPageNum: 1,
       totalnum: 10,
