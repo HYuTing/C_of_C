@@ -137,6 +137,7 @@ export default {
         this.tableData = res.data.data.lotteryVOList;
         var l=this.tableData.length
         for(var i=0;i<l;i++){
+          if(this.tableData[i]['lotteryResult']==null)this.tableData[i]['lotteryResult2']="未抽奖"
           if(this.tableData[i]['lotteryResult']=="nothing")this.tableData[i]['lotteryResult2']="未中奖"
           if(this.tableData[i]['lotteryResult']=="special")this.tableData[i]['lotteryResult2']="特等奖"
           if(this.tableData[i]['lotteryResult']=="first")this.tableData[i]['lotteryResult2']="一等奖"
@@ -238,6 +239,15 @@ export default {
               .then(res => {
                 // console.log(res.data);
                 this.tableData = res.data.data.lotteryVOList;
+                var l=this.tableData.length
+                for(var i=0;i<l;i++){
+                  if(this.tableData[i]['lotteryResult']==null)this.tableData[i]['lotteryResult2']="未抽奖"
+                  if(this.tableData[i]['lotteryResult']=="nothing")this.tableData[i]['lotteryResult2']="未中奖"
+                  if(this.tableData[i]['lotteryResult']=="special")this.tableData[i]['lotteryResult2']="特等奖"
+                  if(this.tableData[i]['lotteryResult']=="first")this.tableData[i]['lotteryResult2']="一等奖"
+                  if(this.tableData[i]['lotteryResult']=="second")this.tableData[i]['lotteryResult2']="二等奖"
+                  if(this.tableData[i]['lotteryResult']=="third")this.tableData[i]['lotteryResult2']="三等奖"
+                }
                 console.log(this.tableData)
                 this.totalnum = res.data.data.maxPageNum * this.pageSize;
               })
@@ -279,6 +289,15 @@ export default {
         .then(res => {
           // console.log(res.data);
           this.tableData = res.data.data.lotteryVOList;
+          var l=this.tableData.length
+          for(var i=0;i<l;i++){
+            if(this.tableData[i]['lotteryResult']==null)this.tableData[i]['lotteryResult2']="未抽奖"
+            if(this.tableData[i]['lotteryResult']=="nothing")this.tableData[i]['lotteryResult2']="未中奖"
+            if(this.tableData[i]['lotteryResult']=="special")this.tableData[i]['lotteryResult2']="特等奖"
+            if(this.tableData[i]['lotteryResult']=="first")this.tableData[i]['lotteryResult2']="一等奖"
+            if(this.tableData[i]['lotteryResult']=="second")this.tableData[i]['lotteryResult2']="二等奖"
+            if(this.tableData[i]['lotteryResult']=="third")this.tableData[i]['lotteryResult2']="三等奖"
+          }
           console.log(this.tableData)
           this.totalnum = res.data.data.maxPageNum * this.pageSize;
         })
