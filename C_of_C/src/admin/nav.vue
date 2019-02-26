@@ -23,7 +23,7 @@
         </template>
         <el-menu-item-group>
           <el-menu-item index="4-1" route="/admin/raffle">抽奖码与奖品</el-menu-item>
-          <el-menu-item index="4-2" route="/admin/raffle2">抽奖</el-menu-item>
+          <el-menu-item index="4-2" route="/admin/lottery">抽奖</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
 

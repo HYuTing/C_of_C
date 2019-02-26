@@ -32,12 +32,9 @@ export default {
 <style>
 .wrap-container {
   display:flex;
-  justify-content: flex-start;
-  flex: 1;
-  margin: 0 auto;
-  box-sizing: border-box;
-  float: left;
-  padding: 10px 30px;
+  justify-content: center;
+  width: 20%;
+  margin: 15px 0;
 }
 
 .wrap{
@@ -46,7 +43,7 @@ export default {
   position:relative;
   overflow:hidden;
   box-sizing: border-box;
-  font-size: 18px;
+  font-size: 21px;
 }
 
 .list {

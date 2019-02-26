@@ -245,7 +245,7 @@ export default {
   },
   watch:{
     dialogFormVisible(val0,val1){
-      this.resetForm('numberValidateForm')
+      //this.resetForm('numberValidateForm')
     }
   },
   methods: {
@@ -253,9 +253,9 @@ export default {
       return (this.curPageNum-1)*this.pageSize + index + 1;
     },
     reset(){
-      this.form.region1=[]
-      this.form.name=""
-      this.form.money=""
+      //this.form.region1=[]
+      //this.form.name=""
+      //this.form.money=""
       this.dialogFormVisible = true
     },
     submitForm(formName) {
@@ -268,7 +268,7 @@ export default {
             });
             return;
           }
-          this.dialogFormVisible = false
+          //this.dialogFormVisible = false
           this.axios({
             url: this.baseUrl + "/donation/user/add",
             method: "post",
@@ -314,6 +314,7 @@ export default {
                   type: "success",
                   message: "添加成功！"
                 });
+                this.resetForm('numberValidateForm')
             })
             .catch(error => {
               console.log(error);
@@ -463,6 +464,9 @@ export default {
 </script>
 
 <style scoped>
+.el-dialog{
+  top:10%;
+}
 .main {
   width: 100%;
   height: 100%;

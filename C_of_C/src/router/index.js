@@ -4,7 +4,7 @@ import AdminLogin from '@/admin/AdminLogin'
 import AdminMessage from '@/admin/AdminMessage'
 import AdminPay from '@/admin/AdminPay'
 import AdminRaffle from '@/admin/AdminRaffle'
-import AdminRaffle2 from '@/admin/AdminRaffle2'
+import AdminLottery from '@/admin/AdminLottery'
 import AdminRanking from '@/admin/AdminRanking'
 import AdminRegis from '@/admin/AdminRegis'
 import AdminUser from '@/admin/AdminUser'
@@ -98,9 +98,9 @@ export default new Router({
       component: AdminDelete
     },
     {
-      path: '/admin/raffle2',
-      name: 'AdminRaffle2',
-      component: AdminRaffle2
+      path: '/admin/lottery',
+      name: 'AdminLottery',
+      component: AdminLottery
     },
     {
       path: '/admin/raffle',
