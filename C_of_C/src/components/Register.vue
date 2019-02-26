@@ -81,6 +81,9 @@ export default {
           else if(res.data.data.lotteryResult === "third") {
             _this.lotteryResult = "三等奖";
           }
+          else if(res.data.data.lotteryResult === "nothing") {
+            _this.lotteryResult = "未中奖";
+          }
         }
         _this.status1 = false;
       })

@@ -1,7 +1,7 @@
 <template>
   <div class="ranking-list">
-    <p class="town-name">{{townname}}镇</p>
-    <div class="topthree">
+    <p class="town-name">{{townname}}镇 &nbsp;&nbsp;{{n+1}}/{{total+1}}</p>
+    <!-- <div class="topthree">
       <div class="fst">
         <img src="../assets/fst2.png" class="fst-icon">
         <p class="fst-name">{{fst[1].userInfoName}}</p>
@@ -17,10 +17,10 @@
         <p class="fst-name">{{fst[2].userInfoName}}</p>
         <p>{{fst[2].donationNumber}}</p>
       </div>
-    </div>
+    </div> -->
     <div class="others">
-      <p class="list" v-for="(item, index) in showData" v-bind:key="index">
-        {{pageSize*n + index + 4}}
+      <p class="others-list" v-for="(item, index) in showData" v-bind:key="index">
+        <!-- {{pageSize*n + index + 4}} -->
         <span class="name">{{item.userInfoName}}</span>
         <span class="num">{{item.donationNumber}} 元</span>
       </p>
@@ -35,7 +35,7 @@ export default {
   name: "AdminRanking",
   data() {
     return {
-      pageSize: 2,
+      pageSize: 14,
       timer: '',
       fst: [{userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}],
       showData: [],
@@ -68,7 +68,10 @@ export default {
     getInfo() {
       var _this = this;
       this.n ++;
+      // console.log(this.n);
+      // console.log(this.total);
       if(this.n > this.total) {
+        console.log('正在更新');
         this.n = 0;
         $.ajax({
           url: this.baseUrl + '/donation/rank?minNumber=' + this.minNum,
@@ -88,16 +91,19 @@ export default {
         })
       }
       var len;
-      if(this.n === this.total) {
+      // console.log(this.n);
+      if(this.n === this.total && this.DataTable.length%this.pageSize !== 0) {
         len = this.DataTable.length%this.pageSize;
       }
       else {
         len = this.pageSize;
       }
       // console.log("第"+this.n+"次"+len);
-      this.showData = [];
-      for(var j=0, i=this.n*this.pageSize; i<this.n*this.pageSize+len; j++, i++) {
-        this.$set(this.showData, j, this.DataTable[i]);
+      if(this.DataTable.length !== 0) {
+        this.showData = [];
+        for(var j=0, i=this.n*this.pageSize; i<this.n*this.pageSize+len; j++, i++) {
+          this.$set(this.showData, j, this.DataTable[i]);
+        }
       }
       // console.log("第"+this.n+"次"+this.showData);
     }
@@ -107,45 +113,56 @@ export default {
   },
   beforeDestroy() { //清除定时器
     clearInterval(this.timer);
-    console.log("beforeDestroy");
+    // console.log("beforeDestroy");
   },
   destroyed() { //清除定时器
     //clearInterval(this.timer);
-    console.log("destroyed");
+    // console.log("destroyed");
   }
 
 };
 
 function initail(Vm, res, name) {
-  var len = res.donationRankMap[name].length;
-  len<3 ? len = len : len = 3;
+  // var len = count(res.donationRankMap[name]);
+  // len<3 ? len = len : len = 3;
 
-  var lens = res.donationRankMap[name].length;
+  var lens = count(res.donationRankMap[name]);
 
-  for(var i=0; i<len; i++) {
-    if(res.donationRankMap[name][i]) {
-      // console.log(res.donationRankMap[name][i]);
-      Vm.$set(Vm.fst, i, res.donationRankMap[name][i]);
-    }
+  // for(var i=0; i<len; i++) {
+  //   if(res.donationRankMap[name][i]) {
+  //     // console.log(res.donationRankMap[name][i]);
+  //     Vm.$set(Vm.fst, i, res.donationRankMap[name][i]);
+  //   }
+  // }
+  for(var i=0; i<lens; i++) {
+    Vm.$set(Vm.DataTable, i, res.donationRankMap[name][i]);
   }
-  for(var i=3; i<lens; i++) {
-    Vm.$set(Vm.DataTable, i-3, res.donationRankMap[name][i]);
+  if(Vm.DataTable.length%Vm.pageSize === 0) {
+    Vm.total = parseInt(Vm.DataTable.length/Vm.pageSize)-1;
   }
+  else {
+    Vm.total = parseInt(Vm.DataTable.length/Vm.pageSize);
+  }
+  // console.log('每次更新的个数'+Vm.total);
+  Vm.n = 0;
 }
 
 function initailData(Vm, name) {
   var len=0;
-  Vm.total = parseInt(Vm.DataTable.length/Vm.pageSize);
-  Vm.n = 0;
-  if(Vm.n === Vm.total) {
+
+  if(Vm.n === Vm.total && Vm.DataTable.length%Vm.pageSize !== 0) {
     len = Vm.DataTable.length%Vm.pageSize;
   }
   else {len = Vm.pageSize;}
   // console.log("第"+Vm.n+"次"+len);
-  Vm.showData = [];
-  for(var j=0, i=Vm.n*Vm.pageSize; i<Vm.n*Vm.pageSize+len; j++, i++) {
-    Vm.$set(Vm.showData, j, Vm.DataTable[i]);
+  console.log(Vm.DataTable.length);
+  if(Vm.DataTable.length !== 0) {
+    Vm.showData = [];
+    for(var j=0, i=Vm.n*Vm.pageSize; i<Vm.n*Vm.pageSize+len; j++, i++) {
+      Vm.$set(Vm.showData, j, Vm.DataTable[i]);
+    }
   }
+
   // console.log("第"+Vm.n+"次"+Vm.showData);
 }
 
@@ -181,10 +198,10 @@ function count(o){
   font-size: 18px;
   font-weight: bold;
   letter-spacing: 1px;
-  margin: 12px auto;
+  margin: 15px auto;
 }
 
-.topthree {
+/* .topthree {
   display: flex;
   margin-bottom: 20px;
 }
@@ -213,26 +230,28 @@ function count(o){
   margin-top: 2px;
   margin-bottom: 10px;
   font-size: 20px;
-}
+} */
 
 .others {
   position:absolute;
-  top: 180px;
+  top: 60px;
   bottom: 10px;
   left: 0;
   right: 0;
 }
 
-.list {
-  height: 7.1%;
+.others-list {
+  height: 7%;
   text-align: left;
-  padding-left: 20px;
+  padding-left: 16px;
   font-size: 20px;
   font-weight: bold;
   letter-spacing: 1px;
 }
 
 .name {
+  display: inline-block;
+  width: 92px;
   margin: 0 20px;
   margin-right: 30px;
 }

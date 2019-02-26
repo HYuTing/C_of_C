@@ -34,7 +34,7 @@ export default {
       Delete() {
       var _this = this;
 
-      this.$confirm("此操作将永久删除记录, 是否继续?", "提示", {
+      this.$confirm("此操作将永久删除付款记录、签到记录以及抽奖记录, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"

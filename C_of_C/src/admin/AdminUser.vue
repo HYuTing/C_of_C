@@ -12,7 +12,7 @@
         :data="tableData"
         style="width: 100%"
         stripe
-        height="517">
+        height="461">
         <el-table-column
           type="index"
           :index="indexMethod"
@@ -165,7 +165,7 @@ export default {
       tableData: [],
       curPageNum: 1,
       totalnum: 0,
-      pageSize: 8,
+      pageSize: 7,
       ruleForm2: {
           pass: '',
           checkPass: ''

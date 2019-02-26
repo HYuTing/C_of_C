@@ -21,7 +21,7 @@
         :data="tableData"
         stripe
         style="width: 100%;"
-        height="450">
+        height="480">
           <el-table-column align="center" type="index" :index="indexMethod" label="序号" width="80"></el-table-column>
           <el-table-column align="center" prop="userInfoName" label="姓名" width="150"></el-table-column>
           <el-table-column align="center" prop="userInfoTown" label="原籍镇" width="200"></el-table-column>
@@ -134,12 +134,12 @@ export default {
         name:'',
         number: ''
       },
-      money:null,
-      people:null,
+      money:0,
+      people:0,
       dialogFormVisible: false,
       curPageNum: 1,
       totalnum: 10,
-      pageSize: 4,
+      pageSize: 7,
       form: {
         region1: [],
         name: '',

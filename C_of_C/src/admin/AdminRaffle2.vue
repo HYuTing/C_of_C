@@ -46,7 +46,7 @@
     </transition> -->
     <transition name="fade">
     <div v-if="!show">
-      <el-button @click="reset()" class="re-btn" circle>抽奖</el-button>
+      <el-button @click="reset()" :disabled="btn" class="re-btn" circle>{{raffleName}}</el-button>
     </div>
     </transition>
   </div>
@@ -59,6 +59,8 @@ export default {
   name: "AdminRaffle2",
   data() {
     return {
+      btn:false,
+      raffleName:"抽奖",
       show: false,
       flag: false,
       specailaward: [],
@@ -90,6 +92,9 @@ export default {
   },
   methods: {
     start: function() {
+      var _this=this
+      this.raffleName="抽奖中"
+      this.btn=true
       // this.show = !this.show;
       this.flag = false;
       this.axios({
@@ -98,12 +103,16 @@ export default {
       })
       .then((res) => {
         console.log('抽奖中...');
+        console.log(this.raffleName);
         // console.log(res.data.data.result);
         this.$set(this.$data, 'specailaward', res.data.data.result.special);
         this.$set(this.$data, 'fst', res.data.data.result.first);
         this.$set(this.$data, 'snd', res.data.data.result.second);
         this.$set(this.$data, 'trd', res.data.data.result.third);
         this.flag = true;
+        //this.raffleName="抽奖";
+        setTimeout(function(){_this.btn=false;_this.raffleName="抽奖";},1200)
+
       })
       .catch((error) => {
         console.log(error);
@@ -136,6 +145,13 @@ export default {
 };
 </script>
 <style scoped>
+.el-button.is-disabled:focus, .el-button.is-disabled:hover {
+  border-color: transparent;
+  cursor: not-allowed;
+  background-image: none;
+  background: linear-gradient(to top, #c76828, #f1c18b);
+  color: #55270d;
+}
 .main {
   position: relative;
   width: 100%;

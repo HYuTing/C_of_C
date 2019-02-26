@@ -93,11 +93,17 @@ export default {
       method: "get",
     })
       .then(res => {
-        var time = res.data.data.signBeginTimestamp;
-        this.starttime = new Date(time*1000).Format("yyyy-MM-dd hh:mm:ss");
-        var time = res.data.data.signEndTimestamp;
-        this.endtime = new Date(time*1000).Format("yyyy-MM-dd hh:mm:ss");
-        console.log(res)
+        var time;
+        if(res.data.data == null) {
+
+        }
+        else {
+          time = res.data.data.signBeginTimestamp;
+          this.starttime = new Date(time*1000).Format("yyyy-MM-dd hh:mm:ss");
+          var time = res.data.data.signEndTimestamp;
+          this.endtime = new Date(time*1000).Format("yyyy-MM-dd hh:mm:ss");
+          console.log(res)
+        }
       })
       .catch(error => {
         console.log(error);
@@ -114,7 +120,7 @@ export default {
         return;
       }
       if(this.starttime!='') {
-        this.$confirm('已经设置过签到时间, 是否继续?', '提示', {
+        this.$confirm('此操作将清空用户之前的签到信息, 是否修改签到时间?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

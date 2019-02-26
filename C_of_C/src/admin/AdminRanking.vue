@@ -2,7 +2,7 @@
   <div class="main">
     <div class="header">
       <p class="return" @click="reback()">&lt; 返回</p>
-      <p class="title">莆田忠门籍在榕乡亲交费排行榜</p>
+      <p class="title">莆田忠门籍在榕乡亲捐款排行榜</p>
     </div>
     <div class="result-div">
       <!-- <div class="ranking-list">
