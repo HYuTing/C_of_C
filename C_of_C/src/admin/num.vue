@@ -33,8 +33,11 @@ export default {
 .wrap-container {
   display:flex;
   justify-content: flex-start;
-  width: 98px;
-  margin: 16px auto;
+  flex: 1;
+  margin: 0 auto;
+  box-sizing: border-box;
+  float: left;
+  padding: 10px 30px;
 }
 
 .wrap{

@@ -19,20 +19,18 @@
         <div v-if="flag">
           <Num v-for="(item, index) in specailaward" v-bind:key="index" :vv="item.lotteryCode"></Num>
         </div>
-      </div>
-      <div class="result-level">
-        <p class="level">一等奖</p>
+        <p class="level" style="margin-top: 70px;">一等奖</p>
         <div v-if="flag">
           <Num v-for="(item, index) in fst" v-bind:key="index" :vv="item.lotteryCode"></Num>
         </div>
       </div>
-      <div class="result-level">
+      <div class="level23">
         <p class="level">二等奖</p>
         <div v-if="flag">
           <Num v-for="(item, index) in snd" v-bind:key="index" :vv="item.lotteryCode"></Num>
         </div>
       </div>
-      <div class="result-level">
+      <div class="level23">
         <p class="level">三等奖</p>
         <div v-if="flag">
           <Num v-for="(item, index) in trd" v-bind:key="index" :vv="item.lotteryCode"></Num>
@@ -209,12 +207,12 @@ export default {
 }
 
 .header {
-  margin-top: 50px;
+  margin-top: 40px;
 }
 
 .return {
   position: absolute;
-  top: 54px;
+  top: 44px;
   left: 64px;
   color: #fff;
   z-index: 99;
@@ -231,9 +229,8 @@ export default {
 .result-div {
   display: flex;
   width: 80%;
-  min-height: 360px;
-  max-height: 540px;
-  margin: 50px auto;
+  height: 80%;
+  margin: 30px auto;
   box-shadow: 0 0 100px rgba(0, 0, 0, 0.25);
   overflow-y: scroll;
   -ms-overflow-style: none;
@@ -245,13 +242,22 @@ export default {
 }
 
 .result-level {
+  width: 156px;
+  margin: 0 30px;
+  color: #ffeecc;
+  text-align: center;
+}
+
+.level23 {
   flex: 1;
+  margin-right: 30px;
   color: #ffeecc;
   text-align: center;
 }
 
 .level {
-  margin: 24px auto;
+  margin: 20px auto;
+  margin-bottom: 15px;
   font-size: 22px;
 }
 
