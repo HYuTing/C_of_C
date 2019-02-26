@@ -1,26 +1,8 @@
 <template>
   <div class="ranking-list">
     <p class="town-name">{{townname}}镇 &nbsp;&nbsp;{{n+1}}/{{total+1}}</p>
-    <!-- <div class="topthree">
-      <div class="fst">
-        <img src="../assets/fst2.png" class="fst-icon">
-        <p class="fst-name">{{fst[1].userInfoName}}</p>
-        <p>{{fst[1].donationNumber}}</p>
-      </div>
-      <div class="fst">
-        <img src="../assets/fst1.png" class="fst-icon">
-        <p class="first-name">{{fst[0].userInfoName}}</p>
-        <p>{{fst[0].donationNumber}}</p>
-      </div>
-      <div class="fst">
-        <img src="../assets/fst3.png" class="fst-icon">
-        <p class="fst-name">{{fst[2].userInfoName}}</p>
-        <p>{{fst[2].donationNumber}}</p>
-      </div>
-    </div> -->
     <div class="others">
       <p class="others-list" v-for="(item, index) in showData" v-bind:key="index">
-        <!-- {{pageSize*n + index + 4}} -->
         <span class="name">{{item.userInfoName}}</span>
         <span class="num">{{item.donationNumber}} 元</span>
       </p>
@@ -35,7 +17,7 @@ export default {
   name: "AdminRanking",
   data() {
     return {
-      pageSize: 14,
+      pageSize: 28,
       timer: '',
       fst: [{userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}],
       showData: [],
@@ -123,17 +105,9 @@ export default {
 };
 
 function initail(Vm, res, name) {
-  // var len = count(res.donationRankMap[name]);
-  // len<3 ? len = len : len = 3;
 
   var lens = count(res.donationRankMap[name]);
 
-  // for(var i=0; i<len; i++) {
-  //   if(res.donationRankMap[name][i]) {
-  //     // console.log(res.donationRankMap[name][i]);
-  //     Vm.$set(Vm.fst, i, res.donationRankMap[name][i]);
-  //   }
-  // }
   for(var i=0; i<lens; i++) {
     Vm.$set(Vm.DataTable, i, res.donationRankMap[name][i]);
   }
@@ -187,7 +161,7 @@ function count(o){
 .ranking-list {
   position: relative;
   flex: 1;
-  min-width: 286px;
+  min-width: 520px;
   margin: 30px 8px;
   border-radius: 2px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
@@ -202,56 +176,26 @@ function count(o){
   margin: 15px auto;
 }
 
-/* .topthree {
-  display: flex;
-  margin-bottom: 20px;
-}
-
-.fst {
-  flex: 1;
-  height: 100%;
-  margin: 0 10px;
-  font-weight: bold;
-}
-
-.fst-icon {
-  width: 50px;
-}
-
-.fst-name {
-  line-height: 26px;
-  margin-top: 7px;
-  margin-bottom: 10px;
-  font-size: 20px;
-  letter-spacing: 1px;
-}
-
-.first-name {
-  line-height: 26px;
-  margin-top: 2px;
-  margin-bottom: 10px;
-  font-size: 20px;
-} */
-
 .others {
   position:absolute;
   top: 60px;
   bottom: 10px;
-  left: 24px;
-  right: 24px;
+  left: 20px;
+  right: 20px;
 }
 
 .others-list {
+  float: left;
+  box-sizing: border-box;
+  width: 50%;
   height: 7%;
   text-align: left;
   font-size: 20px;
   font-weight: bold;
-  letter-spacing: 1px;
 }
 
 .name {
   display: inline-block;
   width: 90px;
-  margin-right: 10px;
 }
 </style>

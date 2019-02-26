@@ -2,7 +2,7 @@
   <div class="main">
     <div class="header">
       <p class="return" @click="reback()">&lt; 返回</p>
-      <p class="title">忠门籍在榕乡亲交费榜（1000元以上）</p>
+      <p class="title">忠门籍在榕乡亲交费榜（{{minNum}}元以上）</p>
     </div>
     <div class="result-div">
       <!-- <div class="ranking-list">
@@ -32,16 +32,17 @@
           </p>
         </div>
       </div> -->
-      <RankingList :townname="st" :minNum="minNum"></RankingList>
+      <RankingList2 :townname="st" :minNum="minNum"></RankingList2>
       <RankingList :townname="zm" :minNum="minNum"></RankingList>
       <RankingList :townname="dp" :minNum="minNum"></RankingList>
-      <RankingList :townname="yt" :minNum="minNum"></RankingList>
+      <RankingList2 :townname="yt" :minNum="minNum"></RankingList2>
     </div>
   </div>
 </template>
 
 <script>
 import RankingList from './RankingList.vue'
+import RankingList2 from './RankingList2.vue'
 import $ from 'jquery'
 
 export default {
@@ -59,7 +60,8 @@ export default {
     };
   },
   components: {
-    RankingList
+    RankingList,
+    RankingList2
   },
   created() {
     this.minNum = this.$route.query.minNum;  // 从父组件接受的参数
@@ -230,7 +232,7 @@ function initailData(Vm, name) {
 .main {
   position: relative;
   width: 100%;
-  min-width: 1360px;
+  min-width: 1710px;
   height: 100%;
   font-size: 16px;
   color: #ffeecc;
