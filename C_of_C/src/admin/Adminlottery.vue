@@ -37,6 +37,24 @@
 <script>
 import Num from "./num.vue"
 
+!(function(win, doc) {
+  function setFontSize() {
+    var docEl = doc.documentElement;
+    var winWidth = docEl.clientWidth;
+    doc.documentElement.style.fontSize = (winWidth / 1080) * 100 + 'px';
+  }
+  var evt = 'onorientationchange' in win ? 'orientationchange' : 'resize';
+  var timer = null;
+  win.addEventListener(evt, function() {
+    clearTimeout(timer); timer = setTimeout(setFontSize, 300);
+  }, false);
+  win.addEventListener('pageshow', function(e) {
+    if (e.persisted) { clearTimeout(timer);
+    timer = setTimeout(setFontSize, 300);
+  } }, false)
+  setFontSize();
+}(window, document))
+
 export default {
   name: "AdminRaffle2",
   data() {
@@ -182,7 +200,7 @@ export default {
   border-color: transparent;
   border-radius: 50%;
   padding: 12px;
-  font-size: 18px;
+  font-size: 0.16rem;
   font-weight: bold;
 }
 .el-button.is-circle:hover {
@@ -196,7 +214,6 @@ export default {
   width: 100%;
   min-width: 800px;
   height: 100%;
-  font-size: 16px;
   background-color: #b81d25;
   overflow: hidden;
 }
@@ -248,7 +265,8 @@ export default {
 }
 
 .header {
-  margin-top: 50px;
+  margin-top: 46px;
+  font-size: 18px;
 }
 
 .select {
@@ -261,29 +279,30 @@ export default {
 
 .return {
   position: absolute;
-  top: 54px;
+  top: 60px;
   left: 64px;
   color: #fff;
   z-index: 99;
   cursor: pointer;
+  font-size: 0.14rem;
 }
 
 .title {
   text-align: center;
-  font-size: 32px;
+  font-size: 0.32rem;
   letter-spacing: 2px;
   color: #ffeecc;
 }
 
 .btn-div {
   position: absolute;
-  top: 54px;
+  top: 60px;
   right: 250px;
 }
 
 .result-div {
   width: 76%;
-  height: 80%;
+  height: 75%;
   padding: 0 60px;
   margin: 40px auto;
   box-shadow: 0 0 100px rgba(0, 0, 0, 0.25);
@@ -300,7 +319,7 @@ export default {
   display: block;
   margin: 20px auto;
   margin-bottom: 15px;
-  font-size: 22px;
+  font-size: 0.24rem;
   color: #ffeecc;
 }
 

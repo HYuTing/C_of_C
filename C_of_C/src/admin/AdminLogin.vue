@@ -25,6 +25,11 @@ export default {
       eye: require('../assets/eyeicon1.png')
     }
   },
+  created() {
+    if(this.$cookies.get('token2')) {
+      this.$router.push("/admin/user_management");
+    }
+  },
   methods: {
     showpassword_fun: function() {
       if(this.showpassword === 'password') {
@@ -63,7 +68,7 @@ export default {
         })
         .then((res) => {
           console.log('登录中...');
-          console.log(res);
+          // console.log(res);
           // console.log(res.headers);
           // console.log(res.headers['s-token']);
           this.$cookies.set('token', res.headers['s-token'], 3600*24*7);
