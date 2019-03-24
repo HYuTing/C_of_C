@@ -32,10 +32,10 @@
           </p>
         </div>
       </div> -->
-      <RankingList :townname="st" :minNum="minNum"></RankingList>
-      <RankingList :townname="zm" :minNum="minNum"></RankingList>
-      <RankingList :townname="dp" :minNum="minNum"></RankingList>
-      <RankingList :townname="yt" :minNum="minNum"></RankingList>
+      <RankingList ref="headerChild1" :townname="st" :minNum="minNum"></RankingList>
+      <RankingList ref="headerChild2" :townname="zm" :minNum="minNum"></RankingList>
+      <RankingList ref="headerChild3" :townname="dp" :minNum="minNum"></RankingList>
+      <RankingList ref="headerChild4" :townname="yt" :minNum="minNum"></RankingList>
     </div>
   </div>
 </template>
@@ -48,6 +48,7 @@ export default {
   name: "AdminRanking",
   data() {
     return {
+      clientWidth: document.body.clientWidth,
       value: 42,
       pageSize: 2,
       minNum: 0,
@@ -57,6 +58,36 @@ export default {
       dp: "东埔",
       yt: "月塘"
     };
+  },
+  mounted() {
+    // 在 DOM 渲染数据时，设置下区域高度为浏览器可视区域高度．
+    this.clientWidth = document.body.clientWidth;
+    // 监听 window 的 resize 事件．在浏览器窗口变化时再设置下区域高度．
+    const _this = this;
+    window.onresize = function temp() {
+        _this.clientWidth = document.body.clientWidth;
+        var fontsize=parseInt(_this.clientWidth/60)+"px";
+        var spanwidth=parseInt(_this.clientWidth/5.9)+"px";
+        var namewidth=parseInt(_this.clientWidth/5.9*0.44)+"px";
+        var numwidth=parseInt(_this.clientWidth/5.9*0.50)+"px";
+        _this.$refs.headerChild1.fontWidth=fontsize;
+        _this.$refs.headerChild2.fontWidth=fontsize;
+        _this.$refs.headerChild3.fontWidth=fontsize;
+        _this.$refs.headerChild4.fontWidth=fontsize;
+        _this.$refs.headerChild1.spanWidth=spanwidth;
+        _this.$refs.headerChild2.spanWidth=spanwidth;
+        _this.$refs.headerChild3.spanWidth=spanwidth;
+        _this.$refs.headerChild4.spanWidth=spanwidth;
+        _this.$refs.headerChild1.nameWidth=namewidth;
+        _this.$refs.headerChild2.nameWidth=namewidth;
+        _this.$refs.headerChild3.nameWidth=namewidth;
+        _this.$refs.headerChild4.nameWidth=namewidth;
+        _this.$refs.headerChild1.numWidth=numwidth;
+        _this.$refs.headerChild2.numWidth=numwidth;
+        _this.$refs.headerChild3.numWidth=numwidth;
+        _this.$refs.headerChild4.numWidth=numwidth;
+        //alert(len)alert(_this.$refs.headerChild.fontWidth);
+    }
   },
   components: {
     RankingList
