@@ -45,6 +45,9 @@ export default {
       });
     }
   },
+  mounted() {
+    // document.getElementsByClassName('form-input')[0].style="font-size: 1rem;";
+  },
   methods: {
     Login: function() {
       var _this = this;

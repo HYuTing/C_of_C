@@ -12,8 +12,19 @@ export default {
   props: {
     vv: String
   },
+  created() {
+
+  },
   methods: {
-    init () {
+    init() {
+      // this.vv.toString().split('').forEach(v => {
+      //   this.html += '<div class="wrap"><ul class="list scroll' + v + '">'
+      //   for (let i = 0; i <= 9; i++) {
+      //     this.html += '<li>' + i + '</li>'
+      //   }
+      //   this.html += '</ul></div>'
+      // })
+      // this.$refs.number.innerHTML = this.html
       this.vv.toString().split('').forEach(v => {
         this.html += '<div class="wrap"><ul class="list scroll' + v + '">'
         for (let i = 0; i <= 9; i++) {
@@ -22,10 +33,16 @@ export default {
         this.html += '</ul></div>'
       })
       this.$refs.number.innerHTML = this.html
+    },
+    fontsizeSet(size) {
+      var len = document.getElementsByClassName('wrap').length;
+      for(var i=0; i<len; i++) {
+        document.getElementsByClassName('wrap')[i].style="font-size: "+ size +"px";
+      }
     }
   },
-  mounted () {
-    this.init()
+  mounted() {
+    this.init();
   }
 }
 </script>
@@ -38,12 +55,12 @@ export default {
 }
 
 .wrap{
-  width:12px;
+  width:15px;
   height:18px;
   position:relative;
   overflow:hidden;
   box-sizing: border-box;
-  font-size: 21px;
+  /* font-size: 24px; */
 }
 
 .list {

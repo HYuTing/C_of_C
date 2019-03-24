@@ -11,7 +11,13 @@
 
     <div class="header">
       <p class="return" @click="reback()">&lt; 返回</p>
+
+    <div class="block">
+      字体大小设置：<el-slider v-model="value1" :change="changeFontsize()"></el-slider>
+    </div>
+
       <p class="title">幸运大抽奖</p>
+
       <div class="btn-div">
         <el-button @click="setlevel('special')" circle style="background: #b81d25; color: #ffeecc;">特</el-button>
         <el-button @click="setlevel('first')" circle style="background: #b81d25; color: #ffeecc;">一</el-button>
@@ -23,7 +29,8 @@
     <div class="result-div">
       <p class="level">{{level}}</p>
       <div v-if="flag" class="result">
-        <Num v-for="(item, index) in result" v-bind:key="index" :vv="item.lotteryCode"></Num>
+        <!-- <Num v-for="(item, index) in result" v-bind:key="index" :vv="item.lotteryCode"></Num> -->
+        <child v-for="(item, index) in result" v-bind:key="index" :vv="item.lotteryCode"></child>
       </div>
     </div>
     <transition name="fade">
@@ -31,34 +38,36 @@
       <el-button @click="reset()" :disabled="btn" class="re-btn" circle style="font-size: 28px; font-weight: normal;">{{raffleName}}</el-button>
     </div>
     </transition>
+
   </div>
 </template>
 
 <script>
-import Num from "./num.vue"
+import Child from './num'
 
-!(function(win, doc) {
-  function setFontSize() {
-    var docEl = doc.documentElement;
-    var winWidth = docEl.clientWidth;
-    doc.documentElement.style.fontSize = (winWidth / 1080) * 100 + 'px';
-  }
-  var evt = 'onorientationchange' in win ? 'orientationchange' : 'resize';
-  var timer = null;
-  win.addEventListener(evt, function() {
-    clearTimeout(timer); timer = setTimeout(setFontSize, 300);
-  }, false);
-  win.addEventListener('pageshow', function(e) {
-    if (e.persisted) { clearTimeout(timer);
-    timer = setTimeout(setFontSize, 300);
-  } }, false)
-  setFontSize();
-}(window, document))
+// !(function(win, doc) {
+//   function setFontSize() {
+//     var docEl = doc.documentElement;
+//     var winWidth = docEl.clientWidth;
+//     doc.documentElement.style.fontSize = (winWidth / 1080) * 100 + 'px';
+//   }
+//   var evt = 'onorientationchange' in win ? 'orientationchange' : 'resize';
+//   var timer = null;
+//   win.addEventListener(evt, function() {
+//     clearTimeout(timer); timer = setTimeout(setFontSize, 300);
+//   }, false);
+//   win.addEventListener('pageshow', function(e) {
+//     if (e.persisted) { clearTimeout(timer);
+//     timer = setTimeout(setFontSize, 300);
+//   } }, false)
+//   setFontSize();
+// }(window, document))
 
 export default {
   name: "AdminRaffle2",
   data() {
     return {
+      value1: 24,
       btn:false,
       raffleName:"抽奖",
       flag: false,
@@ -68,7 +77,7 @@ export default {
     };
   },
   components: {
-    Num
+    Child
   },
   created() {
     this.axios({
@@ -123,14 +132,14 @@ export default {
       var _this=this
       this.raffleName="抽奖"
       this.flag = false;
-      console.log(typeof(this.value));
+      // console.log(typeof(this.value));
       this.axios({
         url: this.baseUrl + '/lottery/draw?type=' + this.value,
         method: 'get'
       })
       .then((res) => {
         console.log('获取中...');
-        console.log(res.data.data.result);
+        // console.log(res.data.data.result);
         if(res.data.data.result.length !== 0) {
           this.$set(this.$data, 'result', res.data.data.result);
           this.flag = true;
@@ -191,6 +200,9 @@ export default {
       }
 
       console.log(this.flag);
+    },
+    changeFontsize() {
+
     }
   }
 };
@@ -200,7 +212,7 @@ export default {
   border-color: transparent;
   border-radius: 50%;
   padding: 12px;
-  font-size: 0.16rem;
+  font-size: 16px;
   font-weight: bold;
 }
 .el-button.is-circle:hover {
@@ -209,6 +221,16 @@ export default {
   background: linear-gradient(to top, #c76828, #f1c18b);
   color: #55270d;
 }
+
+.block {
+  position: absolute;
+  top: 50px;
+  left: 200px;
+  width: 150px;
+  font-size: 16px;
+  color: #ffeecc;
+}
+
 .main {
   position: relative;
   width: 100%;
@@ -284,19 +306,19 @@ export default {
   color: #fff;
   z-index: 99;
   cursor: pointer;
-  font-size: 0.14rem;
+  font-size: 15px;
 }
 
 .title {
   text-align: center;
-  font-size: 0.32rem;
+  font-size: 32px;
   letter-spacing: 2px;
   color: #ffeecc;
 }
 
 .btn-div {
   position: absolute;
-  top: 60px;
+  top: 50px;
   right: 250px;
 }
 
@@ -319,7 +341,7 @@ export default {
   display: block;
   margin: 20px auto;
   margin-bottom: 15px;
-  font-size: 0.24rem;
+  font-size: 24px;
   color: #ffeecc;
 }
 

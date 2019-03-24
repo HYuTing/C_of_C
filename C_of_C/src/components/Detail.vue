@@ -14,7 +14,7 @@
       <div class="form-div">
         <img class="icon" src="../assets/phone.png">
         <div class="input-div">
-          <span class="info">{{cellphone}}</span>
+          <a :href="'tel:' + cellphone" class="info">{{cellphone}}</a>
         </div>
       </div>
       <div class="form-div">
@@ -201,6 +201,8 @@ export default {
 .info {
   display: inline-block;
   margin-left: 0.14rem;
+  text-decoration: none;
+  color: #303133;
 }
 
 .info-null {

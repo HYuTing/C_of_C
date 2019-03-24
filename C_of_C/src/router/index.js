@@ -15,6 +15,9 @@ import Loginup from '@/components/Loginup'
 import Notice from '@/components/Notice'
 import NoticeDetail from '@/components/NoticeDetail'
 import Register from '@/components/Register'
+
+import Parent from '@/admin/parent'
+
 import Router from 'vue-router'
 import Userinfo from '@/components/Userinfo'
 import Vue from 'vue'
@@ -111,6 +114,11 @@ export default new Router({
       path: '/admin/rankinglist',
       name: 'AdminRanking',
       component: AdminRanking
+    },
+    {
+      path: '/admin/parent',
+      name: 'Parent',
+      component: Parent
     }
   ]
 })
