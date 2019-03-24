@@ -74,7 +74,7 @@ export default {
       method: "get",
     })
       .then(res => {
-        console.log(res);
+        // console.log(res);
         this.number = res.data.data.sum;
         if(res.data.data.townCountMap.山亭==null)this.number1=0;
         else this.number1=res.data.data.townCountMap.山亭.sum;
@@ -102,7 +102,7 @@ export default {
           this.starttime = new Date(time*1000).Format("yyyy-MM-dd hh:mm:ss");
           var time = res.data.data.signEndTimestamp;
           this.endtime = new Date(time*1000).Format("yyyy-MM-dd hh:mm:ss");
-          console.log(res)
+          // console.log(res)
         }
       })
       .catch(error => {

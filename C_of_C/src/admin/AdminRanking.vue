@@ -32,17 +32,16 @@
           </p>
         </div>
       </div> -->
-      <RankingList2 :townname="st" :minNum="minNum"></RankingList2>
+      <RankingList :townname="st" :minNum="minNum"></RankingList>
       <RankingList :townname="zm" :minNum="minNum"></RankingList>
       <RankingList :townname="dp" :minNum="minNum"></RankingList>
-      <RankingList2 :townname="yt" :minNum="minNum"></RankingList2>
+      <RankingList :townname="yt" :minNum="minNum"></RankingList>
     </div>
   </div>
 </template>
 
 <script>
 import RankingList from './RankingList.vue'
-import RankingList2 from './RankingList2.vue'
 import $ from 'jquery'
 
 export default {
@@ -60,8 +59,7 @@ export default {
     };
   },
   components: {
-    RankingList,
-    RankingList2
+    RankingList
   },
   created() {
     this.minNum = this.$route.query.minNum;  // 从父组件接受的参数
@@ -232,7 +230,6 @@ function initailData(Vm, name) {
 .main {
   position: relative;
   width: 100%;
-  min-width: 1710px;
   height: 100%;
   font-size: 16px;
   color: #ffeecc;

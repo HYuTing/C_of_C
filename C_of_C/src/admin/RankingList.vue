@@ -187,7 +187,6 @@ function count(o){
 .ranking-list {
   position: relative;
   flex: 1;
-  min-width: 286px;
   margin: 30px 8px;
   border-radius: 2px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
@@ -196,62 +195,33 @@ function count(o){
 }
 
 .town-name {
-  font-size: 18px;
+  font-size: 24px;
   font-weight: bold;
   letter-spacing: 1px;
   margin: 15px auto;
 }
 
-/* .topthree {
-  display: flex;
-  margin-bottom: 20px;
-}
-
-.fst {
-  flex: 1;
-  height: 100%;
-  margin: 0 10px;
-  font-weight: bold;
-}
-
-.fst-icon {
-  width: 50px;
-}
-
-.fst-name {
-  line-height: 26px;
-  margin-top: 7px;
-  margin-bottom: 10px;
-  font-size: 20px;
-  letter-spacing: 1px;
-}
-
-.first-name {
-  line-height: 26px;
-  margin-top: 2px;
-  margin-bottom: 10px;
-  font-size: 20px;
-} */
-
 .others {
   position:absolute;
-  top: 60px;
+  top: 70px;
   bottom: 10px;
-  left: 24px;
-  right: 24px;
+  left: 20px;
+  right: 20px;
 }
 
 .others-list {
+  width: 250px;
   height: 7%;
+  margin: auto;
   text-align: left;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   letter-spacing: 1px;
 }
 
 .name {
   display: inline-block;
-  width: 90px;
+  width: 110px;
   margin-right: 10px;
 }
 </style>

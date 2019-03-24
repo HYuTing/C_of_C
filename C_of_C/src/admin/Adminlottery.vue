@@ -45,31 +45,13 @@
 <script>
 import Child from './num'
 
-// !(function(win, doc) {
-//   function setFontSize() {
-//     var docEl = doc.documentElement;
-//     var winWidth = docEl.clientWidth;
-//     doc.documentElement.style.fontSize = (winWidth / 1080) * 100 + 'px';
-//   }
-//   var evt = 'onorientationchange' in win ? 'orientationchange' : 'resize';
-//   var timer = null;
-//   win.addEventListener(evt, function() {
-//     clearTimeout(timer); timer = setTimeout(setFontSize, 300);
-//   }, false);
-//   win.addEventListener('pageshow', function(e) {
-//     if (e.persisted) { clearTimeout(timer);
-//     timer = setTimeout(setFontSize, 300);
-//   } }, false)
-//   setFontSize();
-// }(window, document))
-
 export default {
   name: "AdminRaffle2",
   data() {
     return {
       value1: 24,
-      btn:false,
-      raffleName:"抽奖",
+      btn: false,
+      raffleName: "抽奖",
       flag: false,
       level: '特等奖',
       result: [],
@@ -85,17 +67,17 @@ export default {
       method: "get",
     })
     .then(res => {
-      if(res.data.data.lotteryFirst==null){
-        this.$message({
+      if(res.data.data.lotteryFirst==null){  // 如果还未设置奖品数量
+        this.$message({  // 错误提示
           type: "warning",
           message: "您还未设置奖品数量！"
         });
-        this.$router.push({
+        this.$router.push({  // 且跳回设置奖品的页面
           path: "/admin/raffle"
         });
       }
       else {
-        this.$confirm('是否需要清空之前抽奖记录？', '提示', {
+        this.$confirm('是否需要清空之前抽奖记录？', '提示', {  // 如果已抽过奖，询问是否清空抽奖记录
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -128,7 +110,7 @@ export default {
 
   },
   methods: {
-    start: function() {
+    start: function() {  // 获取抽奖结果
       var _this=this
       this.raffleName="抽奖"
       this.flag = false;
@@ -139,7 +121,7 @@ export default {
       })
       .then((res) => {
         console.log('获取中...');
-        // console.log(res.data.data.result);
+        console.log(res.data.data.result);
         if(res.data.data.result.length !== 0) {
           this.$set(this.$data, 'result', res.data.data.result);
           this.flag = true;
@@ -154,14 +136,14 @@ export default {
       this.raffleName="抽奖中"
       this.btn=true;
       this.flag = false;
-      console.log(typeof(this.value));
+      // console.log(typeof(this.value));
       this.axios({
         url: this.baseUrl + '/lottery/draw?type=' + this.value,
         method: 'post'
       })
       .then((res) => {
         console.log('抽奖中...');
-        console.log(res.data.data.result);
+        // console.log(res.data.data.result);
         this.$set(this.$data, 'result', res.data.data.result);
         this.flag = true;
         setTimeout(function(){_this.btn=false;_this.raffleName="抽奖";},1200)

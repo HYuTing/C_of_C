@@ -60,7 +60,7 @@ export default {
   position:relative;
   overflow:hidden;
   box-sizing: border-box;
-  /* font-size: 24px; */
+  font-size: 24px;
 }
 
 .list {

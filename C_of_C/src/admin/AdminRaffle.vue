@@ -145,7 +145,7 @@ export default {
           if(this.tableData[i]['lotteryResult']=="third")this.tableData[i]['lotteryResult2']="三等奖"
         }
 
-        console.log("b",this.tableData)
+        // console.log("b",this.tableData)
         this.totalnum = res.data.data.maxPageNum * this.pageSize;
       })
       .catch(error => {
@@ -227,43 +227,45 @@ export default {
           url: this.baseUrl + "/lottery/special?name="+ value,
           method: "get",
         })
+        .then(res => {
+          this.axios({
+            url: this.baseUrl + "/lottery/all",
+            method: "post",
+            data: {
+              pageNum: this.currentPage,
+              pageSize: this.pageSize
+            }
+          })
           .then(res => {
-            this.axios({
-              url: this.baseUrl + "/lottery/all",
-              method: "post",
-              data: {
-                pageNum: this.currentPage,
-                pageSize: this.pageSize
-              }
-            })
-              .then(res => {
-                // console.log(res.data);
-                this.tableData = res.data.data.lotteryVOList;
-                var l=this.tableData.length
-                for(var i=0;i<l;i++){
-                  if(this.tableData[i]['lotteryResult']==null)this.tableData[i]['lotteryResult2']="未抽奖"
-                  if(this.tableData[i]['lotteryResult']=="nothing")this.tableData[i]['lotteryResult2']="未中奖"
-                  if(this.tableData[i]['lotteryResult']=="special")this.tableData[i]['lotteryResult2']="特等奖"
-                  if(this.tableData[i]['lotteryResult']=="first")this.tableData[i]['lotteryResult2']="一等奖"
-                  if(this.tableData[i]['lotteryResult']=="second")this.tableData[i]['lotteryResult2']="二等奖"
-                  if(this.tableData[i]['lotteryResult']=="third")this.tableData[i]['lotteryResult2']="三等奖"
-                }
-                console.log(this.tableData)
-                this.totalnum = res.data.data.maxPageNum * this.pageSize;
-              })
-              .catch(error => {
-                console.log(error);
-              });
-
-            this.$message({
-              type: "success",
-              message: "添加成功！"
-            });
-            console.log(res.data);
+            // console.log(res.data);
+            this.tableData = res.data.data.lotteryVOList;
+            var l=this.tableData.length
+            for(var i=0;i<l;i++){
+              if(this.tableData[i]['lotteryResult']==null)this.tableData[i]['lotteryResult2']="未抽奖"
+              if(this.tableData[i]['lotteryResult']=="nothing")this.tableData[i]['lotteryResult2']="未中奖"
+              if(this.tableData[i]['lotteryResult']=="special")this.tableData[i]['lotteryResult2']="特等奖"
+              if(this.tableData[i]['lotteryResult']=="first")this.tableData[i]['lotteryResult2']="一等奖"
+              if(this.tableData[i]['lotteryResult']=="second")this.tableData[i]['lotteryResult2']="二等奖"
+              if(this.tableData[i]['lotteryResult']=="third")this.tableData[i]['lotteryResult2']="三等奖"
+            }
+            // console.log(this.tableData)
+            this.totalnum = res.data.data.maxPageNum * this.pageSize;
           })
           .catch(error => {
             console.log(error);
           });
+
+          // console.log(res.data);
+          this.$alert('您成功为用户 ['+value+'] 添加了抽奖码：'+res.data.data, '添加成功', {
+            confirmButtonText: '确定',
+            callback: action => {
+
+            }
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
       })
       .catch(() => {
         this.$message({
