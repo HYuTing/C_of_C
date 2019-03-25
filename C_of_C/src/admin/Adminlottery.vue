@@ -27,10 +27,14 @@
 
     </div>
     <div class="result-div">
-      <p class="level">{{level}}</p>
+      <p class="level">{{level}} ({{curNum}}/{{tolNum}})</p>
       <div v-if="flag" class="result">
         <!-- <Num v-for="(item, index) in result" v-bind:key="index" :vv="item.lotteryCode"></Num> -->
-        <child v-for="(item, index) in result" v-bind:key="index" :vv="item.lotteryCode"></child>
+        <div v-for="(item, index) in result" v-bind:key="index" class="lottery-div">
+          <child :vv="item.lotteryCode"></child>
+          <span v-show="userInfoName">{{item.userInfoName}}</span>
+        </div>
+
       </div>
     </div>
     <transition name="fade">
@@ -52,10 +56,22 @@ export default {
       value1: 24,
       btn: false,
       raffleName: "抽奖",
-      flag: false,
+      flag: false,  // 控制抽奖结果的显示，去掉会影响动画
       level: '特等奖',
-      result: [],
-      value: 'special'
+      result: [], // 存放当前显示的数据的数组
+      value: 'special',
+      userInfoName: false,  // 是否显示名字
+
+      specialNum: 0,
+      firstNum: 0,
+      secondNum: 0,
+      thirdNum: 0,
+      specialCur: 0,
+      firstCur: 0,
+      secondCur: 0,
+      thirdCur: 0,
+      curNum: 0,
+      tolNum: 0
     };
   },
   components: {
@@ -63,11 +79,14 @@ export default {
   },
   created() {
     this.axios({
-      url: this.baseUrl + "/lottery/prize",
+      url: this.baseUrl+ "/lottery/prize",
       method: "get",
     })
     .then(res => {
-      if(res.data.data.lotteryFirst==null){  // 如果还未设置奖品数量
+      // console.log(res);
+      var prizeNum = res.data.data;
+      if(prizeNum.lotterySpecial==null && prizeNum.lotteryFirst==null
+      && prizeNum.lotterySecond==null && prizeNum.lotteryThird==null){  // 如果还未设置奖品数量
         this.$message({  // 错误提示
           type: "warning",
           message: "您还未设置奖品数量！"
@@ -77,7 +96,7 @@ export default {
         });
       }
       else {
-        this.$confirm('是否需要清空之前抽奖记录？', '提示', {  // 如果已抽过奖，询问是否清空抽奖记录
+        this.$confirm('是否需要清空之前抽奖记录？', '提示', {  // 无论是否抽过奖都询问是否清空抽奖记录
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -91,6 +110,7 @@ export default {
               type: 'success',
               message: '清空成功!'
             });
+            this.getNum();
           })
           .catch((error) => {
             console.log(error);
@@ -100,6 +120,7 @@ export default {
             type: 'info',
             message: '已取消'
           });
+          this.getNum();
           this.start();
         });
       }
@@ -107,81 +128,123 @@ export default {
     .catch(error => {
       console.log(error);
     });
-
   },
   methods: {
+    getNum: function() { // 获取当前的抽奖进度
+      var _this = this;
+      $.ajax({
+        url: this.baseUrl + '/lottery/drawProgress',
+        method: 'get',
+        headers: {
+          'S-TOKEN': this.$cookies.get('token2')
+        },
+        async: false,
+        dataType: "json",
+        success: function(res) {
+          // console.log(res);
+          var drawProgress = res.data;
+          _this.specialNum = drawProgress.specialMaxPage;
+          _this.firstNum = drawProgress.firstMaxPage;
+          _this.secondNum = drawProgress.secondMaxPage;
+          _this.thirdNum = drawProgress.thirdMaxPage;
+          _this.specialCur = drawProgress.specialPage;
+          _this.firstCur = drawProgress.firstPage;
+          _this.secondCur = drawProgress.secondPage;
+          _this.thirdCur = drawProgress.thirdPage;
+
+          _this.curNum = _this[_this.value+'Cur'];
+          _this.tolNum = _this[_this.value+'Num'];
+        },
+        error: function(err) {
+          console.log(err);
+        }
+      })
+    },
     start: function() {  // 获取抽奖结果
       var _this=this
       this.raffleName="抽奖"
       this.flag = false;
-      // console.log(typeof(this.value));
-      this.axios({
-        url: this.baseUrl + '/lottery/draw?type=' + this.value,
-        method: 'get'
-      })
-      .then((res) => {
-        console.log('获取中...');
-        console.log(res.data.data.result);
-        if(res.data.data.result.length !== 0) {
-          this.$set(this.$data, 'result', res.data.data.result);
-          this.flag = true;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+      this.btn = false;
+      if(this.curNum != 0) {
+        this.axios({
+          url: this.baseUrl + 'lottery/drawSearch',
+          method: 'post',
+          data: {
+            "lotteryPage": this.curNum,
+            "type": this.value
+          }
+        })
+        .then(res => {
+          console.log('获取中...');
+          if(res.data.data.result.length !== 0) {
+            this.$set(this.$data, 'result', res.data.data.result);
+            this.flag = true;
+            setTimeout(function() {
+              _this.userInfoName = true;
+            }, 1500)
+          }
+          if(this.curNum === this.tolNum) this.btn = true;
+          else this.btn = false;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+      }
     },
-    reset: function() {
+    reset: function() {  //点击抽奖
       var _this=this;
-      this.raffleName="抽奖中"
-      this.btn=true;
-      this.flag = false;
-      // console.log(typeof(this.value));
-      this.axios({
-        url: this.baseUrl + '/lottery/draw?type=' + this.value,
-        method: 'post'
-      })
-      .then((res) => {
-        console.log('抽奖中...');
-        // console.log(res.data.data.result);
-        this.$set(this.$data, 'result', res.data.data.result);
-        this.flag = true;
-        setTimeout(function(){_this.btn=false;_this.raffleName="抽奖";},1200)
-        console.log(this.flag);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+      if(this.curNum < this.tolNum) {
+        this.raffleName="抽奖中"
+        this.btn=true;
+        this.flag = false;
+        this.userInfoName = false;
+        this.axios({
+          url: this.baseUrl + '/lottery/draw',
+          method: 'post',
+          data: {
+            "lotteryPage": this.curNum+1,
+            "type": this.value
+          }
+        })
+        .then((res) => {
+          console.log('抽奖中...');
+          this[this.value+'Cur'] ++;
+          this.curNum ++;
+          this.flag = true;
+          this.start();
+          setTimeout(function(){
+            _this.userInfoName = true;
+            _this.raffleName="抽奖";
+          },1200);
+          // console.log(this.flag);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+      }
     },
-    reback: function() {
+    reback: function() {  //返回上一页
       this.$router.go(-1);
     },
-    setlevel(val) {
+    setlevel(val) {  //选择抽奖等级
       this.flag = false;
-      console.log(val);
+      // console.log(val);
       if(val === 'special') {
         this.level = '特等奖';
-        this.value = 'special';
-        this.start();
       }
       else if(val === 'first') {
         this.level = '一等奖';
-        this.value = 'first';
-        this.flag = false;
-        this.start();
       }
       else if(val === 'second') {
         this.level = '二等奖';
-        this.value = 'second';
-        this.start();
       }
       else if(val === 'third') {
         this.level = '三等奖';
-        this.value = 'third';
-        this.start();
       }
-
-      console.log(this.flag);
+      this.value = val;
+      this.curNum = this[this.value+'Cur'];
+      this.tolNum = this[this.value+'Num'];
+      this.start();
     },
     changeFontsize() {
 
@@ -321,9 +384,8 @@ export default {
 
 .level {
   display: block;
-  margin: 20px auto;
-  margin-bottom: 15px;
-  font-size: 24px;
+  margin: 25px auto;
+  font-size: 32px;
   color: #ffeecc;
 }
 
@@ -331,6 +393,18 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.lottery-div {
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  line-height: 50px;
+  margin-bottom: 10px;
+  font-size: 30px;
+  font-weight: bold;
+  color: #ffeecc;
 }
 
 .btn {
