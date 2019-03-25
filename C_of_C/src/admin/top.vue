@@ -1,6 +1,6 @@
 <template>
   <div class="top">
-    <span>莆田忠门籍在榕乡亲通讯平台</span>
+    <span class="top1">莆田忠门籍在榕乡亲通讯平台</span>
     <div class="top2">
       欢迎您 &nbsp;{{username}}<span class="text2">|</span><span class="quit" @click="logoff">退出</span>
     </div>
@@ -44,19 +44,22 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
+  min-width: 1301px;
   width: 100%;
   height: 54px;
   line-height: 54px;
-  padding: 0 24px;
+  padding: 0;
   box-shadow: 0 0 8px #EBEEF5;
   font-size: 18px;
   text-align: left;
   background: #fff;
   z-index: 99;
 }
-
+.top1{
+  margin: 0 24px;
+}
 .top2{
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 24px;
   height: 54px;

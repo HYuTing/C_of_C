@@ -151,9 +151,10 @@ export default {
   color: #55270d;
 }
 .main {
+  min-width: 1301px;
+  min-height: 701px;
   position: relative;
   width: 100%;
-  min-width: 800px;
   height: 100%;
   font-size: 16px;
   background-color: #b81d25;

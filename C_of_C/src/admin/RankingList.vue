@@ -218,7 +218,6 @@ function count(o){
   display: flex;
   justify-content: flex-start;
   width: 250px;
-  height: 7%;
   margin: auto;
   text-align: left;
   font-size: 24px;
@@ -234,7 +233,6 @@ function count(o){
 }
 .num{
   text-align: right;
-  height: 95%;
   display: inline-block;
 }
 </style>

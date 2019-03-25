@@ -267,6 +267,8 @@ function initailData(Vm, name) {
 
 <style scoped>
 .main {
+  min-width: 1301px;
+  min-height: 701px;
   position: relative;
   width: 100%;
   height: 100%;
@@ -355,14 +357,14 @@ function initailData(Vm, name) {
   right: 0;
 }
 
-.list {
+/*.list {
   height: 7.1%;
   text-align: left;
   padding-left: 20px;
   font-size: 20px;
   font-weight: bold;
   letter-spacing: 1px;
-}
+}*/
 
 .name {
   margin: 0 20px;
