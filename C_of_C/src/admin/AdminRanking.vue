@@ -1,8 +1,8 @@
 <template>
   <div class="main">
-    <div class="header">
+    <div class="header" >
       <p class="return" @click="reback()">&lt; 返回</p>
-      <p class="title">忠门籍在榕乡亲交费榜（{{minNum}}元以上）</p>
+      <p v-bind:style="{fontSize:titleFont}" class="title">忠门籍在榕乡亲交费榜（{{minNum}}元以上）</p>
     </div>
     <div class="result-div">
       <!-- <div class="ranking-list">
@@ -48,6 +48,7 @@ export default {
   name: "AdminRanking",
   data() {
     return {
+      titleFont: "30px",
       clientWidth: document.body.clientWidth,
       value: 42,
       pageSize: 2,
@@ -60,33 +61,11 @@ export default {
     };
   },
   mounted() {
-    // 在 DOM 渲染数据时，设置下区域高度为浏览器可视区域高度．
-    this.clientWidth = document.body.clientWidth;
+    this.bodychange()
     // 监听 window 的 resize 事件．在浏览器窗口变化时再设置下区域高度．
     const _this = this;
-    window.onresize = function temp() {
-        _this.clientWidth = document.body.clientWidth;
-        var fontsize=parseInt(_this.clientWidth/60)+"px";
-        var spanwidth=parseInt(_this.clientWidth/5.9)+"px";
-        var namewidth=parseInt(_this.clientWidth/5.9*0.44)+"px";
-        var numwidth=parseInt(_this.clientWidth/5.9*0.50)+"px";
-        _this.$refs.headerChild1.fontWidth=fontsize;
-        _this.$refs.headerChild2.fontWidth=fontsize;
-        _this.$refs.headerChild3.fontWidth=fontsize;
-        _this.$refs.headerChild4.fontWidth=fontsize;
-        _this.$refs.headerChild1.spanWidth=spanwidth;
-        _this.$refs.headerChild2.spanWidth=spanwidth;
-        _this.$refs.headerChild3.spanWidth=spanwidth;
-        _this.$refs.headerChild4.spanWidth=spanwidth;
-        _this.$refs.headerChild1.nameWidth=namewidth;
-        _this.$refs.headerChild2.nameWidth=namewidth;
-        _this.$refs.headerChild3.nameWidth=namewidth;
-        _this.$refs.headerChild4.nameWidth=namewidth;
-        _this.$refs.headerChild1.numWidth=numwidth;
-        _this.$refs.headerChild2.numWidth=numwidth;
-        _this.$refs.headerChild3.numWidth=numwidth;
-        _this.$refs.headerChild4.numWidth=numwidth;
-        //alert(len)alert(_this.$refs.headerChild.fontWidth);
+    window.onresize=function temp(){
+      _this.bodychange();
     }
   },
   components: {
@@ -94,7 +73,7 @@ export default {
   },
   created() {
     this.minNum = this.$route.query.minNum;  // 从父组件接受的参数
-
+    console.log(this)
     // this.axios({
     //   url: this.baseUrl + '/donation/rank?minNumber=' + 1,
     //   method: 'get'
@@ -113,6 +92,35 @@ export default {
     // })
   },
   methods: {
+     bodychange: function() {
+        this.clientWidth = document.body.clientWidth;
+        this.titleFont=parseInt(this.clientWidth/45)+"px";
+        var fontsize=parseInt(this.clientWidth/60)+"px";
+        var topfont=parseInt(this.clientWidth/53)+"px";
+        var spanwidth=parseInt(this.clientWidth/5.9)+"px";
+        var namewidth=parseInt(this.clientWidth/5.9*0.44)+"px";
+        var numwidth=parseInt(this.clientWidth/5.9*0.50)+"px";
+        this.$refs.headerChild1.topFont=topfont;
+        this.$refs.headerChild2.topFont=topfont;
+        this.$refs.headerChild3.topFont=topfont;
+        this.$refs.headerChild4.topFont=topfont;
+        this.$refs.headerChild1.fontWidth=fontsize;
+        this.$refs.headerChild2.fontWidth=fontsize;
+        this.$refs.headerChild3.fontWidth=fontsize;
+        this.$refs.headerChild4.fontWidth=fontsize;
+        this.$refs.headerChild1.spanWidth=spanwidth;
+        this.$refs.headerChild2.spanWidth=spanwidth;
+        this.$refs.headerChild3.spanWidth=spanwidth;
+        this.$refs.headerChild4.spanWidth=spanwidth;
+        this.$refs.headerChild1.nameWidth=namewidth;
+        this.$refs.headerChild2.nameWidth=namewidth;
+        this.$refs.headerChild3.nameWidth=namewidth;
+        this.$refs.headerChild4.nameWidth=namewidth;
+        this.$refs.headerChild1.numWidth=numwidth;
+        this.$refs.headerChild2.numWidth=numwidth;
+        this.$refs.headerChild3.numWidth=numwidth;
+        this.$refs.headerChild4.numWidth=numwidth;
+    },
     reback: function(){
       this.$router.push("/admin/payment_management");
     },
@@ -281,7 +289,6 @@ function initailData(Vm, name) {
 
 .title {
   text-align: center;
-  font-size: 32px;
   letter-spacing: 2px;
 }
 

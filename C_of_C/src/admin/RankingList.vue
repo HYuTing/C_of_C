@@ -1,6 +1,6 @@
 <template>
   <div class="ranking-list">
-    <p class="town-name">{{townname}}镇 &nbsp;&nbsp;{{n+1}}/{{total+1}}</p>
+    <p v-bind:style="{fontSize:topFont}" class="town-name">{{townname}}镇 &nbsp;&nbsp;{{n+1}}/{{total+1}}</p>
     <!-- <div class="topthree">
       <div class="fst">
         <img src="../assets/fst2.png" class="fst-icon">
@@ -35,6 +35,7 @@ export default {
   name: "AdminRanking",
   data() {
     return {
+      topFont: "24px",
       nameWidth: "110px",
       spanWidth: "250px",
       fontWidth: "24px",
