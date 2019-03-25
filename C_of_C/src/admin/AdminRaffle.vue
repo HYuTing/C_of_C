@@ -132,38 +132,39 @@ export default {
         pageSize: this.pageSize
       }
     })
-      .then(res => {
-        // console.log(res.data);
-        this.tableData = res.data.data.lotteryVOList;
-        var l=this.tableData.length
-        for(var i=0;i<l;i++){
-          if(this.tableData[i]['lotteryResult']==null)this.tableData[i]['lotteryResult2']="未抽奖"
-          if(this.tableData[i]['lotteryResult']=="nothing")this.tableData[i]['lotteryResult2']="未中奖"
-          if(this.tableData[i]['lotteryResult']=="special")this.tableData[i]['lotteryResult2']="特等奖"
-          if(this.tableData[i]['lotteryResult']=="first")this.tableData[i]['lotteryResult2']="一等奖"
-          if(this.tableData[i]['lotteryResult']=="second")this.tableData[i]['lotteryResult2']="二等奖"
-          if(this.tableData[i]['lotteryResult']=="third")this.tableData[i]['lotteryResult2']="三等奖"
-        }
+    .then(res => {
+      // console.log(res.data);
+      this.tableData = res.data.data.lotteryVOList;
+      var l=this.tableData.length
+      for(var i=0;i<l;i++){
+        if(this.tableData[i]['lotteryResult']==null)this.tableData[i]['lotteryResult2']="未抽奖"
+        if(this.tableData[i]['lotteryResult']=="nothing")this.tableData[i]['lotteryResult2']="未中奖"
+        if(this.tableData[i]['lotteryResult']=="special")this.tableData[i]['lotteryResult2']="特等奖"
+        if(this.tableData[i]['lotteryResult']=="first")this.tableData[i]['lotteryResult2']="一等奖"
+        if(this.tableData[i]['lotteryResult']=="second")this.tableData[i]['lotteryResult2']="二等奖"
+        if(this.tableData[i]['lotteryResult']=="third")this.tableData[i]['lotteryResult2']="三等奖"
+      }
 
-        // console.log("b",this.tableData)
-        this.totalnum = res.data.data.maxPageNum * this.pageSize;
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      // console.log("b",this.tableData)
+      this.totalnum = res.data.data.maxPageNum * this.pageSize;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+
     this.axios({
       url: this.baseUrl + "/lottery/prize",
       method: "get",
     })
-      .then(res => {
-        this.specialaward=res.data.data.lotterySpecial
-        this.firstprize=res.data.data.lotteryFirst
-        this.secondprize=res.data.data.lotterySecond
-        this.thirdprize=res.data.data.lotteryThird
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    .then(res => {
+      this.specialaward=res.data.data.lotterySpecial
+      this.firstprize=res.data.data.lotteryFirst
+      this.secondprize=res.data.data.lotterySecond
+      this.thirdprize=res.data.data.lotteryThird
+    })
+    .catch(error => {
+      console.log(error);
+    });
   },
   methods: {
     prizesetting: function() {

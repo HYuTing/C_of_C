@@ -48,35 +48,35 @@ export default {
 </script>
 <style>
 .wrap-container {
-  display:flex;
+  display: flex;
   justify-content: center;
-  width: 20%;
-  margin: 15px 0;
+  margin: 15px;
+  margin-left: 0;
 }
 
 .wrap{
-  width:15px;
-  height:18px;
-  position:relative;
-  overflow:hidden;
+  width: 22px;
+  height: 24px;
+  position: relative;
+  overflow: hidden;
   box-sizing: border-box;
-  font-size: 24px;
+  font-size: 32px;
 }
 
 .list {
-  position:absolute;
-  left:0;
-  top:0;
-  margin:0;
-  padding:0;
-  height:100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  height: 100%;
   box-sizing: border-box;
 }
 .list li{
-  list-style:none;
-  width:12px;
-  height:18px;
-  line-height:18px;
+  list-style: none;
+  width: 20px;
+  height: 24px;
+  line-height: 24px;
   color:#ffeecc;
   text-align:center;
   float:left;
