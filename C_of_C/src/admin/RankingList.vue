@@ -1,6 +1,6 @@
 <template>
   <div class="ranking-list">
-    <p class="town-name">{{townname}}镇 &nbsp;&nbsp;{{n+1}}/{{total+1}}</p>
+    <p v-bind:style="{fontSize:topFont}" class="town-name">{{townname}}镇 &nbsp;&nbsp;{{n+1}}/{{total+1}}</p>
     <!-- <div class="topthree">
       <div class="fst">
         <img src="../assets/fst2.png" class="fst-icon">
@@ -19,10 +19,10 @@
       </div>
     </div> -->
     <div class="others">
-      <p class="others-list" v-for="(item, index) in showData" v-bind:key="index">
+      <p class="others-list" v-for="(item, index) in showData" v-bind:style="{width:spanWidth}" v-bind:key="index">
         <!-- {{pageSize*n + index + 4}} -->
-        <span class="name">{{item.userInfoName}}</span>
-        <span class="num">{{item.donationNumber}} 元</span>
+        <span v-bind:style="{fontSize:fontWidth,width:nameWidth}" class="name">{{item.userInfoName}}</span>
+        <span v-bind:style="{fontSize:fontWidth,width:numWidth}" class="num">{{item.donationNumber}} 元</span>
       </p>
     </div>
   </div>
@@ -35,6 +35,11 @@ export default {
   name: "AdminRanking",
   data() {
     return {
+      topFont: "24px",
+      nameWidth: "110px",
+      spanWidth: "250px",
+      fontWidth: "24px",
+      numWidth: "130px",
       pageSize: 14,
       timer: '',
       fst: [{userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}],
@@ -210,6 +215,8 @@ function count(o){
 }
 
 .others-list {
+  display: flex;
+  justify-content: flex-start;
   width: 250px;
   height: 7%;
   margin: auto;
@@ -220,8 +227,14 @@ function count(o){
 }
 
 .name {
+  height: 95%;
   display: inline-block;
   width: 110px;
   margin-right: 10px;
+}
+.num{
+  text-align: right;
+  height: 95%;
+  display: inline-block;
 }
 </style>
