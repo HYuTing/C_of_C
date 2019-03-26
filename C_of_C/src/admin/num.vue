@@ -6,7 +6,8 @@ export default {
   name: 'num',
   data () {
     return {
-      html: ''
+      font: "100px",
+      html: '',
     }
   },
   props: {
@@ -28,18 +29,13 @@ export default {
       this.vv.toString().split('').forEach(v => {
         this.html += '<div class="wrap"><ul class="list scroll' + v + '">'
         for (let i = 0; i <= 9; i++) {
-          this.html += '<li>' + i + '</li>'
+          this.html += '<li style="font-size:34px">' + i + '</li>'
         }
         this.html += '</ul></div>'
       })
       this.$refs.number.innerHTML = this.html
     },
-    fontsizeSet(size) {
-      var len = document.getElementsByClassName('wrap').length;
-      for(var i=0; i<len; i++) {
-        document.getElementsByClassName('wrap')[i].style="font-size: "+ size +"px";
-      }
-    }
+
   },
   mounted() {
     this.init();
@@ -55,12 +51,11 @@ export default {
 }
 
 .wrap{
-  width: 22px;
-  height: 24px;
+  width: 21px;
+  height: 47px;
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
-  font-size: 32px;
 }
 
 .list {
@@ -75,8 +70,8 @@ export default {
 .list li{
   list-style: none;
   width: 20px;
-  height: 24px;
-  line-height: 24px;
+  height: 47px;
+  line-height: 47px;
   color:#ffeecc;
   text-align:center;
   float:left;

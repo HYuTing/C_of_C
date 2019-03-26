@@ -40,7 +40,7 @@ export default {
       spanWidth: "250px",
       fontWidth: "24px",
       numWidth: "130px",
-      pageSize: 14,
+      pageSize: 10,
       timer: '',
       fst: [{userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}, {userInfoName: '暂无', donationNumber: 0}],
       showData: [],
@@ -190,9 +190,9 @@ function count(o){
 
 <style scoped>
 .ranking-list {
-  position: relative;
   flex: 1;
   margin: 30px 8px;
+  padding-bottom: 15px;
   border-radius: 2px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
   text-align: center;
@@ -207,16 +207,11 @@ function count(o){
 }
 
 .others {
-  position:absolute;
-  top: 70px;
-  bottom: 10px;
-  left: 20px;
-  right: 20px;
 }
 
 .others-list {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   width: 250px;
   margin: auto;
   text-align: left;
@@ -226,13 +221,12 @@ function count(o){
 }
 
 .name {
-  height: 95%;
   display: inline-block;
-  width: 110px;
-  margin-right: 10px;
+  line-height: 200%;
 }
 .num{
   text-align: right;
   display: inline-block;
+  line-height: 200%;
 }
 </style>

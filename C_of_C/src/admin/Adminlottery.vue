@@ -13,7 +13,7 @@
       <p class="return" @click="reback()">&lt; 返回</p>
 
     <div class="block">
-      字体大小设置：<el-slider v-model="value1" :change="changeFontsize()"></el-slider>
+      字体大小设置：<el-slider v-model="value1" :max="50" :format-tooltip="formatTooltip" :change="changeFontsize()"></el-slider>
     </div>
 
       <p class="title">幸运大抽奖</p>
@@ -31,8 +31,8 @@
       <div v-if="flag" class="result">
         <!-- <Num v-for="(item, index) in result" v-bind:key="index" :vv="item.lotteryCode"></Num> -->
         <div v-for="(item, index) in result" v-bind:key="index" class="lottery-div">
-          <child :vv="item.lotteryCode"></child>
-          <span v-show="userInfoName">{{item.userInfoName}}</span>
+          <child ref="headerChild1" :vv="item.lotteryCode"></child>
+          <span class="lotteryname" v-bind:style="{fontSize:nameFont,lineHeight:lineheight}" v-show="userInfoName">{{item.userInfoName}}</span>
         </div>
 
       </div>
@@ -53,7 +53,11 @@ export default {
   name: "AdminRaffle2",
   data() {
     return {
-      value1: 24,
+      lineheight: "47px",
+      nameFont:"24px",
+      lfont: "10px",
+      clientWidth: document.body.clientWidth,
+      value1: 10,
       btn: false,
       raffleName: "抽奖",
       flag: false,  // 控制抽奖结果的显示，去掉会影响动画
@@ -74,6 +78,15 @@ export default {
       tolNum: 0
     };
   },
+  mounted() {
+    this.bodychange()
+    // 监听 window 的 resize 事件．在浏览器窗口变化时再设置下区域高度．
+    const _this = this;
+    console.log(this)
+    window.onresize=function temp(){
+      _this.bodychange();
+    }
+  },
   components: {
     Child
   },
@@ -83,7 +96,9 @@ export default {
       method: "get",
     })
     .then(res => {
-      // console.log(res);
+
+      // console.log(this);
+      var _this=this
       var prizeNum = res.data.data;
       if(prizeNum.lotterySpecial==null && prizeNum.lotteryFirst==null
       && prizeNum.lotterySecond==null && prizeNum.lotteryThird==null){  // 如果还未设置奖品数量
@@ -130,6 +145,31 @@ export default {
     });
   },
   methods: {
+    sonchange: function () {
+      this.clientWidth = document.body.clientWidth;
+      var size=parseInt(this.clientWidth/45*this.value1/10)
+      var len = document.getElementsByClassName('wrap').length;
+      for(var i=0; i<len; i++) {
+        document.getElementsByClassName('wrap')[i].style="font-size: "+ size +"px;"+"height: "+ size*7/5+"px;"+"width: "+ size*3/5+"px;";
+      }
+      var len = document.getElementsByTagName('li').length;
+      for(var i=0; i<len; i++) {
+        document.getElementsByTagName ('li')[i].style="height: "+ size*7/5+"px;"+"line-height: "+ size*7/5+"px;"+"width: "+ size*3/5+"px;";
+      }
+    },
+    bodychange: function() {
+      this.clientWidth = document.body.clientWidth;
+      var fontsize=parseInt(this.clientWidth/45*this.value1/10)
+      this.lineheight=fontsize*7/5+"px"
+      this.nameFont=fontsize+"px"
+      this.sonchange()
+      //console.log(fontsize)
+      //if(this.$refs.headerChild1!=null&&this.$refs.headerChild1.length>0)
+      //this.$refs.headerChild1[0].fontsizeSet(fontsize)
+    },
+    formatTooltip(val) {
+        return val / 10;
+    },
     getNum: function() { // 获取当前的抽奖进度
       var _this = this;
       $.ajax({
@@ -165,6 +205,7 @@ export default {
       this.raffleName="抽奖"
       this.flag = false;
       this.btn = false;
+      this.userInfoName=false
       if(this.curNum != 0) {
         this.axios({
           url: this.baseUrl + 'lottery/drawSearch',
@@ -213,9 +254,10 @@ export default {
           this.flag = true;
           this.start();
           setTimeout(function(){
-            _this.userInfoName = true;
+            //_this.userInfoName = true;
             _this.raffleName="抽奖";
           },1200);
+
           // console.log(this.flag);
         })
         .catch((error) => {
@@ -245,9 +287,14 @@ export default {
       this.curNum = this[this.value+'Cur'];
       this.tolNum = this[this.value+'Num'];
       this.start();
+      console.log("tes")
+      var _this=this
+      setTimeout(function(){
+        _this.sonchange()
+      },1500);
     },
     changeFontsize() {
-
+      this.bodychange();
     }
   }
 };
@@ -266,6 +313,7 @@ export default {
   background: linear-gradient(to top, #c76828, #f1c18b);
   color: #55270d;
 }
+
 
 .block {
   position: absolute;
@@ -422,6 +470,9 @@ export default {
   background: linear-gradient(to top, #c76828, #f1c18b);
   box-shadow: 6px 8px 40px rgba(0, 0, 0, 0.2);
   z-index: 99;
+}
+.lotteryname{
+  margin: 15px;
 }
 
 .re-btn {

@@ -93,6 +93,7 @@ export default {
   },
   methods: {
      bodychange: function() {
+        console.log(this.$refs.headerChild1.topFont)
         this.clientWidth = document.body.clientWidth;
         this.titleFont=parseInt(this.clientWidth/45)+"px";
         var fontsize=parseInt(this.clientWidth/60)+"px";
@@ -296,7 +297,6 @@ function initailData(Vm, name) {
 
 .result-div {
   display: flex;
-  height: 87%;
   padding: 0 20px;
   background-color: #b81d25;
 }
@@ -350,11 +350,6 @@ function initailData(Vm, name) {
 }
 
 .others {
-  position:absolute;
-  top: 180px;
-  bottom: 10px;
-  left: 0;
-  right: 0;
 }
 
 /*.list {
