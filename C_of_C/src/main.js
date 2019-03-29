@@ -1,18 +1,17 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
-import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import App from './App'
-import router from './router'
-import axios from 'axios'
-import VueCookies from 'vue-cookies'
-
 import 'lib-flexible'
-import toastRegistry from './toast/toast'
 import '../config/axios'
 
 import $ from 'jquery'
+import App from './App'
+import ElementUI from 'element-ui'
+// The Vue build version to load with the `import` command
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import Vue from 'vue'
+import VueCookies from 'vue-cookies'
+import axios from 'axios'
+import router from './router'
+import toastRegistry from './toast/toast'
 
 Vue.prototype.$ajax = axios
 
@@ -23,7 +22,7 @@ Vue.use(toastRegistry)
 Vue.prototype.axios = axios
 Vue.config.productionTip = false
 
-Vue.prototype.baseUrl = '/api';
+ Vue.prototype.baseUrl = '/api';
 // Vue.prototype.baseUrl = 'http://chamber.huanglexing.com';
 // Vue.prototype.baseUrl = 'https://chamber.w2fzu.com';
 

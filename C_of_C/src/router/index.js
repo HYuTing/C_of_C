@@ -1,29 +1,29 @@
 import AddrList from '@/components/AddrList'
 import AdminDelete from '@/admin/AdminDelete'
 import AdminLogin from '@/admin/AdminLogin'
+import AdminLottery from '@/admin/AdminLottery'
 import AdminMessage from '@/admin/AdminMessage'
 import AdminPay from '@/admin/AdminPay'
 import AdminRaffle from '@/admin/AdminRaffle'
-import AdminLottery from '@/admin/AdminLottery'
 import AdminRanking from '@/admin/AdminRanking'
 import AdminRegis from '@/admin/AdminRegis'
 import AdminUser from '@/admin/AdminUser'
 import Detail from '@/components/Detail'
-import HelloWorld from '@/components/HelloWorld'
 import Login from '@/components/Login'
 import Loginup from '@/components/Loginup'
 import Notice from '@/components/Notice'
 import NoticeDetail from '@/components/NoticeDetail'
-import Register from '@/components/Register'
-
 import Parent from '@/admin/parent'
-
+import Register from '@/components/Register'
 import Router from 'vue-router'
 import Userinfo from '@/components/Userinfo'
 import Vue from 'vue'
+
 Vue.use(Router)
 
 export default new Router({
+  //mode: 'history',
+  //base: '/test',
   routes: [
     {
       path: '/',
@@ -71,7 +71,7 @@ export default new Router({
       component: NoticeDetail
     },
     {
-      path: '/adminlogin',
+      path: '/admin',
       name: 'AdminLogin',
       component: AdminLogin
     },

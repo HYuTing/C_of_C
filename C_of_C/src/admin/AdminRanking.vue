@@ -2,6 +2,9 @@
   <div class="main">
     <div class="header" >
       <p class="return" @click="reback()">&lt; 返回</p>
+      <div class="block">
+        字体大小设置：<el-slider v-model="value1" :max="30" :format-tooltip="formatTooltip" :change="changeFontsize()"></el-slider>
+      </div>
       <p v-bind:style="{fontSize:titleFont}" class="title">忠门籍在榕乡亲交费榜（{{minNum}}元以上）</p>
     </div>
     <div class="result-div">
@@ -48,6 +51,7 @@ export default {
   name: "AdminRanking",
   data() {
     return {
+      value1: 10,
       titleFont: "30px",
       clientWidth: document.body.clientWidth,
       value: 42,
@@ -93,34 +97,42 @@ export default {
   },
   methods: {
      bodychange: function() {
-        console.log(this.$refs.headerChild1.topFont)
         this.clientWidth = document.body.clientWidth;
-        this.titleFont=parseInt(this.clientWidth/45)+"px";
-        var fontsize=parseInt(this.clientWidth/60)+"px";
-        var topfont=parseInt(this.clientWidth/53)+"px";
-        var spanwidth=parseInt(this.clientWidth/5.9)+"px";
-        var namewidth=parseInt(this.clientWidth/5.9*0.44)+"px";
-        var numwidth=parseInt(this.clientWidth/5.9*0.50)+"px";
-        this.$refs.headerChild1.topFont=topfont;
-        this.$refs.headerChild2.topFont=topfont;
-        this.$refs.headerChild3.topFont=topfont;
-        this.$refs.headerChild4.topFont=topfont;
-        this.$refs.headerChild1.fontWidth=fontsize;
-        this.$refs.headerChild2.fontWidth=fontsize;
-        this.$refs.headerChild3.fontWidth=fontsize;
-        this.$refs.headerChild4.fontWidth=fontsize;
-        this.$refs.headerChild1.spanWidth=spanwidth;
-        this.$refs.headerChild2.spanWidth=spanwidth;
-        this.$refs.headerChild3.spanWidth=spanwidth;
-        this.$refs.headerChild4.spanWidth=spanwidth;
-        this.$refs.headerChild1.nameWidth=namewidth;
-        this.$refs.headerChild2.nameWidth=namewidth;
-        this.$refs.headerChild3.nameWidth=namewidth;
-        this.$refs.headerChild4.nameWidth=namewidth;
-        this.$refs.headerChild1.numWidth=numwidth;
-        this.$refs.headerChild2.numWidth=numwidth;
-        this.$refs.headerChild3.numWidth=numwidth;
-        this.$refs.headerChild4.numWidth=numwidth;
+        var scale=document.body.clientWidth*this.value1/10;
+        this.titleFont=parseInt(scale/45)+"px";
+        var fontsize=parseInt(scale/60)+"px";
+        var topfont=parseInt(scale/53)+"px";
+        var spanwidth=parseInt(scale/5.9)+"px";
+        var namewidth=parseInt(scale/5.9*0.44)+"px";
+        var numwidth=parseInt(scale/5.9*0.50)+"px";
+        if(this.$refs.headerChild1!=null){
+          this.$refs.headerChild1.topFont=topfont;
+          this.$refs.headerChild2.topFont=topfont;
+          this.$refs.headerChild3.topFont=topfont;
+          this.$refs.headerChild4.topFont=topfont;
+          this.$refs.headerChild1.fontWidth=fontsize;
+          this.$refs.headerChild2.fontWidth=fontsize;
+          this.$refs.headerChild3.fontWidth=fontsize;
+          this.$refs.headerChild4.fontWidth=fontsize;
+          this.$refs.headerChild1.spanWidth=spanwidth;
+          this.$refs.headerChild2.spanWidth=spanwidth;
+          this.$refs.headerChild3.spanWidth=spanwidth;
+          this.$refs.headerChild4.spanWidth=spanwidth;
+          this.$refs.headerChild1.nameWidth=namewidth;
+          this.$refs.headerChild2.nameWidth=namewidth;
+          this.$refs.headerChild3.nameWidth=namewidth;
+          this.$refs.headerChild4.nameWidth=namewidth;
+          this.$refs.headerChild1.numWidth=numwidth;
+          this.$refs.headerChild2.numWidth=numwidth;
+          this.$refs.headerChild3.numWidth=numwidth;
+          this.$refs.headerChild4.numWidth=numwidth;
+        }
+    },
+    formatTooltip(val) {
+        return val / 10;
+    },
+    changeFontsize() {
+      this.bodychange();
     },
     reback: function(){
       this.$router.push("/admin/payment_management");
@@ -364,5 +376,13 @@ function initailData(Vm, name) {
 .name {
   margin: 0 20px;
   margin-right: 30px;
+}
+.block {
+  position: absolute;
+  top: 50px;
+  left: 200px;
+  width: 150px;
+  font-size: 16px;
+  color: #ffeecc;
 }
 </style>
