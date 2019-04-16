@@ -22,8 +22,9 @@ Vue.use(toastRegistry)
 Vue.prototype.axios = axios
 Vue.config.productionTip = false
 
- Vue.prototype.baseUrl = '/api';
-// Vue.prototype.baseUrl = 'http://chamber.huanglexing.com';
+// Vue.prototype.baseUrl = '/api';
+ Vue.prototype.baseUrl = 'http://chamber.huanglexing.com';
+// Vue.prototype.baseUrl = 'http://localhost:6919';
 // Vue.prototype.baseUrl = 'https://chamber.w2fzu.com';
 
 
@@ -111,7 +112,7 @@ axios.interceptors.response.use(function (response) {
         router.app.$cookies.remove('identity');
         console.log('登录过期，请重新登录');
         setTimeout(() => {
-          router.app.$router.push("/adminlogin");
+          router.app.$router.push("/admin");
         }, 2200);
       }
     }

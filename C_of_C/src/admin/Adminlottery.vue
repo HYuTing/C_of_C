@@ -1,13 +1,20 @@
 <template>
   <div class="main">
 
-    <img src="../assets/flower1.png" class="back-img flower1">
-    <img src="../assets/flower2.png" class="back-img flower2">
-    <img src="../assets/flower3.png" class="back-img flower3">
-    <img src="../assets/flower3.png" class="back-img flower4">
-    <img src="../assets/flower4.png" class="back-img flower5">
-    <img src="../assets/flower6.png" class="back-img flower7">
-    <img src="../assets/flower5.png" class="back-img flower6">
+<!--    <img src="./../static/img/flower1.png" class="back-img flower1">
+    <img src="./../static/img/flower2.png" class="back-img flower2">
+    <img src="./../static/img/flower3.png" class="back-img flower3">
+    <img src="./../static/img/flower3.png" class="back-img flower4">
+    <img src="./../static/img/flower4.png" class="back-img flower5">
+    <img src="./../static/img/flower6.png" class="back-img flower7">
+    <img src="./../static/img/flower5.png" class="back-img flower6">-->
+    <img v-bind:src="imgUrl[0]"  class="back-img flower1">
+    <img v-bind:src="imgUrl[1]"  class="back-img flower2">
+    <img v-bind:src="imgUrl[2]"  class="back-img flower3">
+    <img v-bind:src="imgUrl[2]"  class="back-img flower4">
+    <img v-bind:src="imgUrl[3]"  class="back-img flower5">
+    <img v-bind:src="imgUrl[5]"  class="back-img flower7">
+    <img v-bind:src="imgUrl[4]"  class="back-img flower6">
 
     <div class="header">
       <p class="return" @click="reback()">&lt; 返回</p>
@@ -53,6 +60,15 @@ export default {
   name: "AdminRaffle2",
   data() {
     return {
+      imgUrl:[
+        "./../static/img/flower1.png",
+        "./../static/img/flower2.png",
+        "./../static/img/flower3.png",
+        "./../static/img/flower4.png",
+        "./../static/img/flower5.png",
+        "./../static/img/flower6.png",
+        ],
+
       lineheight: "47px",
       nameFont:"24px",
       lfont: "10px",
@@ -215,7 +231,7 @@ export default {
             "type": this.value
           }
         })
-        .then(res => {
+        .then((res) => {
           console.log('获取中...');
           if(res.data.data.result.length !== 0) {
             this.$set(this.$data, 'result', res.data.data.result);
@@ -228,7 +244,7 @@ export default {
           else this.btn = false;
         })
         .catch((error) => {
-          console.log(error);
+          if(error)console.log(error);
         })
       }
     },

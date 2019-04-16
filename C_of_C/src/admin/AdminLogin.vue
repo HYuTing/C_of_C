@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="container">
-      <img src="../assets/title.png" class="logo">
+      <img v-bind:src="imgUrl" class="logo">
       <input v-model="adminname" type="text" placeholder="管理员账号" class="input">
       <div class="password-div">
         <img :src="eye" class="icon" @click="showpassword_fun">
@@ -19,6 +19,7 @@ export default {
   name: 'AdminLogin',
   data () {
     return {
+      imgUrl:"./../static/img/title.png",
       adminname: '',
       password: '',
       showpassword: 'password',

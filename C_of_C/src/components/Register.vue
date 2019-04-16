@@ -40,7 +40,8 @@ export default {
   name: 'AddrList',
   data () {
     return {
-      image_bg: '../../static/df.png',
+      image_bg: './static/img/df.png',
+      //image_bg: './static/img/bf.png',
       status1: true,
       lotteryCode: '',
       befoDraw: true,
